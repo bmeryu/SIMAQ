@@ -1,393 +1,253 @@
 <!DOCTYPE html>
-<html lang="es-CL" class="scroll-smooth">
+<!-- 
+  HOME · SIMAQ v3.0 (Imágenes Reales y Contenido Oficial)
+  -------------------------------------------------------------------
+  - IMÁGENES: Se reemplazan las imágenes de Unsplash por las imágenes reales del sitio web de SIMAQ, proporcionadas por el usuario.
+  - CONTENIDO: Se mantiene la estructura mejorada, ahora con las fotografías oficiales del equipo y maquinaria.
+  - AUTENTICIDAD: La página ahora refleja fielmente la identidad visual de la marca SIMAQ.
+  -------------------------------------------------------------------
+-->
+<html lang="es-CL">
 <head>
     <meta charset="UTF-8" />
-    <title>SIMAQ - Soluciones Integrales de Capacitación</title>
+    <title>SIMAQ – Soluciones Integrales de Capacitación</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="SIMAQ, con más de 18 años de experiencia, ofrece capacitación de personal y consultoría en Chile y Perú, especializándose en maquinaria agrícola y uso de plaguicidas.">
-    <meta name="keywords" content="capacitación, maquinaria agrícola, cursos, consultoría, SIMAQ, tractores, plaguicidas, SAG">
+    <meta name="description" content="SIMAQ, con más de 18 años de experiencia en la capacitación de personal en Chile y Perú, ofrece cursos y consultoría en maquinaria agrícola y más.">
     <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
-
     <style>
         :root {
             --simaq-blue: #0057FF;
             --simaq-dark-blue: #003db3;
         }
-        html { font-family: 'Inter', sans-serif; }
-        .simaq-button {
-            background-color: var(--simaq-blue);
-            transition: background-color 0.3s ease;
-        }
-        .simaq-button:hover {
-            background-color: var(--simaq-dark-blue);
-        }
-        .simaq-button-outline {
-            color: var(--simaq-blue);
-            border-color: var(--simaq-blue);
-            transition: all 0.3s ease;
-        }
-        .simaq-button-outline:hover {
-            background-color: var(--simaq-blue);
-            color: white;
-        }
+        body { font-family: 'Inter', sans-serif; }
         .text-simaq-blue { color: var(--simaq-blue); }
         .bg-simaq-blue { background-color: var(--simaq-blue); }
-        
-        /* Animación para aparecer */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in-section {
+        .hover\:bg-simaq-dark-blue:hover { background-color: var(--simaq-dark-blue); }
+        .ring-simaq-blue { --tw-ring-color: var(--simaq-blue); }
+        .scroll-animation {
             opacity: 0;
-            animation: fadeIn 0.8s ease-out forwards;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scroll-animation.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="bg-white text-gray-800 antialiased">
+<body class="bg-white text-gray-800">
 
     <!-- Header -->
-    <header id="header" class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <header class="bg-white sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" aria-label="Página de inicio de SIMAQ">
-                <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-14 md:h-16 w-auto" />
+                <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ" class="h-16 md:h-20 w-auto">
             </a>
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#servicios" class="text-gray-600 hover:text-simaq-blue font-medium">Servicios</a>
-                <a href="#metodologia" class="text-gray-600 hover:text-simaq-blue font-medium">Metodología</a>
-                <a href="#cursos" class="text-gray-600 hover:text-simaq-blue font-medium">Cursos</a>
-                <a href="#equipo" class="text-gray-600 hover:text-simaq-blue font-medium">Equipo</a>
-            </nav>
             <div class="flex items-center space-x-4">
-                <a href="acceso-simaq.html" class="simaq-button-outline text-sm font-semibold px-5 py-2.5 rounded-lg border-2 hidden sm:block">
+                <a href="#cursos" class="text-gray-600 hover:text-simaq-blue font-semibold transition-colors">Cursos</a>
+                <a href="#contacto" class="text-gray-600 hover:text-simaq-blue font-semibold transition-colors">Contacto</a>
+                <a href="acceso-simaq.html" class="bg-simaq-blue text-white font-bold py-2 px-6 rounded-lg hover:bg-simaq-dark-blue transition-colors">
                     Acceso Alumnos
                 </a>
-                <a href="acceso-simaq.html" class="simaq-button text-white text-sm font-semibold px-5 py-2.5 rounded-lg">
-                    Inscríbete
-                </a>
             </div>
-        </div>
+        </nav>
     </header>
 
     <!-- Hero Section -->
-    <main class="pt-24">
-        <section class="bg-gray-50 relative">
-             <div class="absolute inset-0 bg-cover bg-center opacity-10" style="background-image: url('http://www.simaq.cl/simaq/images/gallery/full/1.jpg');"></div>
-             <div class="absolute inset-0 bg-gradient-to-t from-gray-50 via-gray-50 to-transparent"></div>
-            <div class="container mx-auto px-6 py-20 md:py-32 text-center relative z-10">
-                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-                    <span class="text-simaq-blue">SIMAQ</span> – Soluciones Integrales de Capacitación Ltda.
-                </h1>
-                <p class="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-gray-600">
-                    Con más de 18 años de experiencia en la capacitación de personal en Chile y Perú, nos especializamos en potenciar las habilidades de su equipo para enfrentar los desafíos del mañana.
-                </p>
-                <div class="mt-10 flex justify-center items-center gap-4">
-                    <a href="#cursos" class="simaq-button text-white font-semibold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">
-                        Ver Nuestros Cursos
-                    </a>
+    <main>
+        <section class="relative bg-gray-50">
+            <div class="container mx-auto px-6 py-20 md:py-32 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight scroll-animation">
+                        Soluciones Integrales de Capacitación
+                    </h1>
+                    <p class="mt-6 text-lg text-gray-600 max-w-xl mx-auto md:mx-0 scroll-animation">
+                        Con más de 18 años de experiencia, potenciamos el talento de personal en Chile y Perú a través de capacitación, consultoría y formación en maquinaria especializada.
+                    </p>
+                    <div class="mt-8 flex justify-center md:justify-start space-x-4 scroll-animation">
+                        <a href="#cursos" class="bg-simaq-blue text-white font-bold py-3 px-8 rounded-lg hover:bg-simaq-dark-blue transition-colors">
+                            Ver Cursos
+                        </a>
+                        <a href="acceso-simaq.html" class="bg-gray-200 text-gray-800 font-bold py-3 px-8 rounded-lg hover:bg-gray-300 transition-colors">
+                            Portal Alumnos
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Servicios Section -->
-        <section id="servicios" class="py-20 md:py-28">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Servicios Ofrecidos</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Soluciones a la medida de las necesidades de su empresa.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <div class="text-center p-8 bg-gray-50 rounded-xl hover:shadow-lg hover:-translate-y-2 transition-transform duration-300">
-                        <div class="flex justify-center items-center mb-5 w-16 h-16 bg-simaq-blue/10 rounded-full mx-auto">
-                            <i data-lucide="clipboard-list" class="w-8 h-8 text-simaq-blue"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2">Capacitación</h3>
-                        <p class="text-gray-600">Diagnóstico de necesidades de capacitación y desarrollo de programas personalizados para empresas y trabajadores.</p>
-                    </div>
-                    <div class="text-center p-8 bg-gray-50 rounded-xl hover:shadow-lg hover:-translate-y-2 transition-transform duration-300">
-                        <div class="flex justify-center items-center mb-5 w-16 h-16 bg-simaq-blue/10 rounded-full mx-auto">
-                            <i data-lucide="tractor" class="w-8 h-8 text-simaq-blue"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2">Maquinaria</h3>
-                        <p class="text-gray-600">Formación especializada en la operación, mantenimiento y calibración de maquinaria agrícola y equipos de riego.</p>
-                    </div>
-                    <div class="text-center p-8 bg-gray-50 rounded-xl hover:shadow-lg hover:-translate-y-2 transition-transform duration-300">
-                        <div class="flex justify-center items-center mb-5 w-16 h-16 bg-simaq-blue/10 rounded-full mx-auto">
-                            <i data-lucide="briefcase" class="w-8 h-8 text-simaq-blue"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2">Consultoría</h3>
-                        <p class="text-gray-600">Amplia experiencia en la prestación de servicios de consultoría técnica y estratégica en Chile y en el extranjero.</p>
-                    </div>
+                <div class="md:w-1/2 mt-10 md:mt-0">
+                    <img src="https://www.simaq.cl/wp-content/uploads/2020/04/tractor-1.jpg" alt="Tractor agrícola operando en un campo" class="rounded-lg shadow-2xl scroll-animation">
                 </div>
             </div>
         </section>
 
         <!-- Metodología Section -->
-        <section id="metodologia" class="bg-gray-50 py-20 md:py-28">
+        <section id="metodologia" class="py-20">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Nuestra Metodología de Éxito</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Un proceso probado para garantizar resultados medibles.</p>
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 scroll-animation">Nuestra Metodología de Trabajo</h2>
+                    <p class="mt-4 text-lg text-gray-600 scroll-animation">Un proceso probado para garantizar resultados efectivos.</p>
                 </div>
-                <div class="relative">
-                    <!-- Linea de conexión -->
-                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-                        <div class="text-center">
-                            <div class="relative inline-block">
-                                <div class="w-20 h-20 bg-simaq-blue text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold">1</div>
-                            </div>
-                            <h3 class="text-xl font-semibold mt-6 mb-2">Diagnóstico</h3>
-                            <p class="text-gray-600">Analizamos las necesidades específicas de su equipo y organización para definir objetivos claros y alcanzables.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="text-center p-6 bg-gray-50 rounded-lg scroll-animation">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-simaq-blue text-white mx-auto mb-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
-                        <div class="text-center">
-                             <div class="relative inline-block">
-                                <div class="w-20 h-20 bg-simaq-blue text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold">2</div>
-                            </div>
-                            <h3 class="text-xl font-semibold mt-6 mb-2">Capacitación Personalizada</h3>
-                            <p class="text-gray-600">Diseñamos e impartimos programas formativos a medida, combinando teoría y práctica con equipamiento real.</p>
+                        <h3 class="text-xl font-bold mb-2">1. Diagnóstico</h3>
+                        <p class="text-gray-600">Analizamos las necesidades específicas de capacitación para desarrollar un programa a la medida de tu empresa y trabajadores.</p>
+                    </div>
+                    <div class="text-center p-6 bg-gray-50 rounded-lg scroll-animation">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-simaq-blue text-white mx-auto mb-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                         </div>
-                        <div class="text-center">
-                            <div class="relative inline-block">
-                                <div class="w-20 h-20 bg-simaq-blue text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold">3</div>
-                            </div>
-                            <h3 class="text-xl font-semibold mt-6 mb-2">Certificación y Seguimiento</h3>
-                            <p class="text-gray-600">Validamos las competencias adquiridas y ofrecemos seguimiento para asegurar la aplicación efectiva en el puesto de trabajo.</p>
+                        <h3 class="text-xl font-bold mb-2">2. Capacitación</h3>
+                        <p class="text-gray-600">Impartimos cursos teóricos y prácticos con un equipo profesional de vasta experiencia en terreno, tanto en Chile como en el extranjero.</p>
+                    </div>
+                    <div class="text-center p-6 bg-gray-50 rounded-lg scroll-animation">
+                         <div class="flex items-center justify-center h-16 w-16 rounded-full bg-simaq-blue text-white mx-auto mb-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Cursos Section -->
-        <section id="cursos" class="py-20 md:py-28">
-            <div class="container mx-auto px-6">
-                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Nuestros Cursos de Capacitación</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Programas diseñados para entregar competencias clave a sus colaboradores.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Curso 1 -->
-                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
-                        <i data-lucide="spray-can" class="w-10 h-10 text-simaq-blue mb-4"></i>
-                        <h3 class="font-bold text-lg mb-2 flex-grow">Calibración de equipos de pulverización</h3>
-                        <p class="text-sm text-gray-600">Aprenda sobre control de parámetros, componentes, sistemas de mando, tipos de boquillas y más.</p>
-                    </div>
-                     <!-- Curso 2 -->
-                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
-                        <i data-lucide="shield-check" class="w-10 h-10 text-simaq-blue mb-4"></i>
-                        <h3 class="font-bold text-lg mb-2 flex-grow">Uso y manejo de plaguicidas (credencial SAG)</h3>
-                        <p class="text-sm text-gray-600">Domine el almacenamiento, transporte, mezcla y manipulación de plaguicidas según la normativa vigente.</p>
-                    </div>
-                     <!-- Curso 3 -->
-                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
-                         <i data-lucide="forklift" class="w-10 h-10 text-simaq-blue mb-4"></i>
-                        <h3 class="font-bold text-lg mb-2 flex-grow">Manejo y operación de carretillas elevadoras</h3>
-                        <p class="text-sm text-gray-600">Conozca la descripción, funcionamiento y sistemas de una carretilla elevadora.</p>
-                    </div>
-                     <!-- Curso 4 -->
-                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
-                        <i data-lucide="droplets" class="w-10 h-10 text-simaq-blue mb-4"></i>
-                        <h3 class="font-bold text-lg mb-2 flex-grow">Operación y mantenimiento de equipos de riego</h3>
-                        <p class="text-sm text-gray-600">Entienda los principios de fertirrigación, mantenimiento, programación y manejo de tableros eléctricos.</p>
-                    </div>
-                     <!-- Curso 5 -->
-                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
-                        <i data-lucide="tractor" class="w-10 h-10 text-simaq-blue mb-4"></i>
-                        <h3 class="font-bold text-lg mb-2 flex-grow">Operación y mantenimiento de tractores y maquinaria</h3>
-                        <p class="text-sm text-gray-600">Factores para el uso y mantenimiento adecuado, velocidad de avance y economía de combustible.</p>
-                    </div>
-                     <!-- CTA Cursos -->
-                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg flex flex-col items-center justify-center text-center">
-                        <h3 class="font-bold text-lg mb-2">¿Necesita un curso a medida?</h3>
-                        <p class="text-sm text-gray-600 mb-4">Contáctenos para diseñar un programa que se ajuste a sus necesidades exactas.</p>
-                        <a href="mailto:simaqcapacita@gmail.com" class="simaq-button-outline text-sm font-semibold px-5 py-2.5 rounded-lg border-2">
-                           Cotizar
-                        </a>
+                        <h3 class="text-xl font-bold mb-2">3. Certificación</h3>
+                        <p class="text-gray-600">Nuestros programas, como el de "Uso y manejo de plaguicidas", otorgan credenciales oficiales (SAG) que validan las competencias adquiridas.</p>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- Galería Section -->
-        <section id="galeria" class="bg-gray-50 py-20 md:py-28">
+        <!-- Cursos Destacados Section -->
+        <section id="cursos" class="py-20 bg-gray-100">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Nuestros Clientes en Acción</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">La capacitación se demuestra en el terreno.</p>
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 scroll-animation">Nuestros Cursos de Capacitación</h2>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="overflow-hidden rounded-lg shadow-lg">
-                        <img src="http://www.simaq.cl/simaq/images/gallery/full/2.jpg" alt="[Imagen de capacitación de maquinaria]" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/334155?text=SIMAQ';">
-                    </div>
-                    <div class="overflow-hidden rounded-lg shadow-lg">
-                        <img src="http://www.simaq.cl/simaq/images/gallery/full/3.jpg" alt="[Imagen de operario en tractor]" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/334155?text=SIMAQ';">
-                    </div>
-                    <div class="overflow-hidden rounded-lg shadow-lg">
-                        <img src="http://www.simaq.cl/simaq/images/gallery/full/4.jpg" alt="[Imagen de equipo de pulverización]" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/334155?text=SIMAQ';">
-                    </div>
-                     <div class="overflow-hidden rounded-lg shadow-lg">
-                        <img src="http://www.simaq.cl/simaq/images/gallery/full/5.jpg" alt="[Imagen de grupo en capacitación]" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/334155?text=SIMAQ';">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonios Section -->
-        <section id="testimonios" class="py-20 md:py-28">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Lo que dicen nuestros clientes</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">La experiencia y resultados nos avalan.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-                        <p class="text-gray-600 mb-6">"La capacitación de SIMAQ fue un antes y un después para nuestro equipo. Mejoramos la eficiencia en el uso de la maquinaria y redujimos costos de mantenimiento significativamente. Su enfoque práctico es invaluable."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/48x48/e2e8f0/334155?text=CA" class="w-12 h-12 rounded-full" alt="Foto de cliente">
-                            <div class="ml-4">
-                                <p class="font-semibold">Carlos Andrade</p>
-                                <p class="text-sm text-gray-500">Jefe de Operaciones, Agro-Exportadora del Valle</p>
-                            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Curso Card -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 scroll-animation">
+                        <img src="https://www.simaq.cl/wp-content/uploads/2020/04/PHOTO-2019-07-24-17-13-15-COLLAGE.jpg" alt="Equipo de pulverización" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Calibración de Equipos de Pulverización</h3>
+                            <p class="text-gray-600">Domina los parámetros de aplicación, componentes y tipos de boquillas.</p>
                         </div>
                     </div>
-                     <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-                        <p class="text-gray-600 mb-6">"Obtener la credencial SAG a través de SIMAQ fue un proceso claro y muy completo. Los instructores tienen un dominio total de la materia y la normativa. Totalmente recomendados para cualquier empresa del sector."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/48x48/e2e8f0/334155?text=LR" class="w-12 h-12 rounded-full" alt="Foto de cliente">
-                            <div class="ml-4">
-                                <p class="font-semibold">Lorena Rojas</p>
-                                <p class="text-sm text-gray-500">Encargada de Prevención de Riesgos</p>
-                            </div>
+                     <!-- Curso Card -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 scroll-animation">
+                        <img src="https://www.simaq.cl/wp-content/uploads/2020/04/noticias_1583865968_smal.jpg" alt="Persona aplicando plaguicidas de forma segura" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Uso y Manejo de Plaguicidas (Credencial SAG)</h3>
+                            <p class="text-gray-600">Aprende sobre almacenamiento, transporte y manipulación según la normativa vigente.</p>
+                        </div>
+                    </div>
+                     <!-- Curso Card -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 scroll-animation">
+                        <img src="https://www.simaq.cl/wp-content/uploads/2020/04/grua-horquilla-4x2-carga-35tons-a-3mts-50hp-gas-fesal-D_NQ_NP_777962-MLC40831975069_022020-F_cuaddrado.jpg" alt="Carretilla elevadora en operación" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Manejo de Carretillas Elevadoras</h3>
+                            <p class="text-gray-600">Conoce el funcionamiento del motor, sistema eléctrico, transmisión y más.</p>
                         </div>
                     </div>
                 </div>
+                 <div class="text-center mt-12">
+                    <a href="acceso-simaq.html" class="bg-simaq-blue text-white font-bold py-3 px-8 rounded-lg hover:bg-simaq-dark-blue transition-colors scroll-animation">
+                        Ver todos los cursos
+                    </a>
+                </div>
             </div>
         </section>
-
 
         <!-- Equipo Section -->
-        <section id="equipo" class="bg-gray-50 py-20 md:py-28">
+        <section class="py-20">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Equipo Profesional</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Liderazgo y experiencia a su servicio.</p>
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 scroll-animation">Nuestro Equipo Profesional</h2>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-                    <div>
-                        <img src="http://www.simaq.cl/simaq/images/team/jmery.png" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de José Mery Grez" onerror="this.onerror=null; this.src='https://placehold.co/128x128/e2e8f0/334155?text=JM';">
-                        <h3 class="font-bold text-lg">José Mery Grez</h3>
-                        <p class="text-sm text-simaq-blue">Gerente</p>
-                        <p class="text-xs text-gray-500 mt-1">Ingeniero Agrónomo, Dr. en Mecanización Agrícola.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    <div class="text-center scroll-animation">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg" src="https://www.simaq.cl/wp-content/uploads/2020/04/JMery_cuadrado.jpg" alt="Retrato de José Mery Grez">
+                        <h3 class="text-xl font-bold">José Mery Grez</h3>
+                        <p class="text-gray-600">Gerente y Asesor</p>
                     </div>
-                    <div>
-                        <img src="http://www.simaq.cl/simaq/images/team/jrocuant.png" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de Joshua Rocuant" onerror="this.onerror=null; this.src='https://placehold.co/128x128/e2e8f0/334155?text=JR';">
-                        <h3 class="font-bold text-lg">Joshua Rocuant</h3>
-                        <p class="text-sm text-simaq-blue">Jefe de Operaciones</p>
-                        <p class="text-xs text-gray-500 mt-1">Coordinador General de Cursos.</p>
+                    <div class="text-center scroll-animation">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg" src="https://www.simaq.cl/wp-content/uploads/2020/04/Joshua_cuadrado.jpg" alt="Retrato de Joshua Rocuant">
+                        <h3 class="text-xl font-bold">Joshua Rocuant</h3>
+                        <p class="text-gray-600">Jefe de Operaciones</p>
                     </div>
-                    <div>
-                        <img src="http://www.simaq.cl/simaq/images/team/nquintana.png" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de Nataly Quintana" onerror="this.onerror=null; this.src='https://placehold.co/128x128/e2e8f0/334155?text=NQ';">
-                        <h3 class="font-bold text-lg">Nataly Quintana</h3>
-                        <p class="text-sm text-simaq-blue">Asistente Administrativa</p>
-                        <p class="text-xs text-gray-500 mt-1">Técnica Profesional en Adm. de Empresas.</p>
+                    <div class="text-center scroll-animation">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg" src="https://www.simaq.cl/wp-content/uploads/2020/04/Nataly_cuadrado.jpg" alt="Retrato de Nataly Quintana">
+                        <h3 class="text-xl font-bold">Nataly Quintana</h3>
+                        <p class="text-gray-600">Asistente Administrativa</p>
                     </div>
-                    <div>
-                        <img src="http://www.simaq.cl/simaq/images/team/vcabezas.png" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de Vilma Cabezas" onerror="this.onerror=null; this.src='https://placehold.co/128x128/e2e8f0/334155?text=VC';">
-                        <h3 class="font-bold text-lg">Vilma Cabezas</h3>
-                        <p class="text-sm text-simaq-blue">Directora de Capacitación</p>
-                        <p class="text-xs text-gray-500 mt-1">Especialista en franquicias tributarias.</p>
+                    <div class="text-center scroll-animation">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg" src="https://www.simaq.cl/wp-content/uploads/2020/04/Vilma_cuadrado.jpg" alt="Retrato de Vilma Cabezas">
+                        <h3 class="text-xl font-bold">Vilma Cabezas</h3>
+                        <p class="text-gray-600">Directora de Capacitación</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Final CTA Section -->
-         <section class="bg-simaq-blue">
+        <!-- CTA Section -->
+        <section class="bg-gray-800 text-white">
             <div class="container mx-auto px-6 py-20 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-white">Potencie el talento de su equipo hoy mismo</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg text-white/80">Contáctenos para un diagnóstico sin costo y descubra cómo podemos ayudar a su empresa a alcanzar sus objetivos.</p>
-                <a href="mailto:simaqcapacita@gmail.com" class="mt-8 inline-block bg-white text-simaq-blue font-semibold px-10 py-4 rounded-lg shadow-lg text-lg hover:bg-gray-100 transition-colors">
-                    Solicitar Información
-                </a>
+                <h2 class="text-3xl md:text-4xl font-bold scroll-animation">¿Listo para potenciar a tu equipo?</h2>
+                <p class="mt-4 text-lg text-gray-300 max-w-2xl mx-auto scroll-animation">
+                    Contacta con nosotros para obtener un diagnóstico y una propuesta de capacitación a la medida de tus necesidades.
+                </p>
+                <div class="mt-8 scroll-animation">
+                    <a href="#contacto" class="bg-simaq-blue text-white font-bold py-4 px-10 rounded-lg hover:bg-simaq-dark-blue transition-colors text-lg">
+                        Contáctanos
+                    </a>
+                </div>
             </div>
         </section>
 
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-100">
+    <footer id="contacto" class="bg-gray-900 text-gray-300">
         <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-gray-700">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
                 <div>
-                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-14 w-auto" />
-                    <p class="mt-4 text-sm text-gray-600">
-                        <strong>SIMAQ – Soluciones Integrales de Capacitación Ltda.</strong><br>
-                        Comprometidos con el desarrollo profesional.
-                    </p>
+                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ en pie de página" class="h-12 w-auto mx-auto md:mx-0 mb-4">
+                    <p class="max-w-xs mx-auto md:mx-0">Soluciones Integrales de Capacitación Ltda. Más de 18 años de experiencia.</p>
                 </div>
                 <div>
-                    <h3 class="font-semibold tracking-wider uppercase">Navegación</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#servicios" class="text-gray-600 hover:text-simaq-blue">Servicios</a></li>
-                        <li><a href="#cursos" class="text-gray-600 hover:text-simaq-blue">Cursos</a></li>
-                        <li><a href="acceso-simaq.html" class="text-gray-600 hover:text-simaq-blue">Acceso Alumnos</a></li>
+                    <h3 class="font-bold text-white uppercase tracking-wider mb-4">Contacto</h3>
+                    <p>Victor Achurra #398, Peumo, VI Región</p>
+                    <p>Lunes a Viernes, 9:00 - 18:00 hrs.</p>
+                    <p class="mt-2"><a href="mailto:simaqcapacita@gmail.com" class="hover:text-simaq-blue transition-colors">simaqcapacita@gmail.com</a></p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white uppercase tracking-wider mb-4">Navegación</h3>
+                    <ul>
+                        <li><a href="#cursos" class="hover:text-simaq-blue transition-colors">Cursos</a></li>
+                        <li><a href="acceso-simaq.html" class="hover:text-simaq-blue transition-colors">Acceso Alumnos</a></li>
+                        <li><a href="#" class="hover:text-simaq-blue transition-colors">Responsabilidad Social</a></li>
                     </ul>
-                </div>
-                <div>
-                     <h3 class="font-semibold tracking-wider uppercase">Contacto</h3>
-                     <ul class="mt-4 space-y-2 text-sm">
-                        <li class="text-gray-600">Victor Achurra #398, Peumo, VI Región.</li>
-                        <li class="text-gray-600">Lunes a Viernes, 9:00 a 18:00 hrs.</li>
-                        <li><a href="mailto:simaqcapacita@gmail.com" class="text-gray-600 hover:text-simaq-blue">simaqcapacita@gmail.com</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-semibold tracking-wider uppercase">Responsabilidad Social</h3>
-                     <p class="mt-4 text-sm text-gray-600">
-                        Contribuimos a la <a href="#" class="text-simaq-blue font-semibold hover:underline">Fundación Unes Chile</a>, que ofrece formación laboral a personas con poca o ninguna cualificación.
-                     </p>
                 </div>
             </div>
-            <div class="mt-12 border-t border-gray-200 pt-6 text-center text-gray-500">
-                <p>&copy; 2024 SIMAQ. Todos los derechos reservados.</p>
+            <div class="border-t border-gray-700 mt-12 pt-6 text-center text-sm">
+                <p>&copy; 2025 SIMAQ Capacitaciones. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-
-            // Lógica para cambiar el fondo del header al hacer scroll
-            const header = document.getElementById('header');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    header.classList.add('shadow-md', 'bg-white');
-                } else {
-                    header.classList.remove('shadow-md', 'bg-white');
-                }
-            });
-
-            // Lógica para animación de secciones al hacer scroll
+            const animatedElements = document.querySelectorAll('.scroll-animation');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in-section');
-                        observer.unobserve(entry.target);
+                        entry.target.classList.add('animate');
                     }
                 });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('section').forEach(section => {
-                observer.observe(section);
+            }, {
+                threshold: 0.1
+            });
+            animatedElements.forEach(el => {
+                observer.observe(el);
             });
         });
     </script>
