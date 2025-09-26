@@ -79,7 +79,8 @@
     <!-- Hero Section -->
     <main class="pt-24">
         <section class="bg-gray-50 relative">
-             <div class="absolute inset-0 bg-cover bg-center opacity-5" style="background-image: url('https://images.unsplash.com/photo-1621939514649-280e29b62f26?q=80&w=2070&auto=format&fit=crop');"></div>
+             <div class="absolute inset-0 bg-cover bg-center opacity-10" style="background-image: url('http://www.simaq.cl/simaq/images/gallery/full/1.jpg');"></div>
+             <div class="absolute inset-0 bg-gradient-to-t from-gray-50 via-gray-50 to-transparent"></div>
             <div class="container mx-auto px-6 py-20 md:py-32 text-center relative z-10">
                 <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
                     <span class="text-simaq-blue">SIMAQ</span> – Soluciones Integrales de Capacitación Ltda.
@@ -203,24 +204,51 @@
                         <h3 class="font-bold text-lg mb-2 flex-grow">Operación y mantenimiento de tractores y maquinaria</h3>
                         <p class="text-sm text-gray-600">Factores para el uso y mantenimiento adecuado, velocidad de avance y economía de combustible.</p>
                     </div>
+                     <!-- CTA Cursos -->
+                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg flex flex-col items-center justify-center text-center">
+                        <h3 class="font-bold text-lg mb-2">¿Necesita un curso a medida?</h3>
+                        <p class="text-sm text-gray-600 mb-4">Contáctenos para diseñar un programa que se ajuste a sus necesidades exactas.</p>
+                        <a href="mailto:simaqcapacita@gmail.com" class="simaq-button-outline text-sm font-semibold px-5 py-2.5 rounded-lg border-2">
+                           Cotizar
+                        </a>
+                    </div>
                 </div>
-                <div class="text-center mt-12">
-                     <a href="acceso-simaq.html" class="simaq-button text-white font-semibold px-8 py-3 rounded-lg shadow-lg">
-                        Inscribirse en un Curso
-                    </a>
+            </div>
+        </section>
+        
+        <!-- Galería Section -->
+        <section id="galeria" class="bg-gray-50 py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Nuestros Clientes en Acción</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">La capacitación se demuestra en el terreno.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="overflow-hidden rounded-lg shadow-lg">
+                        <img src="http://www.simaq.cl/simaq/images/gallery/full/2.jpg" alt="[Imagen de capacitación de maquinaria]" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/334155?text=SIMAQ';">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-lg">
+                        <img src="http://www.simaq.cl/simaq/images/gallery/full/3.jpg" alt="[Imagen de operario en tractor]" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/334155?text=SIMAQ';">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-lg">
+                        <img src="http://www.simaq.cl/simaq/images/gallery/full/4.jpg" alt="[Imagen de equipo de pulverización]" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/334155?text=SIMAQ';">
+                    </div>
+                     <div class="overflow-hidden rounded-lg shadow-lg">
+                        <img src="http://www.simaq.cl/simaq/images/gallery/full/5.jpg" alt="[Imagen de grupo en capacitación]" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/334155?text=SIMAQ';">
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Testimonios Section -->
-        <section id="testimonios" class="bg-gray-50 py-20 md:py-28">
+        <section id="testimonios" class="py-20 md:py-28">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Lo que dicen nuestros clientes</h2>
                     <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">La experiencia y resultados nos avalan.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
                         <p class="text-gray-600 mb-6">"La capacitación de SIMAQ fue un antes y un después para nuestro equipo. Mejoramos la eficiencia en el uso de la maquinaria y redujimos costos de mantenimiento significativamente. Su enfoque práctico es invaluable."</p>
                         <div class="flex items-center">
                             <img src="https://placehold.co/48x48/e2e8f0/334155?text=CA" class="w-12 h-12 rounded-full" alt="Foto de cliente">
@@ -230,7 +258,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="bg-white p-8 rounded-xl shadow-lg">
+                     <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
                         <p class="text-gray-600 mb-6">"Obtener la credencial SAG a través de SIMAQ fue un proceso claro y muy completo. Los instructores tienen un dominio total de la materia y la normativa. Totalmente recomendados para cualquier empresa del sector."</p>
                         <div class="flex items-center">
                             <img src="https://placehold.co/48x48/e2e8f0/334155?text=LR" class="w-12 h-12 rounded-full" alt="Foto de cliente">
@@ -246,7 +274,7 @@
 
 
         <!-- Equipo Section -->
-        <section id="equipo" class="py-20 md:py-28">
+        <section id="equipo" class="bg-gray-50 py-20 md:py-28">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Equipo Profesional</h2>
@@ -254,25 +282,25 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
                     <div>
-                        <img src="https://placehold.co/128x128/e2e8f0/334155?text=JM" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-gray-200" alt="Foto de José Mery Grez">
+                        <img src="http://www.simaq.cl/simaq/images/team/jmery.png" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de José Mery Grez" onerror="this.onerror=null; this.src='https://placehold.co/128x128/e2e8f0/334155?text=JM';">
                         <h3 class="font-bold text-lg">José Mery Grez</h3>
                         <p class="text-sm text-simaq-blue">Gerente</p>
                         <p class="text-xs text-gray-500 mt-1">Ingeniero Agrónomo, Dr. en Mecanización Agrícola.</p>
                     </div>
                     <div>
-                        <img src="https://placehold.co/128x128/e2e8f0/334155?text=JR" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-gray-200" alt="Foto de Joshua Rocuant">
+                        <img src="http://www.simaq.cl/simaq/images/team/jrocuant.png" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de Joshua Rocuant" onerror="this.onerror=null; this.src='https://placehold.co/128x128/e2e8f0/334155?text=JR';">
                         <h3 class="font-bold text-lg">Joshua Rocuant</h3>
                         <p class="text-sm text-simaq-blue">Jefe de Operaciones</p>
                         <p class="text-xs text-gray-500 mt-1">Coordinador General de Cursos.</p>
                     </div>
                     <div>
-                        <img src="https://placehold.co/128x128/e2e8f0/334155?text=NQ" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-gray-200" alt="Foto de Nataly Quintana">
+                        <img src="http://www.simaq.cl/simaq/images/team/nquintana.png" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de Nataly Quintana" onerror="this.onerror=null; this.src='https://placehold.co/128x128/e2e8f0/334155?text=NQ';">
                         <h3 class="font-bold text-lg">Nataly Quintana</h3>
                         <p class="text-sm text-simaq-blue">Asistente Administrativa</p>
                         <p class="text-xs text-gray-500 mt-1">Técnica Profesional en Adm. de Empresas.</p>
                     </div>
                     <div>
-                        <img src="https://placehold.co/128x128/e2e8f0/334155?text=VC" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-gray-200" alt="Foto de Vilma Cabezas">
+                        <img src="http://www.simaq.cl/simaq/images/team/vcabezas.png" class="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de Vilma Cabezas" onerror="this.onerror=null; this.src='https://placehold.co/128x128/e2e8f0/334155?text=VC';">
                         <h3 class="font-bold text-lg">Vilma Cabezas</h3>
                         <p class="text-sm text-simaq-blue">Directora de Capacitación</p>
                         <p class="text-xs text-gray-500 mt-1">Especialista en franquicias tributarias.</p>
