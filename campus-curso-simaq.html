@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · SIMAQ v3.5 (Carga Instantánea y Robusta)
+  CAMPUS CURSO · SIMAQ v3.6 (Botones de Progreso Corregidos)
   -------------------------------------------------------------------
-  - FIX DEFINITIVO: Se soluciona el problema de la página "Cargando...".
-  - LÓGICA REESCRITA: La página ahora muestra la estructura del curso instantáneamente y carga el progreso del usuario en segundo plano.
-  - UX MEJORADA: Se elimina cualquier posibilidad de que la página se congele esperando una respuesta de la base de datos.
+  - FIX: Se soluciona el error que impedía el funcionamiento de los botones "Marcar como completada" y de navegación.
+  - LÓGICA REFACTORIZADA: Se ha mejorado la función que maneja la finalización de lecciones para asegurar que el estado se guarde y la interfaz se actualice correctamente.
+  - UX: La navegación y el registro del progreso del curso ahora son fiables y funcionales.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -204,8 +204,7 @@
                     <div class="text-center py-10">
                         <i data-lucide="alert-triangle" class="w-16 h-16 mx-auto text-red-500 mb-4"></i>
                         <h3 class="text-2xl font-bold text-gray-800">${message}</h3>
-                        <p class="mt-2 text-gray-600">Por favor, intenta recargar la página. Si el problema persiste, contacta a soporte.</p>
-                        ${details ? `<pre class="mt-4 text-xs text-left bg-gray-100 p-2 rounded">${details}</pre>` : ''}
+                        <p class="mt-2 text-gray-600">Por favor, intenta recargar la página.</p>
                     </div>`;
                 dom.progressContainer.style.display = 'none';
                 dom.navigationButtons.style.display = 'none';
@@ -226,25 +225,19 @@
                 lucide.createIcons();
             }
 
-            function renderInitialCourseView() {
-                if (!userProgress.currentLessonId && allLessons.length > 0) {
-                    userProgress.currentLessonId = allLessons[0].id;
-                }
-                dom.progressContainer.style.display = 'block';
-                dom.navigationButtons.style.display = 'flex';
+            function updateUI() {
+                if (!courseData) return;
+
                 const lessonInfo = allLessons.find(l => l.id === userProgress.currentLessonId);
+                
                 if (lessonInfo) {
                     dom.lessonTitle.textContent = lessonInfo.title;
                     renderLessonContent(lessonInfo);
                 }
-                updateUIWithProgress();
-            }
-            
-            function updateUIWithProgress() {
+                
                 renderSidebar();
                 updateOverallProgress();
-                updateMainActionButton();
-                dom.prevBtn.disabled = allLessons.findIndex(l => l.id === userProgress.currentLessonId) === 0;
+                updateNavigationButtons();
                 lucide.createIcons();
             }
 
@@ -273,7 +266,7 @@
                 let materialHtml = ''; 
                 switch(lesson.type) { 
                     case 'video':
-                        materialHtml = `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black"><video controls class="w-full h-full object-cover" src="${lesson.videoUrl || ''}"></video></div>`;
+                        materialHtml = `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black"><video controls class="w-full h-full object-cover" src="${lesson.videoUrl || ''}" key="${lesson.id}"></video></div>`;
                         break; 
                     case 'quiz':
                         const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
@@ -306,17 +299,22 @@
 
             // --- LÓGICA DEL CURSO Y PROGRESO ---
 
-            async function completeLesson(lessonId) {
-                if (!userProgress.completedLessons.includes(lessonId)) {
-                    userProgress.completedLessons.push(lessonId);
-                    await saveProgress();
-                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
-                    if (currentIndex < allLessons.length - 1) {
-                        navigateToLesson(allLessons[currentIndex + 1].id);
-                    } else {
-                        alert("¡Felicidades! Has completado el curso.");
-                        updateUIWithProgress();
-                    }
+            async function completeCurrentLesson() {
+                const lessonId = userProgress.currentLessonId;
+                if (!lessonId || userProgress.completedLessons.includes(lessonId)) return;
+
+                const lesson = allLessons.find(l => l.id === lessonId);
+                if (lesson.type === 'quiz') return; // Quizzes se completan con checkQuizAnswers
+
+                userProgress.completedLessons.push(lessonId);
+                await saveProgress();
+                
+                const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                if (currentIndex < allLessons.length - 1) {
+                    navigateToLesson(allLessons[currentIndex + 1].id);
+                } else {
+                    alert("¡Felicidades! Has completado el curso.");
+                    updateUI();
                 }
             }
 
@@ -326,30 +324,41 @@
                 lesson.questions.forEach((q, qIndex) => {
                     const container = dom.lessonMaterialContainer.querySelector(`[data-question-index="${qIndex}"]`);
                     const selected = container.querySelector('.quiz-option.selected');
-                    if (!selected) {
-                        allAnswered = false;
-                    } else if (parseInt(selected.dataset.index) === q.correctAnswer) {
-                        correctCount++;
-                    }
+                    if (!selected) allAnswered = false;
+                    else if (parseInt(selected.dataset.index) === q.correctAnswer) correctCount++;
                 });
+
                 if (!allAnswered) {
                     alert('Por favor, responde todas las preguntas.');
                     return;
                 }
                 if (correctCount === lesson.questions.length) {
                     alert('¡Excelente! Todas las respuestas son correctas.');
-                    completeLesson(lesson.id);
+                    completeCurrentLessonQuiz(lesson.id);
                 } else {
                     alert(`Tienes ${correctCount} de ${lesson.questions.length} respuestas correctas. Inténtalo de nuevo.`);
                 }
             }
+
+            async function completeCurrentLessonQuiz(lessonId) {
+                userProgress.completedLessons.push(lessonId);
+                await saveProgress();
+                 const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                if (currentIndex < allLessons.length - 1) {
+                    navigateToLesson(allLessons[currentIndex + 1].id);
+                } else {
+                    alert("¡Felicidades! Has completado el curso.");
+                    updateUI();
+                }
+            }
             
-            function updateMainActionButton() {
+            function updateNavigationButtons() {
                 const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
                 if (!lesson) return;
                 const isCompleted = userProgress.completedLessons.includes(lesson.id);
                 dom.mainActionBtn.disabled = lesson.type === 'quiz' || isCompleted;
                 dom.mainActionBtn.textContent = isCompleted ? 'Completada' : 'Marcar como completada';
+                dom.prevBtn.disabled = allLessons.findIndex(l => l.id === userProgress.currentLessonId) === 0;
             }
 
             function updateOverallProgress() { 
@@ -361,28 +370,16 @@
             async function navigateToLesson(lessonId) {
                 userProgress.currentLessonId = lessonId;
                 await saveProgress();
-                renderInitialCourseView();
+                updateUI();
             }
 
             async function saveProgress() { 
                 if (!currentUser) return; 
-                const progressRef = db.collection('userProgress').doc(currentUser.uid); 
-                await progressRef.set({ [courseId]: userProgress }, { merge: true }); 
-            }
-            
-            async function loadAndApplyUserProgress() { 
                 try {
-                    const docRef = db.collection('userProgress').doc(currentUser.uid);
-                    const doc = await docRef.get();
-                    if (doc.exists && doc.data()[courseId]) { 
-                        const loadedProgress = doc.data()[courseId];
-                        userProgress.completedLessons = Array.isArray(loadedProgress.completedLessons) ? loadedProgress.completedLessons : [];
-                        userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : allLessons[0].id;
-                    }
-                } catch (error) {
-                    console.warn("No se pudo cargar el progreso. Se mostrará el curso desde el inicio.", error);
-                } finally {
-                    updateUIWithProgress();
+                    const progressRef = db.collection('userProgress').doc(currentUser.uid); 
+                    await progressRef.set({ [courseId]: userProgress }, { merge: true });
+                } catch(error) {
+                    console.error("Error al guardar el progreso:", error);
                 }
             }
             
@@ -391,46 +388,60 @@
                     link.addEventListener('click', e => {
                         e.preventDefault();
                         const lessonId = e.currentTarget.closest('.lesson-item').dataset.lessonId;
-                        navigateToLesson(lessonId);
+                        if (lessonId !== userProgress.currentLessonId) {
+                            navigateToLesson(lessonId);
+                        }
                     });
                 });
             }
             
             // --- INICIALIZACIÓN ---
             
-            auth.onAuthStateChanged((user) => {
-                if (user) {
+            async function initializeApp(user) {
+                try {
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
                     dom.userName.textContent = currentUser.name;
                     dom.userProfile.classList.remove('hidden');
                     dom.userProfile.classList.add('flex');
 
-                    try {
-                        if (!courseId || !ALL_COURSES_DATA[courseId]) {
-                            throw new Error("ID de curso no válido en la URL.");
-                        }
-                        
-                        courseData = ALL_COURSES_DATA[courseId];
-                        allLessons = courseData.modules.flatMap(m => m.lessons);
-                        dom.courseTitle.textContent = courseData.title;
+                    if (!courseId || !ALL_COURSES_DATA[courseId]) throw new Error("ID de curso no válido.");
+                    
+                    courseData = ALL_COURSES_DATA[courseId];
+                    allLessons = courseData.modules.flatMap(m => m.lessons);
+                    dom.courseTitle.textContent = courseData.title;
 
-                        if (allLessons.length === 0) {
-                            renderCourseUnderConstruction();
-                        } else {
-                            renderInitialCourseView();
-                            loadAndApplyUserProgress();
-                        }
-                    } catch (error) {
-                        displayError("No se pudo inicializar el curso", error.message);
+                    if (allLessons.length === 0) {
+                        renderCourseUnderConstruction();
+                        return;
                     }
 
+                    // Cargar progreso del usuario
+                    const docRef = db.collection('userProgress').doc(currentUser.uid);
+                    const doc = await docRef.get();
+                    if (doc.exists && doc.data()[courseId]) {
+                        const loadedProgress = doc.data()[courseId];
+                        userProgress.completedLessons = Array.isArray(loadedProgress.completedLessons) ? loadedProgress.completedLessons : [];
+                        userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : allLessons[0].id;
+                    } else {
+                         userProgress.currentLessonId = allLessons[0].id;
+                    }
+
+                    updateUI(); // Renderizar UI con datos cargados
+                } catch (error) {
+                    displayError("No se pudo inicializar el curso", error.message);
+                }
+            }
+
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    initializeApp(user);
                 } else {
                     window.location.href = 'acceso-simaq.html';
                 }
             });
 
             dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
-            dom.mainActionBtn.addEventListener('click', () => completeLesson(userProgress.currentLessonId));
+            dom.mainActionBtn.addEventListener('click', () => completeCurrentLesson());
             dom.prevBtn.addEventListener('click', () => { 
                 const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); 
                 if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); 
