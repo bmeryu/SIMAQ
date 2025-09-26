@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · SIMAQ v2.1 (Página de Curso en Construcción)
+  CAMPUS CURSO · SIMAQ v3.0 (Contenido de Curso Cargado)
   -------------------------------------------------------------------
-  - MODIFICACIÓN: Se adapta la página para mostrar un estado de "Curso en Construcción" cuando el contenido aún no está disponible.
-  - UI: Se oculta la barra de progreso, los módulos y los botones de navegación.
-  - UX: Se muestra un mensaje claro al usuario indicando que el material estará disponible próximamente.
-  - CONTENIDO: Se deja la estructura de datos del curso como un ejemplo comentado para facilitar la futura carga de contenido.
+  - CONTENIDO: Se ha creado y añadido una estructura completa de módulos y lecciones para el curso "Uso y Manejo de Plaguicidas".
+  - LÓGICA: La página ahora detecta el contenido y activa la vista interactiva del curso, mostrando la barra de progreso, módulos y navegación.
+  - PLACEHOLDERS: Se utilizan videos de muestra. El siguiente paso es reemplazar las URLs por el contenido real del curso subido a Firebase Storage.
+  - TOTAL LESSONS: Se actualiza el contador de lecciones totales para que el progreso se calcule correctamente.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -33,10 +33,13 @@
         .border-simaq-blue { border-color: var(--simaq-blue); }
         .ring-simaq-blue { --tw-ring-color: var(--simaq-blue); }
         
-        .ltab.active {
-            color: var(--simaq-blue);
-            border-bottom-color: var(--simaq-blue);
+        .quiz-option.selected { 
+            border-color: var(--simaq-blue); 
+            background-color: #eff6ff; 
+            --tw-ring-color: var(--simaq-blue);
+            box-shadow: 0 0 0 2px var(--simaq-blue);
         }
+
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
         details[open] summary .arrow-down { transform: rotate(180deg); }
@@ -118,31 +121,87 @@
             const ALL_COURSES_DATA = {
               'manejo-plaguicidas-sag': {
                 title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
-                totalLessons: 0, // El curso no tiene lecciones creadas aún
+                totalLessons: 9, // Total de lecciones (videos + quizzes)
                 modules: [
-                  /*
-                  EJEMPLO DE CÓMO SE VERÁ LA ESTRUCTURA CUANDO EL CURSO ESTÉ CREADO:
                   {
-                    title: 'Módulo 1: Normativa y Seguridad',
+                    title: 'Módulo 1: Fundamentos y Normativa',
                     lessons: [
                       { 
                         id: '1-1', 
-                        title: 'Introducción a la Normativa Vigente', 
+                        title: 'Introducción al Manejo Seguro', 
                         type: 'video', 
-                        videoUrl: 'URL_DE_TU_VIDEO_EN_FIREBASE_STORAGE',
-                        resources: [ { name: 'Resumen Normativa SAG.pdf', url: 'URL_DEL_PDF' } ]
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                        resources: [ { name: 'Glosario de Términos.pdf', url: '#' } ]
+                      },
+                      { 
+                        id: '1-2', 
+                        title: 'Normativa SAG Aplicable', 
+                        type: 'video', 
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+                        resources: [ { name: 'Resumen Normativa Vigente.pdf', url: '#' } ]
+                      },
+                       { 
+                        id: '1-3', 
+                        title: 'Tipos de Plaguicidas y Etiquetas', 
+                        type: 'video', 
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
                       },
                       { 
                         id: 'q-1', 
-                        title: 'Quiz: Módulo 1', 
+                        title: 'Quiz: Fundamentos', 
                         type: 'quiz', 
                         questions: [
-                          { text: 'Pregunta 1', options: ['Opción A', 'Opción B'], correctAnswer: 0 },
+                          { text: 'La normativa SAG busca principalmente:', options: ['Aumentar la producción', 'Asegurar la inocuidad alimentaria y la seguridad del aplicador', 'Facilitar la exportación'], correctAnswer: 1 },
+                          { text: 'La banda toxicológica de color rojo en una etiqueta indica:', options: ['Poco peligroso', 'Cuidado', 'Muy peligroso'], correctAnswer: 2 }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 2: Equipos y Calibración',
+                    lessons: [
+                       { 
+                        id: '2-1', 
+                        title: 'Equipos de Protección Personal (EPP)', 
+                        type: 'video', 
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
+                      },
+                       { 
+                        id: '2-2', 
+                        title: 'Calibración de Equipos de Pulverización', 
+                        type: 'video', 
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4'
+                      },
+                      { 
+                        id: 'q-2', 
+                        title: 'Quiz: Equipos', 
+                        type: 'quiz', 
+                        questions: [
+                           { text: '¿Qué elemento del EPP protege las vías respiratorias?', options: ['Guantes', 'Traje impermeable', 'Mascarilla con filtro'], correctAnswer: 2 },
+                           { text: 'Una correcta calibración asegura:', options: ['Aplicar la dosis exacta del producto', 'Ahorrar tiempo', 'Usar menos agua'], correctAnswer: 0 },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 3: Aplicación y Post-Aplicación',
+                    lessons: [
+                       { 
+                        id: '3-1', 
+                        title: 'Técnicas de Aplicación Segura', 
+                        type: 'video', 
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'
+                      },
+                      { 
+                        id: 'q-3', 
+                        title: 'Quiz Final: Buenas Prácticas', 
+                        type: 'quiz', 
+                        questions: [
+                           { text: 'El triple lavado de envases es una práctica para:', options: ['Reutilizar los envases', 'Eliminar residuos peligrosos antes de su desecho', 'Ahorrar producto'], correctAnswer: 1 },
                         ]
                       }
                     ]
                   }
-                  */
                 ]
               }
               // Puedes agregar más cursos aquí
@@ -199,14 +258,11 @@
             function initializeCourse() {
                 if (allLessons.length === 0) {
                     renderCourseUnderConstruction();
-                    // No hay necesidad de cargar progreso si no hay lecciones
                 } else {
-                    // Lógica original para cargar el curso (se ejecutará cuando agregues lecciones)
                     loadProgress();
                 }
             }
             
-            // --- Las demás funciones se mantienen pero solo se usarán cuando haya lecciones ---
             function refreshUI() { 
                 if (!userProgress.currentLessonId && allLessons.length > 0) {
                     userProgress.currentLessonId = allLessons[0].id;
@@ -265,8 +321,8 @@
                     dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
                         opt.addEventListener('click', () => {
                             const questionContainer = opt.closest('[data-question-index]');
-                            questionContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('bg-blue-100', 'border-simaq-blue'));
-                            opt.classList.add('bg-blue-100', 'border-simaq-blue');
+                            questionContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                            opt.classList.add('selected');
                         });
                     });
                     document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswers(lesson));
@@ -275,13 +331,20 @@
 
             function checkQuizAnswers(lesson) {
                 let correctCount = 0;
+                let allAnswered = true;
                 lesson.questions.forEach((q, qIndex) => {
                     const container = dom.lessonMaterialContainer.querySelector(`[data-question-index="${qIndex}"]`);
-                    const selected = container.querySelector('.quiz-option.bg-blue-100');
-                    if (selected && parseInt(selected.dataset.index) === q.correctAnswer) {
+                    const selected = container.querySelector('.quiz-option.selected');
+                    if (!selected) {
+                        allAnswered = false;
+                    } else if (parseInt(selected.dataset.index) === q.correctAnswer) {
                         correctCount++;
                     }
                 });
+                if (!allAnswered) {
+                    alert('Por favor, responde todas las preguntas antes de verificar.');
+                    return;
+                }
                 if (correctCount === lesson.questions.length) {
                     alert('¡Excelente! Todas las respuestas son correctas.');
                     completeLesson(lesson.id);
