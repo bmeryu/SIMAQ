@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!-- 
+    PÁGINA DE ACCESO SIMAC v2.0 (Look & Feel Simaq.cl)
+    -----------------------------------------------------------------------
+    - REDISEÑO VISUAL: Se ha actualizado la interfaz para reflejar la estética 
+      de la web simaq.cl, utilizando su paleta de colores (azules, blancos, grises)
+      y una tipografía similar (Inter).
+    - UI MEJORADA: El diseño ahora es más limpio, luminoso y profesional. 
+      Se rediseñaron los botones, campos de formulario y pestañas para una 
+      experiencia de usuario más moderna.
+    - FUNCIONALIDAD: La lógica de autenticación con Firebase (solo email) se mantiene
+      intacta. Solo necesitas actualizar tu configuración.
+-->
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Accede o Crea tu Cuenta - SIMAC</title>
+    <meta name="description" content="Inicia sesión o regístrate para acceder a los cursos de SIMAC. Comienza tu viaje de aprendizaje hoy.">
+    
+    <link rel="icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --simaq-blue: #0057FF;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .simaq-button {
+            background-color: var(--simaq-blue);
+        }
+        .simaq-button:hover {
+            background-color: #0045cc;
+        }
+        .focus\:ring-simaq-blue:focus {
+            --tw-ring-color: var(--simaq-blue);
+        }
+        .focus\:border-simaq-blue:focus {
+            --tw-border-opacity: 1;
+            border-color: var(--simaq-blue);
+        }
+        .text-simaq-blue {
+            color: var(--simaq-blue);
+        }
+        .tab-slider {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            left: 0;
+            width: 50%;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease;
+            z-index: 0;
+        }
+    </style>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="container mx-auto flex justify-center px-6 py-6 sm:py-8">
+      <a href="index.html" class="block" aria-label="Página de inicio de SIMAC">
+        <img
+          src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png"
+          alt="Logo de SIMAC"
+          class="h-16 w-auto"
+          onerror="this.onerror=null; this.src='https://placehold.co/200x64/ffffff/000000?text=SIMAC';"
+        />
+      </a>
+    </header>
+
+    <main class="flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+            
+            <div class="bg-white rounded-xl shadow-lg p-8 sm:p-10">
+                <h1 id="auth-title" class="mb-2 text-center text-2xl sm:text-3xl font-bold text-gray-900">Bienvenido</h1>
+                <p id="auth-subtitle" class="mb-8 text-center text-gray-500">Ingresa tus credenciales para continuar</p>
+
+                <div class="bg-gray-100 rounded-lg p-1 mb-8 relative flex">
+                    <div id="tab-slider" class="tab-slider"></div>
+                    <button id="login-tab" class="w-1/2 py-2 font-semibold text-simaq-blue z-10 transition-colors">Iniciar Sesión</button>
+                    <button id="register-tab" class="w-1/2 py-2 font-semibold text-gray-500 z-10 transition-colors">Crear Cuenta</button>
+                </div>
+
+                <div id="auth-container">
+                    <div id="login-form-container" role="tabpanel" aria-labelledby="login-tab">
+                        <form id="login-form" novalidate class="space-y-6">
+                            <div>
+                                <label for="login-email" class="mb-2 block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                                <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="mail" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="email" id="login-email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-300 bg-gray-50 p-3 pl-10 focus:border-simaq-blue focus:ring-simaq-blue">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label for="login-password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                                    <a href="#" id="forgot-password-link" class="text-sm text-simaq-blue hover:underline">¿Olvidaste tu contraseña?</a>
+                                </div>
+                                 <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="lock" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="password" id="login-password" placeholder="••••••••" required aria-required="true" autocomplete="current-password" class="w-full rounded-lg border-gray-300 bg-gray-50 p-3 pl-10 focus:border-simaq-blue focus:ring-simaq-blue">
+                                </div>
+                            </div>
+                            <button type="submit" class="simaq-button mt-4 w-full rounded-lg py-3 text-base font-semibold text-white transition-colors">Iniciar Sesión</button>
+                        </form>
+                    </div>
+
+                    <div id="register-form-container" class="hidden" role="tabpanel" aria-labelledby="register-tab">
+                        <form id="register-form" novalidate class="space-y-6">
+                            <div>
+                                <label for="register-name" class="mb-2 block text-sm font-medium text-gray-700">Nombre Completo</label>
+                                <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="user" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="text" id="register-name" placeholder="Tu Nombre y Apellido" required aria-required="true" autocomplete="name" class="w-full rounded-lg border-gray-300 bg-gray-50 p-3 pl-10 focus:border-simaq-blue focus:ring-simaq-blue">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="register-email" class="mb-2 block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                                <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="mail" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="email" id="register-email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-300 bg-gray-50 p-3 pl-10 focus:border-simaq-blue focus:ring-simaq-blue">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="register-password" class="mb-2 block text-sm font-medium text-gray-700">Crea una Contraseña</label>
+                                 <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="lock" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="password" id="register-password" placeholder="Mínimo 6 caracteres" required aria-required="true" autocomplete="new-password" class="w-full rounded-lg border-gray-300 bg-gray-50 p-3 pl-10 focus:border-simaq-blue focus:ring-simaq-blue">
+                                </div>
+                            </div>
+                            <button type="submit" class="simaq-button mt-4 w-full rounded-lg py-3 text-base font-semibold text-white transition-colors">Crear mi Cuenta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="text-center px-6 py-6">
+                <p class="text-xs text-gray-500">
+                    Al crear una cuenta, aceptas nuestros 
+                    <a href="#" class="text-simaq-blue hover:underline">Términos</a> y 
+                    <a href="#" class="text-simaq-blue hover:underline">Política de Privacidad</a>.
+                </p>
+            </footer>
+        </div>
+    </main>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+
+    <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONFIGURACIÓN DE FIREBASE PARA SIMAC ---
+        // IMPORTANTE: Reemplaza estos valores con los de tu proyecto de Firebase para SIMAC
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_AUTH_DOMAIN",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_STORAGE_BUCKET",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // --- REFERENCIAS A ELEMENTOS DEL DOM ---
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginFormContainer = document.getElementById('login-form-container');
+        const registerFormContainer = document.getElementById('register-form-container');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const tabSlider = document.getElementById('tab-slider');
+        const authTitle = document.getElementById('auth-title');
+        const authSubtitle = document.getElementById('auth-subtitle');
+        
+        // --- LÓGICA DE PESTAÑAS ---
+        const switchTab = (isLogin) => {
+            if (isLogin) {
+                loginTab.classList.remove('text-gray-500');
+                loginTab.classList.add('text-simaq-blue');
+                registerTab.classList.remove('text-simaq-blue');
+                registerTab.classList.add('text-gray-500');
+                
+                loginFormContainer.classList.remove('hidden');
+                registerFormContainer.classList.add('hidden');
+                
+                tabSlider.style.transform = 'translateX(0%)';
+                authTitle.textContent = 'Bienvenido de nuevo';
+                authSubtitle.textContent = 'Ingresa tus credenciales para continuar';
+            } else {
+                registerTab.classList.remove('text-gray-500');
+                registerTab.classList.add('text-simaq-blue');
+                loginTab.classList.remove('text-simaq-blue');
+                loginTab.classList.add('text-gray-500');
+                
+                registerFormContainer.classList.remove('hidden');
+                loginFormContainer.classList.add('hidden');
+                
+                tabSlider.style.transform = 'translateX(100%)';
+                authTitle.textContent = 'Crea tu cuenta';
+                authSubtitle.textContent = 'Comienza tu viaje de aprendizaje con nosotros';
+            }
+        };
+
+        loginTab.addEventListener('click', () => switchTab(true));
+        registerTab.addEventListener('click', () => switchTab(false));
+        
+        // --- LÓGICA DE AUTENTICACIÓN ---
+        const handleAuthError = (error) => {
+            console.error("Error de autenticación:", error);
+            let message = `Ocurrió un error: ${error.message}`;
+            if (error.code === 'auth/email-already-in-use') {
+                message = 'Ya existe una cuenta con este correo electrónico. Por favor, intenta iniciar sesión.';
+            } else if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                message = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
+            }
+            alert(message);
+        };
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = registerForm.querySelector('#register-name').value;
+            const email = registerForm.querySelector('#register-email').value;
+            const password = registerForm.querySelector('#register-password').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(userCredential => userCredential.user.updateProfile({ displayName: name }))
+                .catch(handleAuthError);
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('#login-email').value;
+            const password = loginForm.querySelector('#login-password').value;
+            auth.signInWithEmailAndPassword(email, password).catch(handleAuthError);
+        });
+
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('#login-email').value;
+            if (!email) {
+                alert('Ingresa tu correo en el campo de arriba para restablecer la contraseña.');
+                return;
+            }
+            auth.sendPasswordResetEmail(email)
+                .then(() => alert('Correo de restablecimiento enviado. Revisa tu bandeja de entrada.'))
+                .catch(error => {
+                    console.error('Error al enviar correo de restablecimiento:', error);
+                    alert(`Ocurrió un error: ${error.message}`);
+                });
+        });
+
+        // --- MANEJO DEL ESTADO DE AUTENTICACIÓN Y REDIRECCIÓN ---
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log('Usuario autenticado. Redirigiendo al campus de SIMAC...');
+                window.location.href = 'campus-SIMAQ.html';
+            }
+        });
+        
+        lucide.createIcons();
+    });
+    </script>
+
+</body>
+</html>
+
