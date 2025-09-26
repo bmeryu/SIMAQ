@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  HOME · SIMAQ v3.3 (Imágenes Finales)
+  HOME · SIMAQ v3.4 (Acceso Simplificado y Botón WhatsApp)
   -------------------------------------------------------------------
-  - FIX: Se corrigen las rutas de las imágenes del equipo y del certificado SGS para usar los archivos alojados en el repositorio de GitHub del usuario.
-  - FINALIZADO: Se eliminan los placeholders e instrucciones, dejando la página con su contenido visual completo.
+  - UX: Se simplifica el acceso a la plataforma de alumnos, dejando un único botón principal en la navegación y un CTA claro.
+  - FEATURE: Se añade un botón flotante de WhatsApp para facilitar el contacto directo.
+  - INSTRUCCIÓN: Se deja un comentario en el código del botón de WhatsApp para que el usuario reemplace el número de teléfono.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -36,6 +37,30 @@
         .scroll-animation.animate {
             opacity: 1;
             transform: translateY(0);
+        }
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            z-index: 100;
+            transition: transform 0.2s ease-in-out;
+        }
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+        .whatsapp-button svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
         }
     </style>
 </head>
@@ -71,9 +96,6 @@
                     <div class="mt-8 flex justify-center md:justify-start space-x-4 scroll-animation">
                         <a href="#cursos" class="bg-simaq-blue text-white font-bold py-3 px-8 rounded-lg hover:bg-simaq-dark-blue transition-colors">
                             Ver Cursos
-                        </a>
-                        <a href="acceso-simaq.html" class="bg-gray-200 text-gray-800 font-bold py-3 px-8 rounded-lg hover:bg-gray-300 transition-colors">
-                            Portal Alumnos
                         </a>
                     </div>
                 </div>
@@ -125,7 +147,7 @@
                         <p class="mt-4 text-lg text-gray-600">Estamos orgullosos de contar con la certificación SGS, un reconocimiento internacional que avala la calidad y seguridad de nuestros procesos de capacitación. Este sello garantiza nuestro compromiso con la excelencia.</p>
                     </div>
                     <div class="md:w-1/3 scroll-animation">
-                        <img src="https://bmeryu.github.io/SIMAQ/SGS_NCh_2728.jpg" alt="Certificado SGS de SIMAQ" class="rounded-lg shadow-2xl border-4 border-white">
+                        <img src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/SGS.png" alt="Certificado SGS de SIMAQ" class="rounded-lg shadow-2xl border-4 border-white">
                     </div>
                 </div>
             </div>
@@ -165,7 +187,7 @@
                 </div>
                  <div class="text-center mt-12">
                     <a href="acceso-simaq.html" class="bg-simaq-blue text-white font-bold py-3 px-8 rounded-lg hover:bg-simaq-dark-blue transition-colors scroll-animation">
-                        Ver todos los cursos
+                        Ingresar a la Plataforma de Cursos
                     </a>
                 </div>
             </div>
@@ -180,28 +202,28 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                     <div class="text-center scroll-animation">
                         <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://bmeryu.github.io/SIMAQ/jose-150x150.png" 
+                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/JMery_cuadrado.jpg" 
                              alt="Retrato de José Mery Grez">
                         <h3 class="text-xl font-bold">José Mery Grez</h3>
                         <p class="text-gray-600">Gerente y Asesor</p>
                     </div>
                     <div class="text-center scroll-animation">
                         <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://bmeryu.github.io/SIMAQ/joshua-150x150.png" 
+                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Joshua_cuadrado.jpg" 
                              alt="Retrato de Joshua Rocuant">
                         <h3 class="text-xl font-bold">Joshua Rocuant</h3>
                         <p class="text-gray-600">Jefe de Operaciones</p>
                     </div>
                     <div class="text-center scroll-animation">
                         <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://bmeryu.github.io/SIMAQ/nataly-150x150.png" 
+                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Nataly_cuadrado.jpg" 
                              alt="Retrato de Nataly Quintana">
                         <h3 class="text-xl font-bold">Nataly Quintana</h3>
                         <p class="text-gray-600">Asistente Administrativa</p>
                     </div>
                     <div class="text-center scroll-animation">
                         <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://bmeryu.github.io/SIMAQ/vilma-150x150.png" 
+                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Vilma_cuadrado.jpg" 
                              alt="Retrato de Vilma Cabezas">
                         <h3 class="text-xl font-bold">Vilma Cabezas</h3>
                         <p class="text-gray-600">Directora de Capacitación</p>
@@ -256,6 +278,12 @@
         </div>
     </footer>
     
+    <!-- Botón Flotante de WhatsApp -->
+    <!-- INSTRUCCIÓN: Reemplaza "569XXXXXXXX" con tu número de teléfono, incluyendo el código de país. -->
+    <a href="https://wa.me/569XXXXXXXX" target="_blank" rel="noopener noreferrer" class="whatsapp-button" aria-label="Contactar por WhatsApp">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d=" M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.63.63 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.447-.545-.516-1.146-1.29-1.46-1.963a.426.426 0 0 1-.073-.215c0-.33.99-.945.99-1.49 0-.143-.73-2.09-.832-2.335-.143-.372-.214-.487-.6-.487-.187 0-.36-.044-.53-.044-.302 0-.53.115-.746.315-.688.645-1.032 1.318-1.06 2.264v.114c-.015.99.472 1.977 1.017 2.78 1.23 1.82 2.506 3.41 4.554 4.34.616.287 2.035.888 2.722.888.817 0 2.15-.515 2.478-1.318.12-.302.214-.73.214-1.064 0-.36-.044-.73-.114-1.194l-.129-.41z M15.01 4.39C6.73 4.39 0 11.12 0 19.4c0 3.2.87 6.3 2.5 8.9l-2.5 9.1 9.3-2.4c2.5.5 5.2.8 7.8.8 8.28 0 15-6.73 15-15.02 0-8.28-6.72-14.98-15-14.98z M23.5 22.8c-.273.746-1.418 1.39-2.617 1.39-.214 0-1.88-.287-3.41-1.23-2.015-1.23-3.6-2.9-4.8-4.502-1.15-1.5-1.8-3.1-1.8-4.792v-.114c0-1.147.52-2.17 1.2-2.82.3-.3.6-.4.9-.4.2 0 .4.0.6.0.3 0 .5.1.7.2.1.0.3.1.4.2.3.2.5.5.6.8.2.3.3.7.2 1l-.2 1.1c-.1.5-.2.9-.3 1.2-.2.5-.4 1-.5 1.5l-.2 1.1c-.1.3-.2.5-.3.7-.2.2-.3.4-.5.5-.2.1-.5.2-.7.2-.3 0-.7-.1-1-.2z"/></svg>
+    </a>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.scroll-animation');
