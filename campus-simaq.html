@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS · SIMAQ v2.2 (Imágenes Reales de Cursos)
+  CAMPUS CURSO · SIMAQ v3.3 (Módulo de Prueba Añadido)
   -------------------------------------------------------------------
-  - IMÁGENES: Se reemplazan las imágenes de Unsplash por las fotografías reales del sitio web simaq.cl, proporcionadas por el usuario.
-  - AUTENTICIDAD: La página del campus ahora refleja fielmente la identidad visual de los cursos de SIMAQ.
+  - CONTENIDO: Se añade un nuevo módulo y un quiz final al curso de "Manejo de Plaguicidas" para probar la funcionalidad completa.
+  - PRUEBAS: Permite verificar la navegación entre módulos, la finalización de lecciones sin video y el sistema de evaluación.
+  - TOTAL LESSONS: Se actualiza el contador total de lecciones para que el cálculo del progreso sea correcto.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8" />
-    <title>Campus Virtual - SIMAQ</title>
+    <title>Lección del Curso - SIMAQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Dashboard de estudiante para acceder a los cursos de SIMAQ.">
+    <meta name="description" content="Plataforma de aprendizaje de SIMAQ.">
     <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
     <style>
         :root {
             --simaq-blue: #0057FF;
@@ -26,87 +28,77 @@
         }
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .text-simaq-blue { color: var(--simaq-blue); }
+        .bg-simaq-blue { background-color: var(--simaq-blue); }
+        .border-simaq-blue { border-color: var(--simaq-blue); }
+        .ring-simaq-blue { --tw-ring-color: var(--simaq-blue); }
+        
+        .quiz-option.selected { 
+            border-color: var(--simaq-blue); 
+            background-color: #eff6ff; 
+            --tw-ring-color: var(--simaq-blue);
+            box-shadow: 0 0 0 2px var(--simaq-blue);
+        }
+
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .arrow-down { transform: rotate(180deg); }
+        .arrow-down { transition: transform 0.2s ease-in-out; }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <header class="bg-white shadow-sm sticky top-0 z-30">
-        <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-            <a href="index.html" aria-label="Ir al inicio de SIMAQ">
-                <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-16 md:h-20 w-auto" />
-            </a>
-            <div id="user-profile" class="hidden sm:flex items-center gap-3 relative">
-                <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[20ch]"></span>
-                <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
-            </div>
-        </nav>
-    </header>
-
-    <main class="container mx-auto px-6 py-12 max-w-7xl">
-        <section class="mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Alumno</span>!</h1>
-            <p class="text-lg text-gray-600 mt-2">Continuemos fortaleciendo tus competencias.</p>
-        </section>
-
-        <section aria-labelledby="courses-heading">
-            <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-8">Mis Cursos Disponibles</h2>
-            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
-                <!-- Curso: Uso y Manejo de Plaguicidas -->
-                <a href="campus-curso-simaq.html?course=manejo-plaguicidas-sag" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/noticias_1583865968_smal.jpg" alt="Persona aplicando plaguicidas en un campo agrícola">
-                    <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Uso y Manejo de Plaguicidas (Credencial SAG)</h3>
-                    </div>
+    <div id="app" class="flex flex-col min-h-screen">
+        <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+            <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+                <a href="index.html" class="flex items-center" aria-label="Página de inicio de SIMAQ">
+                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ" class="h-16 md:h-20 w-auto">
                 </a>
-
-                <!-- Curso: Calibración de Equipos de Pulverización -->
-                <a href="campus-curso-simaq.html?course=calibracion-pulverizacion" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/PHOTO-2019-07-24-17-13-15-COLLAGE.jpg" alt="Equipo de pulverización agrícola en un campo">
-                    <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Calibración de Equipos de Pulverización</h3>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div id="user-profile-container" class="hidden items-center gap-3 relative">
+                        <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
+                        <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
                     </div>
-                </a>
+                </div>
+            </nav>
+        </header>
 
-                <!-- Curso: Manejo y Operación de Carretillas Elevadoras -->
-                <a href="campus-curso-simaq.html?course=manejo-carretillas" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/grua-horquilla-4x2-carga-35tons-a-3mts-50hp-gas-fesal-D_NQ_NP_777962-MLC40831975069_022020-F_cuaddrado.jpg" alt="Operador manejando una carretilla elevadora en un almacén">
-                    <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Manejo y Operación de Carretillas Elevadoras</h3>
+        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
+                <div class="p-6">
+                    <a href="./campus-simaq.html" class="text-sm text-simaq-blue hover:text-simaq-dark-blue font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
+                    <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
+                    <div id="progress-container" class="mt-4">
+                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
+                        <div class="w-full bg-slate-200 rounded-full h-2-5"><div id="progress-bar" class="bg-simaq-blue h-2-5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
                     </div>
-                </a>
-                
-                <!-- Curso: Operación y Mantenimiento de Equipos de Riego -->
-                <a href="campus-curso-simaq.html?course=operacion-riego" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/tractor-1.jpg" alt="Sistema de riego en un campo agrícola">
-                    <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Operación y Mantenimiento de Equipos de Riego</h3>
+                </div>
+                <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
+            </aside>
+
+            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
+                <div class="p-6 md:p-8 lg:p-10 max-w-4xl mx-auto">
+                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-8">Cargando...</h2>
+                    <div id="lesson-material-container" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <!-- El contenido se inyecta aquí -->
                     </div>
-                </a>
-
-                <!-- Curso: Operación y Mantenimiento de Tractores -->
-                <a href="campus-curso-simaq.html?course=operacion-tractores" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                     <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/tractor-1.jpg" alt="Tractor en un campo listo para operar">
-                    <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Operación y Mantenimiento de Tractores</h3>
+                    <div id="navigation-buttons" class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
+                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
+                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-simaq-blue rounded-lg shadow-sm hover:bg-simaq-dark-blue disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
                     </div>
-                </a>
-
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
-        &copy; 2025 SIMAQ Capacitaciones · Todos los derechos reservados.
-    </footer>
-
+                </div>
+            </section>
+        </main>
+    </div>
+    
     <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
-    <script defer>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ ---
             const firebaseConfig = {
                 apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
                 authDomain: "simaq-2ed6c.firebaseapp.com",
@@ -117,30 +109,304 @@
                 measurementId: "G-1PRF6FG2YY"
             };
             
-            try {
-                firebase.initializeApp(firebaseConfig);
-            } catch (e) {
-                console.warn("Firebase ya fue inicializado.");
-            }
+            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
 
             const auth = firebase.auth();
             const db = firebase.firestore();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('course');
+            
+            // --- BASE DE DATOS DE CURSOS SIMAQ ---
+            const ALL_COURSES_DATA = {
+              'manejo-plaguicidas-sag': {
+                title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
+                totalLessons: 11, // ACTUALIZADO: 9 lecciones originales + 2 nuevas
+                modules: [
+                  {
+                    title: 'Módulo 1: Fundamentos y Normativa',
+                    lessons: [
+                      { id: '1-1', title: 'Introducción al Manejo Seguro', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
+                      { id: '1-2', title: 'Normativa SAG Aplicable', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4' },
+                      { id: '1-3', title: 'Tipos de Plaguicidas y Etiquetas', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' },
+                      { id: 'q-1', title: 'Quiz: Fundamentos', type: 'quiz', questions: [
+                          { text: 'La normativa SAG busca principalmente:', options: ['Aumentar la producción', 'Asegurar la inocuidad alimentaria y la seguridad del aplicador', 'Facilitar la exportación'], correctAnswer: 1 },
+                          { text: 'La banda toxicológica de color rojo en una etiqueta indica:', options: ['Poco peligroso', 'Cuidado', 'Muy peligroso'], correctAnswer: 2 }
+                      ]}
+                    ]
+                  },
+                  {
+                    title: 'Módulo 2: Equipos y Calibración',
+                    lessons: [
+                       { id: '2-1', title: 'Equipos de Protección Personal (EPP)', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4' },
+                       { id: '2-2', title: 'Calibración de Equipos de Pulverización', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4' },
+                       { id: 'q-2', title: 'Quiz: Equipos', type: 'quiz', questions: [
+                           { text: '¿Qué elemento del EPP protege las vías respiratorias?', options: ['Guantes', 'Traje impermeable', 'Mascarilla con filtro'], correctAnswer: 2 },
+                           { text: 'Una correcta calibración asegura:', options: ['Aplicar la dosis exacta del producto', 'Ahorrar tiempo', 'Usar menos agua'], correctAnswer: 0 },
+                       ]}
+                    ]
+                  },
+                  {
+                    title: 'Módulo 3: Aplicación y Post-Aplicación',
+                    lessons: [
+                       { id: '3-1', title: 'Técnicas de Aplicación Segura', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4' },
+                       { id: 'q-3', title: 'Quiz: Buenas Prácticas', type: 'quiz', questions: [
+                           { text: 'El triple lavado de envases es una práctica para:', options: ['Reutilizar los envases', 'Eliminar residuos peligrosos antes de su desecho', 'Ahorrar producto'], correctAnswer: 1 },
+                       ]}
+                    ]
+                  },
+                  { // --- NUEVO MÓDULO AÑADIDO ---
+                    title: 'Módulo 4: Casos Prácticos y Evaluación Final',
+                    lessons: [
+                       { id: '4-1', title: 'Análisis de Casos Reales', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4' },
+                       { id: 'q-4', title: 'Evaluación Final del Curso', type: 'quiz', questions: [
+                           { text: 'Ante un derrame de producto, ¿cuál es el primer paso a seguir?', options: ['Llamar a emergencias', 'Contener el derrame con material absorbente', 'Abandonar el área'], correctAnswer: 1 },
+                           { text: 'El período de reingreso a un área tratada se encuentra especificado en:', options: ['La boleta de compra', 'La etiqueta del producto', 'El manual del tractor'], correctAnswer: 1 }
+                       ]}
+                    ]
+                  }
+                ]
+              },
+              'calibracion-pulverizacion': { title: 'Calibración de Equipos de Pulverización', totalLessons: 0, modules: [] },
+              'manejo-carretillas': { title: 'Manejo y Operación de Carretillas Elevadoras', totalLessons: 0, modules: [] },
+              'operacion-riego': { title: 'Operación y Mantenimiento de Equipos de Riego', totalLessons: 0, modules: [] },
+              'operacion-tractores': { title: 'Operación y Mantenimiento de Tractores', totalLessons: 0, modules: [] }
+            };
 
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    const name = user.displayName || 'Alumno';
-                    document.getElementById('user-name').textContent = name;
-                    document.getElementById('welcome-name').textContent = name.split(' ')[0]; // Solo el primer nombre
-                    document.getElementById('user-profile').classList.remove('hidden');
+            // --- VARIABLES GLOBALES ---
+            let currentUser = null;
+            let courseData = null;
+            let allLessons = [];
+            let userProgress = { completedLessons: [], currentLessonId: null };
 
-                    document.getElementById('logout-btn').addEventListener('click', () => {
-                        auth.signOut().then(() => {
-                            window.location.href = 'index.html';
+            // --- REFERENCIAS AL DOM ---
+            const dom = {
+                userName: document.getElementById('user-name'),
+                logoutButton: document.getElementById('logout-button'),
+                userProfile: document.getElementById('user-profile-container'),
+                courseTitle: document.getElementById('course-title'),
+                progressContainer: document.getElementById('progress-container'),
+                modulesContainer: document.getElementById('modules-container'),
+                lessonTitle: document.getElementById('lesson-title'),
+                lessonMaterialContainer: document.getElementById('lesson-material-container'),
+                navigationButtons: document.getElementById('navigation-buttons'),
+                prevBtn: document.getElementById('prev-lesson-btn'),
+                mainActionBtn: document.getElementById('main-action-btn'),
+            };
+
+            // --- FUNCIONES PRINCIPALES DE RENDERIZADO ---
+
+            function renderCourseUnderConstruction() {
+                dom.courseTitle.textContent = courseData.title;
+                dom.lessonTitle.textContent = "Curso en Construcción";
+                dom.progressContainer.style.display = 'none';
+                dom.navigationButtons.style.display = 'none';
+
+                dom.lessonMaterialContainer.innerHTML = `
+                    <div class="text-center py-10">
+                        <i data-lucide="hard-hat" class="w-16 h-16 mx-auto text-yellow-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-800">¡Estamos preparando este curso!</h3>
+                        <p class="mt-2 text-gray-600">El material para "${courseData.title}" estará disponible muy pronto.</p>
+                    </div>`;
+                dom.modulesContainer.innerHTML = `<p class="p-4 text-sm text-gray-500 text-center">El contenido se mostrará aquí.</p>`;
+                lucide.createIcons();
+            }
+
+            function renderActiveCourse() {
+                if (!userProgress.currentLessonId) {
+                    userProgress.currentLessonId = allLessons[0].id;
+                }
+                dom.courseTitle.textContent = courseData.title;
+                dom.progressContainer.style.display = 'block';
+                dom.navigationButtons.style.display = 'flex';
+                renderSidebar();
+                const lessonInfo = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (lessonInfo) {
+                    dom.lessonTitle.textContent = lessonInfo.title;
+                    renderLessonContent(lessonInfo);
+                }
+                updateOverallProgress();
+                updateMainActionButton();
+                lucide.createIcons();
+            }
+
+            function renderSidebar() {
+                dom.modulesContainer.innerHTML = courseData.modules.map((module) => {
+                    const lessonsHtml = module.lessons.map(lesson => {
+                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const isActive = userProgress.currentLessonId === lesson.id;
+                        const linkClasses = isActive ? 'bg-blue-50 text-simaq-blue font-semibold' : 'text-gray-600 hover:bg-slate-100';
+                        const statusIcon = isCompleted ? 'check-circle-2' : 'circle';
+                        const iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        return `
+                            <li class="lesson-item" data-lesson-id="${lesson.id}">
+                                <a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}">
+                                    <i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i>
+                                    <span class="flex-1 text-sm">${lesson.title}</span>
+                                </a>
+                            </li>`;
+                    }).join('');
+                    return `<div class="py-2"><h3 class="font-semibold text-gray-800 px-3 mb-1">${module.title}</h3><ul class="space-y-1">${lessonsHtml}</ul></div>`;
+                }).join('');
+                addSidebarListeners();
+            }
+            
+            function renderLessonContent(lesson) {
+                let materialHtml = ''; 
+                switch(lesson.type) { 
+                    case 'video':
+                        materialHtml = `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black"><video controls class="w-full h-full object-cover" src="${lesson.videoUrl || ''}"></video></div>`;
+                        break; 
+                    case 'quiz':
+                        const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
+                        if (isQuizCompleted) {
+                            materialHtml = `<p class="text-center p-4 bg-green-100 text-green-700 rounded-lg">Ya completaste este quiz.</p>`;
+                        } else {
+                            const questionsHtml = lesson.questions.map((q, qIndex) => {
+                                const optionsHtml = q.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
+                                return `<div class="space-y-4 mb-8" data-question-index="${qIndex}"><h3 class="text-xl font-semibold">${qIndex + 1}. ${q.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
+                            }).join('');
+                            materialHtml = `<div id="quiz-container">${questionsHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                        }
+                        break;
+                    default: 
+                        materialHtml = `<p>Contenido no disponible.</p>`;
+                } 
+                dom.lessonMaterialContainer.innerHTML = materialHtml; 
+
+                if (lesson.type === 'quiz' && !userProgress.completedLessons.includes(lesson.id)) {
+                    dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.addEventListener('click', () => {
+                            const questionContainer = opt.closest('[data-question-index]');
+                            questionContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                            opt.classList.add('selected');
                         });
                     });
+                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswers(lesson));
+                }
+            }
+
+            // --- LÓGICA DEL CURSO Y PROGRESO ---
+
+            async function completeLesson(lessonId) {
+                if (!userProgress.completedLessons.includes(lessonId)) {
+                    userProgress.completedLessons.push(lessonId);
+                    await saveProgress();
+                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                    if (currentIndex < allLessons.length - 1) {
+                        navigateToLesson(allLessons[currentIndex + 1].id);
+                    } else {
+                        alert("¡Felicidades! Has completado el curso.");
+                        renderActiveCourse();
+                    }
+                }
+            }
+
+            function checkQuizAnswers(lesson) {
+                let correctCount = 0;
+                let allAnswered = true;
+                lesson.questions.forEach((q, qIndex) => {
+                    const container = dom.lessonMaterialContainer.querySelector(`[data-question-index="${qIndex}"]`);
+                    const selected = container.querySelector('.quiz-option.selected');
+                    if (!selected) {
+                        allAnswered = false;
+                    } else if (parseInt(selected.dataset.index) === q.correctAnswer) {
+                        correctCount++;
+                    }
+                });
+                if (!allAnswered) {
+                    alert('Por favor, responde todas las preguntas.');
+                    return;
+                }
+                if (correctCount === lesson.questions.length) {
+                    alert('¡Excelente! Todas las respuestas son correctas.');
+                    completeLesson(lesson.id);
+                } else {
+                    alert(`Tienes ${correctCount} de ${lesson.questions.length} respuestas correctas. Inténtalo de nuevo.`);
+                }
+            }
+            
+            function updateMainActionButton() {
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (!lesson) return;
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                dom.mainActionBtn.disabled = lesson.type === 'quiz' || isCompleted;
+                dom.mainActionBtn.textContent = isCompleted ? 'Completada' : 'Marcar como completada';
+            }
+
+            function updateOverallProgress() { 
+                const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / courseData.totalLessons) * 100) : 0;
+                document.getElementById('progress-bar').style.width = `${percentage}%`;
+                document.getElementById('progress-text').textContent = `${percentage}%`; 
+            }
+            
+            async function navigateToLesson(lessonId) {
+                userProgress.currentLessonId = lessonId;
+                await saveProgress();
+                renderActiveCourse();
+            }
+
+            async function saveProgress() { 
+                if (!currentUser) return; 
+                const progressRef = db.collection('userProgress').doc(currentUser.uid); 
+                await progressRef.set({ [courseId]: userProgress }, { merge: true }); 
+            }
+            
+            async function loadProgress() { 
+                const docRef = db.collection('userProgress').doc(currentUser.uid);
+                const doc = await docRef.get(); 
+                if (doc.exists && doc.data()[courseId]) { 
+                    const loadedProgress = doc.data()[courseId];
+                    userProgress.completedLessons = Array.isArray(loadedProgress.completedLessons) ? loadedProgress.completedLessons : [];
+                    userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : null;
+                }
+                renderActiveCourse(); 
+            }
+            
+            function addSidebarListeners() {
+                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
+                    link.addEventListener('click', e => {
+                        e.preventDefault();
+                        const lessonId = e.currentTarget.closest('.lesson-item').dataset.lessonId;
+                        navigateToLesson(lessonId);
+                    });
+                });
+            }
+            
+            // --- INICIALIZACIÓN ---
+            
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
+                    dom.userName.textContent = currentUser.name;
+                    dom.userProfile.classList.remove('hidden');
+                    dom.userProfile.classList.add('flex');
+
+                    if (!courseId || !ALL_COURSES_DATA[courseId]) {
+                        alert("Curso no válido.");
+                        window.location.href = 'campus-simaq.html';
+                        return;
+                    }
+                    
+                    courseData = ALL_COURSES_DATA[courseId];
+                    allLessons = courseData.modules.flatMap(m => m.lessons);
+
+                    if (allLessons.length === 0) {
+                        renderCourseUnderConstruction();
+                    } else {
+                        loadProgress();
+                    }
+
                 } else {
                     window.location.href = 'acceso-simaq.html';
                 }
+            });
+
+            dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
+            dom.mainActionBtn.addEventListener('click', () => completeLesson(userProgress.currentLessonId));
+            dom.prevBtn.addEventListener('click', () => { 
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); 
+                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); 
             });
         });
     </script>
