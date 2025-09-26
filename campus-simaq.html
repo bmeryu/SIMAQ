@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS VIRTUAL · SIMAQ v2.1 (ID de Curso Corregido)
+  CAMPUS VIRTUAL · SIMAQ v2.3 (Imágenes Corregidas)
   -------------------------------------------------------------------
-  - CORRECCIÓN CRÍTICA: Se ha corregido el ID del curso en el enlace "Acceder al Curso" para que coincida con el ID esperado por la página de la lección. Esto soluciona el error "Curso no válido".
-  - ACTUALIZACIÓN DE CONTENIDO: Se ha actualizado el texto y la imagen de la tarjeta del curso para reflejar el contenido de "Manejo de Plaguicidas".
+  - CORRECCIÓN VISUAL: Se han reemplazado las URLs de las imágenes de los cursos por unas nuevas y funcionales de Unsplash para solucionar el problema de las imágenes rotas.
+  - IDs ÚNICOS: Cada tarjeta de curso ahora tiene un `data-course-id` y un enlace con un parámetro `course=` único, preparando la plataforma para futuro contenido.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -62,7 +62,7 @@
 
         <!-- Curso: Plaguicidas -->
         <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="manejo-plaguicidas-sag">
-          <img src="https://images.unsplash.com/photo-1591785233519-27c95b655d40?q=80&w=2070&auto=format&fit=crop" 
+          <img src="https://images.unsplash.com/photo-1570963321391-1bef39442197?q=80&w=2070&auto=format&fit=crop" 
                alt="Persona aplicando plaguicidas en un campo agrícola" 
                class="h-48 w-full object-cover">
           <div class="p-6 flex-grow flex flex-col">
@@ -77,7 +77,73 @@
           </div>
         </article>
         
-        <!-- Aquí puedes agregar más tarjetas de cursos en el futuro -->
+        <!-- Curso: Calibración de equipos de pulverización -->
+        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="calibracion-pulverizacion">
+          <img src="https://images.unsplash.com/photo-1628863353534-b4b385556725?q=80&w=1974&auto=format&fit=crop" 
+               alt="Equipo de pulverización agrícola en un campo" 
+               class="h-48 w-full object-cover">
+          <div class="p-6 flex-grow flex flex-col">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
+            <h3 class="text-xl font-bold mt-2 mb-2">Calibración de Equipos de Pulverización</h3>
+            <p class="text-gray-600 text-sm mb-6 flex-grow">Domina los parámetros de aplicación, componentes, boquillas y sistemas de regulación.</p>
+          </div>
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <a href="campus-curso-simaq.html?course=calibracion-pulverizacion" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
+                Acceder al Curso
+            </a>
+          </div>
+        </article>
+        
+        <!-- Curso: Manejo y operación de carretillas elevadoras -->
+        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="manejo-carretillas">
+          <img src="https://images.unsplash.com/photo-1587044679093-e384e58b3f63?q=80&w=2070&auto=format&fit=crop" 
+               alt="Operador manejando una carretilla elevadora en un almacén" 
+               class="h-48 w-full object-cover">
+          <div class="p-6 flex-grow flex flex-col">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
+            <h3 class="text-xl font-bold mt-2 mb-2">Manejo y Operación de Carretillas Elevadoras</h3>
+            <p class="text-gray-600 text-sm mb-6 flex-grow">Conoce el funcionamiento del motor, sistema eléctrico, transmisión y elevación hidráulica.</p>
+          </div>
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <a href="campus-curso-simaq.html?course=manejo-carretillas" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
+                Acceder al Curso
+            </a>
+          </div>
+        </article>
+        
+        <!-- Curso: Operación y mantenimiento de equipos de riego -->
+        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="operacion-riego">
+          <img src="https://images.unsplash.com/photo-1524638431109-93d95c968f03?q=80&w=2070&auto=format&fit=crop" 
+               alt="Sistema de riego por aspersión en un campo verde" 
+               class="h-48 w-full object-cover">
+          <div class="p-6 flex-grow flex flex-col">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
+            <h3 class="text-xl font-bold mt-2 mb-2">Operación y Mantenimiento de Equipos de Riego</h3>
+            <p class="text-gray-600 text-sm mb-6 flex-grow">Aprende sobre fertirrigación, programación, control de equipos y manejo de tableros eléctricos.</p>
+          </div>
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <a href="campus-curso-simaq.html?course=operacion-riego" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
+                Acceder al Curso
+            </a>
+          </div>
+        </article>
+        
+        <!-- Curso: Operación y mantenimiento de tractores y maquinaria agrícola -->
+        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="operacion-tractores">
+          <img src="https://images.unsplash.com/photo-1580913829023-ad1354e20557?q=80&w=2070&auto=format&fit=crop" 
+               alt="Tractor agrícola en un campo al atardecer" 
+               class="h-48 w-full object-cover">
+          <div class="p-6 flex-grow flex flex-col">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
+            <h3 class="text-xl font-bold mt-2 mb-2">Operación y Mantenimiento de Tractores</h3>
+            <p class="text-gray-600 text-sm mb-6 flex-grow">Conoce los factores de uso y mantenimiento que afectan la economía de combustible.</p>
+          </div>
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <a href="campus-curso-simaq.html?course=operacion-tractores" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
+                Acceder al Curso
+            </a>
+          </div>
+        </article>
 
       </div>
     </section>
