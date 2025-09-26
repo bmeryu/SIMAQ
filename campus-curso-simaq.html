@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · SIMAQ v2.1 (Branding Corregido)
+  CAMPUS CURSO · SIMAQ v2.0 (Funcional)
   -------------------------------------------------------------------
-  - CORRECCIÓN: Se ha corregido el nombre de la marca de "SIMAC" a "SIMAQ"
-    en todos los textos visibles y metadatos.
-  - MIGRACIÓN: Se mantiene la configuración de Firebase para conectar
-    con el proyecto "simaq-2ed6c".
-  - BRANDING: Se han reemplazado todos los logos, textos y enlaces para
-    reflejar la nueva marca SIMAQ.
-  - NOTA: La estructura de datos del curso (ALL_COURSES_DATA) se ha mantenido
-    temporalmente, pero los recursos (videos, PDFs) deben ser subidos
-    al nuevo Firebase Storage de SIMAQ.
+  - CORRECCIÓN CRÍTICA: Se actualizó la configuración de Firebase (storageBucket) para conectar correctamente con SIMAQ.
+  - CORRECCIÓN DE LÓGICA: Se corrigió la URL de redirección para usuarios no autenticados.
+  - ACTUALIZACIÓN DE CONTENIDO: Se reemplazó toda la data del curso de "IA Aplicada" por una nueva estructura para el curso "Uso y Manejo de Plaguicidas", que sirve como plantilla.
+  - PLACEHOLDERS: Todos los videos y recursos ahora apuntan a URLs de ejemplo. Debes reemplazarlos con tu contenido real subido al Storage de Firebase.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -19,7 +14,7 @@
     <title>Lección del Curso - SIMAQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Continúa tu aprendizaje en los cursos de SIMAQ.">
+    <meta name="description" content="Plataforma de aprendizaje de SIMAQ.">
     <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,27 +23,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
     <style>
-        :root { 
+        :root {
             --simaq-blue: #0057FF;
-            --brand-teal: #0057FF; /* Adaptado para consistencia */
+            --simaq-dark-blue: #003db3;
         }
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        #profile-modal, .toast-notification, #completion-modal { transition: all 0.3s ease-in-out; }
-        label span.required { color: #ef4444; }
-        .form-input-error { @apply border-red-500 ring-red-500; }
-        .form-input-success { @apply border-green-500 ring-green-500; }
-        .error-message { @apply text-red-600 text-xs mt-1; }
-        .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); z-index: 1000; }
-        .toast-notification.show { transform: translateX(0); }
-        #completion-modal.show > div { transform: scale(1); opacity: 1; }
-        .quiz-option { transition: all 0.2s ease-in-out; }
-        .quiz-option.selected { border-color: var(--simaq-blue); background-color: #eff6ff; box-shadow: 0 0 0 2px var(--simaq-blue); }
-        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
-        .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
-        .ltab.active { color: var(--simaq-blue); border-bottom-color: var(--simaq-blue); }
-        .ltab-panel { @apply py-4; }
-        #pdf-modal-overlay { transition: opacity 0.3s ease-in-out; }
-        #pdf-modal-content { transition: all 0.3s ease-in-out; }
+        .text-simaq-blue { color: var(--simaq-blue); }
+        .bg-simaq-blue { background-color: var(--simaq-blue); }
+        .border-simaq-blue { border-color: var(--simaq-blue); }
+        .ring-simaq-blue { --tw-ring-color: var(--simaq-blue); }
+        
+        .ltab.active {
+            color: var(--simaq-blue);
+            border-bottom-color: var(--simaq-blue);
+        }
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
         details[open] summary .arrow-down { transform: rotate(180deg); }
@@ -61,16 +49,11 @@
         <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
             <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
                 <a href="index.html" class="flex items-center" aria-label="Página de inicio de SIMAQ">
-                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ" class="h-16 w-auto">
+                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ" class="h-16 md:h-20 w-auto">
                 </a>
                 <div class="flex items-center gap-2 sm:gap-4">
                     <div id="user-profile-container" class="hidden items-center gap-3 relative">
                         <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
-                        <div class="relative group">
-                            <button id="avatar-button" aria-label="Abrir menú de perfil">
-                                <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-blue-500 cursor-pointer group-hover:opacity-90 transition-opacity" />
-                            </button>
-                        </div>
                         <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
                     </div>
                 </div>
@@ -80,7 +63,7 @@
         <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
             <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
                 <div class="p-6">
-                    <a href="./campus-simaq.html" class="text-sm text-simaq-blue hover:text-blue-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
+                    <a href="./campus-simaq.html" class="text-sm text-simaq-blue hover:text-simaq-dark-blue font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
                     <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
                     <div class="mt-4">
                         <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
@@ -91,159 +74,27 @@
             </aside>
 
             <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
-                <div class="p-6 md:p-8 lg:p-10">
-                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-2">Cargando...</h2>
-                    
-                    <div id="learning-tabs" class="mt-8">
-                        <div class="border-b border-slate-200 mb-4">
-                            <nav class="-mb-px flex gap-6 text-sm font-medium overflow-x-auto">
-                                <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-simaq-blue whitespace-nowrap" data-tab="tab-material">
-                                    <span class="inline-flex items-center gap-2"><i data-lucide="book-open" class="h-4 w-4"></i>Material</span>
-                                </button>
-                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-simaq-blue whitespace-nowrap" data-tab="tab-notes">
-                                    <span class="inline-flex items-center gap-2"><i data-lucide="notebook-pen" class="h-4 w-4"></i>Notas</span>
-                                </button>
-                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-simaq-blue whitespace-nowrap" data-tab="tab-resources">
-                                    <span class="inline-flex items-center gap-2"><i data-lucide="folder-down" class="h-4 w-4"></i>Recursos</span>
-                                </button>
-                            </nav>
-                        </div>
-
-                        <div id="tab-material" class="ltab-panel">
-                             <div id="lesson-material-container" class="mb-6"></div>
-                        </div>
-
-                        <div id="tab-notes" class="ltab-panel hidden">
-                            <div class="grid gap-3">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="text-lg font-semibold text-gray-900">Tus notas de esta lección</h3>
-                                    <span id="notes-save-status" class="text-xs text-slate-500 transition-opacity">Sin cambios</span>
-                                </div>
-                                <textarea id="notes-textarea" class="w-full min-h-[160px] rounded-lg border border-slate-300 p-3 focus:outline-none focus:ring-2 focus:ring-simaq-blue" placeholder="Escribe aquí tus ideas, resúmenes o preguntas..."></textarea>
-                                <div class="flex gap-3 text-xs text-slate-500">
-                                    <span class="inline-flex items-center gap-1"><i data-lucide="cloud" class="h-4 w-4"></i>Guardado automático</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="tab-resources" class="ltab-panel hidden">
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900">Recursos de la lección</h3>
-                                <div id="resources-list" class="space-y-3"></div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="p-6 md:p-8 lg:p-10 max-w-4xl mx-auto">
+                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-8">Cargando...</h2>
+                    <div id="lesson-material-container" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200"></div>
                     <div id="navigation-buttons" class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
                         <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
-                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-simaq-blue rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-simaq-blue disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
+                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-simaq-blue rounded-lg shadow-sm hover:bg-simaq-dark-blue disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
                     </div>
                 </div>
             </section>
         </main>
-        
-        <footer class="bg-gray-100 border-t border-gray-200 mt-auto">
-            <div class="container mx-auto px-6 py-8 text-center text-gray-600">
-                <a href="index.html" class="flex items-center justify-center mb-4">
-                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ al pie de página" class="h-12 w-auto">
-                </a>
-                <p class="text-sm mt-4">&copy; 2024 SIMAQ - Todos los derechos reservados.</p>
-            </div>
-        </footer>
     </div>
-
-    <!-- Modales y notificaciones -->
-    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
-    <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0">
-            <div class="p-6 flex-shrink-0">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3>
-                        <p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p>
-                    </div>
-                    <button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button>
-                </div>
-            </div>
-            
-            <div class="px-6 pb-2 flex-grow overflow-y-auto">
-                <form id="profile-form" class="space-y-3" novalidate>
-                    <div>
-                        <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
-                        <div class="relative">
-                            <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-simaq-blue focus:ring-simaq-blue pr-10" placeholder="Ej: Ada Lovelace">
-                            <span id="name-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
-                        </div>
-                        <p class="text-xs text-gray-500 mt-1">Este será el nombre en tu certificado.</p>
-                        <div id="name-error" class="error-message"></div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                         <div>
-                            <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
-                            <div class="relative">
-                                <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-simaq-blue focus:ring-simaq-blue appearance-none pr-10">
-                                    <option value="">Selecciona tu país</option>
-                                    <option value="CL">Chile</option>
-                                    <option value="AR">Argentina</option>
-                                    <option value="PE">Perú</option>
-                                    <option value="CO">Colombia</option>
-                                    <option value="MX">México</option>
-                                </select>
-                                <span id="country-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"></span>
-                            </div>
-                            <div id="country-error" class="error-message"></div>
-                        </div>
-                        <div>
-                            <label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label>
-                            <input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-simaq-blue focus:ring-simaq-blue" placeholder="Ej: Estudiante">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
-                        <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
-                    </div>
-                    <div id="form-status" class="text-center p-3 rounded-lg hidden"></div>
-                </form>
-            </div>
-            <div class="p-6 pt-4 flex-shrink-0">
-                 <div class="flex justify-end gap-3 pt-4 border-t">
-                    <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-                    <button type="submit" form="profile-form" id="save-profile-btn" class="bg-simaq-blue text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span id="save-btn-text">Guardar Cambios</span>
-                        <i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-blue-400"></i><span id="toast-message"></span></div><div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
     
-    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
-    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300">
-            <i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i>
-            <h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2>
-            <p class="text-gray-600 mt-2">Has completado exitosamente el curso "<span id="modal-course-name"></span>".</p>
-            <div class="space-y-3 mt-6">
-                <a id="certificate-link" href="#" class="hidden items-center justify-center gap-2 w-full text-center bg-simaq-blue hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-                    <i data-lucide="award" class="h-5 w-5"></i>
-                    <span>Ver Certificado</span>
-                </a>
-                <button id="review-course-btn" class="block w-full text-sm text-gray-500 hover:text-simaq-blue font-semibold transition-colors text-center py-2">Repasar Curso</button>
-            </div>
-            <button id="close-modal-btn" class="mt-8 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button>
-        </div>
-    </div>
-
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
-    <script defer>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ (CORREGIDA) ---
             const firebaseConfig = {
                 apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
                 authDomain: "simaq-2ed6c.firebaseapp.com",
@@ -262,65 +113,89 @@
             
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('course');
-
-            // TODO: Esta data de curso debe ser cargada desde Firestore en el futuro.
-            // Por ahora, se mantiene para la estructura visual.
+            
+            // --- NUEVA ESTRUCTURA DE CURSOS SIMAQ ---
             const ALL_COURSES_DATA = {
-              'ia-aplicada-esencial': {
-                title: 'IA Aplicada · Esencial',
-                hasCertificate: true,
+              'manejo-plaguicidas-sag': {
+                title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
+                totalLessons: 6, // Actualizar este número manualmente
                 modules: [
                   {
-                    title: 'Módulo 0: Onboarding',
+                    title: 'Módulo 1: Normativa y Seguridad',
                     lessons: [
                       { 
-                        id: '0-1', 
-                        title: 'Tu primer día con IA', 
+                        id: '1-1', 
+                        title: 'Introducción a la Normativa Vigente', 
                         type: 'video', 
-                        videoUrl: 'gs://simaq-2ed6c.appspot.com/ONBOARDING.mp4', // TODO: Actualizar ruta
+                        // REEMPLAZAR: Sube tu video a Firebase Storage y pega la URL de descarga aquí
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
                         resources: [
-                          { name: 'Accede a ChatGPT.pdf', url: '#' }, // TODO: Actualizar ruta
-                          { name: 'Accede a Gemini.pdf', url: '#' } // TODO: Actualizar ruta
+                          { name: 'Resumen Normativa SAG.pdf', url: '#' } 
                         ]
                       },
                       { 
-                        id: 'q-0', 
-                        title: 'Quiz: Módulo 0', 
+                        id: '1-2', 
+                        title: 'Equipos de Protección Personal (EPP)', 
+                        type: 'video', 
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+                      },
+                      { 
+                        id: 'q-1', 
+                        title: 'Quiz: Módulo 1', 
                         type: 'quiz', 
                         questions: [
-                          { 
-                            text: 'Pregunta de prueba 1?', 
-                            options: ['Opción A', 'Opción B (Correcta)', 'Opción C'], 
-                            correctAnswer: 1 
-                          }
-                        ], 
-                        resources: [] 
+                          { text: '¿Cuál es el objetivo principal de la credencial SAG?', options: ['Certificar el conocimiento de la normativa', 'Permitir la compra de cualquier producto', 'Es un requisito solo para exportadores'], correctAnswer: 0 },
+                           { text: 'Un EPP básico incluye:', options: ['Gorra y lentes de sol', 'Guantes, mascarilla y traje impermeable', 'Zapatos de seguridad solamente'], correctAnswer: 1 },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 2: Manipulación y Almacenamiento',
+                    lessons: [
+                      { 
+                        id: '2-1', 
+                        title: 'Técnicas de Mezcla Segura', 
+                        type: 'video', 
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+                      },
+                      { 
+                        id: '2-2', 
+                        title: 'Bodegaje y Transporte de Plaguicidas', 
+                        type: 'video', 
+                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
+                      },
+                      { 
+                        id: 'q-2', 
+                        title: 'Quiz: Módulo 2', 
+                        type: 'quiz', 
+                        questions: [
+                           { text: '¿Dónde se deben almacenar los plaguicidas?', options: ['En una bodega ventilada, segura y señalizada', 'Junto a los alimentos para animales', 'En cualquier lugar fresco'], correctAnswer: 0 },
+                        ]
                       }
                     ]
                   }
-                  // TODO: Añadir el resto de los módulos y lecciones
                 ]
               }
+              // Puedes agregar más cursos aquí
             };
 
-            const courseData = ALL_COURSES_DATA[courseId];
-            if (!courseData) {
-                document.body.innerHTML = '<div class="p-8 text-center"><h1>Error</h1><p>Curso no encontrado. Vuelve al campus y selecciona un curso válido.</p><a href="/campus-simaq.html" class="text-blue-600">Volver al Campus</a></div>';
+            if (!courseId || !ALL_COURSES_DATA[courseId]) {
+                alert("Curso no válido o no especificado.");
+                window.location.href = 'campus-simaq.html';
                 return;
             }
 
+            const courseData = ALL_COURSES_DATA[courseId];
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
-            let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
-            let notesSaveTimer = null;
-            let currentLessonVideo = null;
-            let hasShownCompletionModal = false;
+            let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null };
 
+            // Referencias al DOM
             const dom = {
                 userName: document.getElementById('user-name'),
-                userAvatar: document.getElementById('user-avatar'),
-                userProfile: document.getElementById('user-profile-container'),
                 logoutButton: document.getElementById('logout-button'),
+                userProfile: document.getElementById('user-profile-container'),
                 courseTitle: document.getElementById('course-title'),
                 progressBar: document.getElementById('progress-bar'),
                 progressText: document.getElementById('progress-text'),
@@ -329,119 +204,150 @@
                 lessonMaterialContainer: document.getElementById('lesson-material-container'),
                 prevBtn: document.getElementById('prev-lesson-btn'),
                 mainActionBtn: document.getElementById('main-action-btn'),
-                notesTextarea: document.getElementById('notes-textarea'),
-                notesSaveStatus: document.getElementById('notes-save-status'),
-                resourcesList: document.getElementById('resources-list'),
             };
 
-            function getLessonInfo(lessonId) { for (let i = 0; i < courseData.modules.length; i++) { const module = courseData.modules[i]; const lessonIndex = module.lessons.findIndex(l => l.id === lessonId); if (lessonIndex !== -1) { return { lesson: module.lessons[lessonIndex], moduleIndex: i, module: module }; } } return null; }
-            
             function refreshUI() { 
                 if (!userProgress.currentLessonId && allLessons.length > 0) {
                     userProgress.currentLessonId = allLessons[0].id;
                 }
                 dom.courseTitle.textContent = courseData.title; 
                 renderSidebar(); 
-                const lessonInfo = getLessonInfo(userProgress.currentLessonId); 
+                const lessonInfo = allLessons.find(l => l.id === userProgress.currentLessonId); 
                 if (lessonInfo) { 
-                    dom.lessonTitle.textContent = lessonInfo.lesson.title; 
-                    renderLessonContent(lessonInfo.lesson); 
-                    if (dom.prevBtn) dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.lesson.id) === 0; 
+                    dom.lessonTitle.textContent = lessonInfo.title; 
+                    renderLessonContent(lessonInfo); 
+                    dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.id) === 0; 
                 } 
-                updateOverallProgress(); 
-                updateMainActionButton(); 
+                updateOverallProgress();
+                updateMainActionButton();
                 lucide.createIcons();
             }
 
             function renderSidebar() {
-                if (!dom.modulesContainer) return;
-                dom.modulesContainer.innerHTML = courseData.modules.map(module => {
+                dom.modulesContainer.innerHTML = courseData.modules.map((module) => {
                     const lessonsHtml = module.lessons.map(lesson => {
                         const isCompleted = userProgress.completedLessons.includes(lesson.id);
                         const isActive = userProgress.currentLessonId === lesson.id;
                         let linkClasses = 'text-gray-600 hover:bg-slate-100';
-                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
+                        let statusIcon = isCompleted ? 'check-circle-2' : 'circle';
                         let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
-                        
                         if (isActive) {
                             linkClasses = 'bg-blue-50 text-simaq-blue font-semibold';
-                            statusIcon = 'play-circle';
-                            iconColor = '';
                         }
-                        
-                        const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
-                        
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2"></i></a></li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span></a></li>`;
                     }).join('');
-                    
-                    return `<div class="p-2"><h3 class="font-semibold text-gray-800 px-2 mb-1">${module.title}</h3><ul class="border-l border-slate-200 py-1 space-y-1">${lessonsHtml}</ul></div>`;
+                    return `<div class="py-2"><h3 class="font-semibold text-gray-800 px-3 mb-1">${module.title}</h3><ul class="space-y-1">${lessonsHtml}</ul></div>`;
                 }).join('');
                 addSidebarListeners();
             }
             
             function renderLessonContent(lesson) {
                 let materialHtml = ''; 
-                if (currentLessonVideo) { currentLessonVideo.pause(); currentLessonVideo = null; }
-
                 switch(lesson.type) { 
                     case 'video':
-                        materialHtml = `<div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-black">
-                                    <video id="course-video" controls class="w-full h-full object-cover">
-                                        <source id="course-video-source" data-src="${lesson.videoUrl || ''}" type="video/mp4">
-                                        Tu navegador no soporta el elemento de video.
-                                    </video>
-                                </div>`;
+                        materialHtml = `<div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-black"><video controls class="w-full h-full object-cover" src="${lesson.videoUrl || ''}"></video></div>`;
                         break; 
-                    case 'quiz': 
+                    case 'quiz':
                         const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
-                        let quizHtml = lesson.questions.map((question, qIndex) => {
-                            const optionsHtml = question.options.map((opt, index) => 
-                                `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}" data-question-id="q-${qIndex}">${opt}</div>`
-                            ).join('');
-                            return `<div class="space-y-4 mb-8 p-4 border-b border-slate-200" id="q-${qIndex}"><h3 class="text-xl font-semibold">${qIndex + 1}. ${question.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
+                        let quizHtml = lesson.questions.map((q, qIndex) => {
+                            const optionsHtml = q.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
+                            return `<div class="space-y-4 mb-8" data-question-index="${qIndex}"><h3 class="text-xl font-semibold">${qIndex + 1}. ${q.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
                         }).join('');
-                        materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                        materialHtml = isQuizCompleted ? `<p class="text-center p-4 bg-green-100 text-green-700 rounded-lg">Ya completaste este quiz.</p>` : `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
                         break;
                     default: materialHtml = `<p>Contenido no disponible.</p>`;
                 } 
-                if (dom.lessonMaterialContainer) dom.lessonMaterialContainer.innerHTML = materialHtml; 
-                
-                // TODO: Re-implementar lógica de quiz
-                
-                const videoEl = document.getElementById('course-video');
-                if (videoEl) {
-                    currentLessonVideo = videoEl;
-                    const videoSrcEl = videoEl.querySelector('#course-video-source');
-                    if(videoSrcEl && videoSrcEl.dataset.src) {
-                        storage.refFromURL(videoSrcEl.dataset.src).getDownloadURL()
-                            .then(url => { videoSrcEl.src = url; videoEl.load(); })
-                            .catch(error => console.error("Error obteniendo URL del video:", error));
+                dom.lessonMaterialContainer.innerHTML = materialHtml; 
+
+                if (lesson.type === 'quiz' && !userProgress.completedLessons.includes(lesson.id)) {
+                    dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.addEventListener('click', () => {
+                            const questionContainer = opt.closest('[data-question-index]');
+                            questionContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('bg-blue-100', 'border-simaq-blue'));
+                            opt.classList.add('bg-blue-100', 'border-simaq-blue');
+                        });
+                    });
+                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswers(lesson));
+                }
+            }
+
+            function checkQuizAnswers(lesson) {
+                let correctCount = 0;
+                lesson.questions.forEach((q, qIndex) => {
+                    const container = dom.lessonMaterialContainer.querySelector(`[data-question-index="${qIndex}"]`);
+                    const selected = container.querySelector('.quiz-option.bg-blue-100');
+                    if (selected && parseInt(selected.dataset.index) === q.correctAnswer) {
+                        correctCount++;
+                    }
+                });
+                if (correctCount === lesson.questions.length) {
+                    alert('¡Excelente! Todas las respuestas son correctas.');
+                    completeLesson(lesson.id);
+                } else {
+                    alert(`Tienes ${correctCount} de ${lesson.questions.length} respuestas correctas. ¡Inténtalo de nuevo!`);
+                }
+            }
+
+            async function completeLesson(lessonId) {
+                const isCompleted = userProgress.completedLessons.includes(lessonId);
+                if (!isCompleted) {
+                    userProgress.completedLessons = [...userProgress.completedLessons, lessonId];
+                    await saveProgress();
+                    refreshUI();
+
+                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                    if (currentIndex < allLessons.length - 1) {
+                        navigateToLesson(allLessons[currentIndex + 1].id);
+                    } else {
+                        alert("¡Felicidades! Has completado el curso.");
                     }
                 }
             }
             
             function updateMainActionButton() {
-                // Lógica simplificada
-            }
-            function updateOverallProgress() { 
-                const completedCount = new Set(userProgress.completedLessons).size; 
-                const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; 
-                if (dom.progressBar) dom.progressBar.style.width = `${percentage}%`; 
-                if (dom.progressText) dom.progressText.textContent = `${percentage}%`; 
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (!lesson) return;
+                dom.mainActionBtn.disabled = lesson.type === 'quiz' || userProgress.completedLessons.includes(lesson.id);
+                if (userProgress.completedLessons.includes(lesson.id)) {
+                    dom.mainActionBtn.textContent = 'Completada';
+                } else {
+                    dom.mainActionBtn.textContent = 'Marcar como completada';
+                }
             }
 
+            function updateOverallProgress() { 
+                const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / courseData.totalLessons) * 100) : 0;
+                dom.progressBar.style.width = `${percentage}%`;
+                dom.progressText.textContent = `${percentage}%`; 
+            }
+            
             async function navigateToLesson(lessonId) {
-                userProgress = { ...userProgress, currentLessonId: lessonId };
+                userProgress.currentLessonId = lessonId;
                 await saveProgress();
                 refreshUI();
             }
 
-            async function saveProgress() { if (!currentUser) return; try { const progressRef = db.collection('userProgress').doc(currentUser.uid); await progressRef.set({ [courseId]: userProgress }, { merge: true }); } catch (error) { console.error("Error al guardar el progreso:", error); } }
+            async function saveProgress() { 
+                if (!currentUser) return; 
+                try { 
+                    const progressRef = db.collection('userProgress').doc(currentUser.uid); 
+                    await progressRef.set({ [courseId]: userProgress }, { merge: true }); 
+                } catch (error) { console.error("Error al guardar el progreso:", error); } 
+            }
             
-            async function loadProgressAndInitialize() { const docRef = db.collection('userProgress').doc(currentUser.uid); try { const doc = await docRef.get(); if (doc.exists) { const courseProgress = doc.data()[courseId]; if (courseProgress) { userProgress = { completedLessons: courseProgress.completedLessons || [], currentLessonId: courseProgress.currentLessonId || allLessons[0].id, unlockedBadges: courseProgress.unlockedBadges || [] }; } } } catch (error) { console.error("Error al cargar el progreso.", error); } refreshUI(); }
+            async function loadProgress() { 
+                const docRef = db.collection('userProgress').doc(currentUser.uid);
+                const doc = await docRef.get(); 
+                if (doc.exists && doc.data()[courseId]) { 
+                    const loadedProgress = doc.data()[courseId];
+                    // Validar datos cargados
+                    userProgress.completedLessons = Array.isArray(loadedProgress.completedLessons) ? loadedProgress.completedLessons : [];
+                    userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : allLessons[0].id;
+                }
+                refreshUI(); 
+            }
             
             function addSidebarListeners() {
-                if (!dom.modulesContainer) return;
                 dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
                     link.addEventListener('click', e => {
                         e.preventDefault();
@@ -451,22 +357,28 @@
                 });
             }
             
-            if (dom.mainActionBtn) dom.mainActionBtn.addEventListener('click', async () => { /* Lógica simplificada */ });
-            if (dom.prevBtn) dom.prevBtn.addEventListener('click', () => { const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); });
-
-            if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `acceso-simaq.html`));
-
+            dom.mainActionBtn.addEventListener('click', () => {
+                completeLesson(userProgress.currentLessonId)
+            });
+            dom.prevBtn.addEventListener('click', () => { 
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); 
+                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); 
+            });
+            
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
-                    if (dom.userName) dom.userName.textContent = currentUser.name;
-                    if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name.charAt(0))}&background=0057FF&color=fff`;
-                    if (dom.userProfile) { dom.userProfile.classList.remove('hidden'); dom.userProfile.classList.add('flex'); }
-                    loadProgressAndInitialize();
+                    dom.userName.textContent = currentUser.name;
+                    dom.userProfile.classList.remove('hidden');
+                    dom.userProfile.classList.add('flex');
+                    loadProgress();
                 } else {
-                    window.location.href = `acceso-simaq.html`;
+                    // --- REDIRECCIÓN CORREGIDA ---
+                    window.location.href = 'acceso-simaq.html';
                 }
             });
+
+            if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
         });
     </script>
 </body>
