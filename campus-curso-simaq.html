@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · SIMAQ v3.0 (Contenido de Curso Cargado)
+  CAMPUS CURSO · SIMAQ v3.1 (Soporte para Múltiples Cursos)
   -------------------------------------------------------------------
-  - CONTENIDO: Se ha creado y añadido una estructura completa de módulos y lecciones para el curso "Uso y Manejo de Plaguicidas".
-  - LÓGICA: La página ahora detecta el contenido y activa la vista interactiva del curso, mostrando la barra de progreso, módulos y navegación.
-  - PLACEHOLDERS: Se utilizan videos de muestra. El siguiente paso es reemplazar las URLs por el contenido real del curso subido a Firebase Storage.
-  - TOTAL LESSONS: Se actualiza el contador de lecciones totales para que el progreso se calcule correctamente.
+  - CONTENIDO: Se ha añadido la estructura de datos para todos los cursos de SIMAQ en el objeto `ALL_COURSES_DATA`.
+  - LÓGICA: La página ahora puede cargar dinámicamente el título y estado de cualquier curso.
+  - ESTADO "EN CONSTRUCCIÓN": Los nuevos cursos se muestran con un mensaje claro, indicando que el contenido estará disponible pronto.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -70,7 +69,7 @@
                     <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
                     <div id="progress-container" class="mt-4">
                         <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
-                        <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-simaq-blue h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                        <div class="w-full bg-slate-200 rounded-full h-2-5"><div id="progress-bar" class="bg-simaq-blue h-2-5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
                     </div>
                 </div>
                 <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
@@ -126,85 +125,57 @@
                   {
                     title: 'Módulo 1: Fundamentos y Normativa',
                     lessons: [
-                      { 
-                        id: '1-1', 
-                        title: 'Introducción al Manejo Seguro', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                        resources: [ { name: 'Glosario de Términos.pdf', url: '#' } ]
-                      },
-                      { 
-                        id: '1-2', 
-                        title: 'Normativa SAG Aplicable', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-                        resources: [ { name: 'Resumen Normativa Vigente.pdf', url: '#' } ]
-                      },
-                       { 
-                        id: '1-3', 
-                        title: 'Tipos de Plaguicidas y Etiquetas', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
-                      },
-                      { 
-                        id: 'q-1', 
-                        title: 'Quiz: Fundamentos', 
-                        type: 'quiz', 
-                        questions: [
+                      { id: '1-1', title: 'Introducción al Manejo Seguro', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
+                      { id: '1-2', title: 'Normativa SAG Aplicable', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4' },
+                      { id: '1-3', title: 'Tipos de Plaguicidas y Etiquetas', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' },
+                      { id: 'q-1', title: 'Quiz: Fundamentos', type: 'quiz', questions: [
                           { text: 'La normativa SAG busca principalmente:', options: ['Aumentar la producción', 'Asegurar la inocuidad alimentaria y la seguridad del aplicador', 'Facilitar la exportación'], correctAnswer: 1 },
                           { text: 'La banda toxicológica de color rojo en una etiqueta indica:', options: ['Poco peligroso', 'Cuidado', 'Muy peligroso'], correctAnswer: 2 }
-                        ]
-                      }
+                      ]}
                     ]
                   },
                   {
                     title: 'Módulo 2: Equipos y Calibración',
                     lessons: [
-                       { 
-                        id: '2-1', 
-                        title: 'Equipos de Protección Personal (EPP)', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
-                      },
-                       { 
-                        id: '2-2', 
-                        title: 'Calibración de Equipos de Pulverización', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4'
-                      },
-                      { 
-                        id: 'q-2', 
-                        title: 'Quiz: Equipos', 
-                        type: 'quiz', 
-                        questions: [
+                       { id: '2-1', title: 'Equipos de Protección Personal (EPP)', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4' },
+                       { id: '2-2', title: 'Calibración de Equipos de Pulverización', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4' },
+                       { id: 'q-2', title: 'Quiz: Equipos', type: 'quiz', questions: [
                            { text: '¿Qué elemento del EPP protege las vías respiratorias?', options: ['Guantes', 'Traje impermeable', 'Mascarilla con filtro'], correctAnswer: 2 },
                            { text: 'Una correcta calibración asegura:', options: ['Aplicar la dosis exacta del producto', 'Ahorrar tiempo', 'Usar menos agua'], correctAnswer: 0 },
-                        ]
-                      }
+                       ]}
                     ]
                   },
                   {
                     title: 'Módulo 3: Aplicación y Post-Aplicación',
                     lessons: [
-                       { 
-                        id: '3-1', 
-                        title: 'Técnicas de Aplicación Segura', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'
-                      },
-                      { 
-                        id: 'q-3', 
-                        title: 'Quiz Final: Buenas Prácticas', 
-                        type: 'quiz', 
-                        questions: [
+                       { id: '3-1', title: 'Técnicas de Aplicación Segura', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4' },
+                       { id: 'q-3', title: 'Quiz Final: Buenas Prácticas', type: 'quiz', questions: [
                            { text: 'El triple lavado de envases es una práctica para:', options: ['Reutilizar los envases', 'Eliminar residuos peligrosos antes de su desecho', 'Ahorrar producto'], correctAnswer: 1 },
-                        ]
-                      }
+                       ]}
                     ]
                   }
                 ]
+              },
+              'calibracion-pulverizacion': {
+                title: 'Calibración de Equipos de Pulverización',
+                totalLessons: 0,
+                modules: []
+              },
+              'manejo-carretillas': {
+                title: 'Manejo y Operación de Carretillas Elevadoras',
+                totalLessons: 0,
+                modules: []
+              },
+              'operacion-riego': {
+                title: 'Operación y Mantenimiento de Equipos de Riego',
+                totalLessons: 0,
+                modules: []
+              },
+              'operacion-tractores': {
+                title: 'Operación y Mantenimiento de Tractores',
+                totalLessons: 0,
+                modules: []
               }
-              // Puedes agregar más cursos aquí
             };
 
             if (!courseId || !ALL_COURSES_DATA[courseId]) {
@@ -251,7 +222,7 @@
                 `;
                 
                 dom.lessonMaterialContainer.innerHTML = constructionHtml;
-                dom.modulesContainer.innerHTML = `<p class="p-4 text-sm text-gray-500 text-center">El contenido del curso se mostrará aquí una vez que esté disponible.</p>`;
+                dom.modulesContainer.innerHTML = `<p class="p-4 text-sm text-gray-500 text-center">El contenido se mostrará aquí.</p>`;
                 lucide.createIcons();
             }
 
