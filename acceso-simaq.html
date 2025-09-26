@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <!-- 
-    PÁGINA DE ACCESO SIMAC v2.4 (Redirección Corregida)
+    PÁGINA DE ACCESO SIMAQ v2.5 (Branding Corregido)
     -----------------------------------------------------------------------
-    - CORRECCIÓN: Se ha ajustado la URL de redirección post-login a "campus-simaq.html"
-      (en minúsculas) para coincidir con el nombre de archivo real en el repositorio
-      y solucionar el error 404 de GitHub Pages.
-    - ACTUALIZACIÓN: Se ha insertado la configuración real del proyecto de Firebase
-      "simaq-2ed6c", dejando la página completamente funcional.
-    - REDISEÑO VISUAL: Se mantiene la estética de la web simaq.cl.
-    - FUNCIONALIDAD: La lógica de autenticación con Firebase (solo email) se mantiene
-      intacta.
+    - CORRECCIÓN: Se ha ajustado el nombre de la marca de "SIMAC" a "SIMAQ"
+      en todos los textos visibles y metadatos.
+    - FUNCIONALIDAD: La página está conectada al proyecto de Firebase "simaq-2ed6c"
+      y redirige correctamente a "campus-simaq.html" tras el login.
 -->
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Accede o Crea tu Cuenta - SIMAC</title>
-    <meta name="description" content="Inicia sesión o regístrate para acceder a los cursos de SIMAC. Comienza tu viaje de aprendizaje hoy.">
+    <title>Accede o Crea tu Cuenta - SIMAQ</title>
+    <meta name="description" content="Inicia sesión o regístrate para acceder a los cursos de SIMAQ. Comienza tu viaje de aprendizaje hoy.">
     
     <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
@@ -70,12 +66,12 @@
 <body class="bg-gray-50 text-gray-800">
 
     <header class="container mx-auto flex justify-center px-6 py-6 sm:py-8">
-      <a href="index.html" class="block" aria-label="Página de inicio de SIMAC">
+      <a href="index.html" class="block" aria-label="Página de inicio de SIMAQ">
         <img
           src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png"
-          alt="Logo de SIMAC"
+          alt="Logo de SIMAQ"
           class="h-16 w-auto"
-          onerror="this.onerror=null; this.src='https://placehold.co/200x64/ffffff/000000?text=SIMAC';"
+          onerror="this.onerror=null; this.src='https://placehold.co/200x64/ffffff/000000?text=SIMAQ';"
         />
       </a>
     </header>
@@ -161,7 +157,7 @@
 
     <script defer>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- CONFIGURACIÓN DE FIREBASE PARA SIMAC ---
+        // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ ---
         const firebaseConfig = {
             apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
             authDomain: "simaq-2ed6c.firebaseapp.com",
@@ -266,8 +262,7 @@
         // --- MANEJO DEL ESTADO DE AUTENTICACIÓN Y REDIRECCIÓN ---
         auth.onAuthStateChanged(user => {
             if (user) {
-                console.log('Usuario autenticado. Redirigiendo al campus de SIMAC...');
-                // CORRECCIÓN: Apuntar a 'campus-simaq.html' en minúsculas
+                console.log('Usuario autenticado. Redirigiendo al campus de SIMAQ...');
                 window.location.href = 'campus-simaq.html';
             }
         });
