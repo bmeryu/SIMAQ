@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · SIMAQ v3.2 (Lógica de Cursos Vacíos Corregida)
+  CAMPUS CURSO · SIMAQ v3.5 (Carga Instantánea y Robusta)
   -------------------------------------------------------------------
-  - FIX: Se corrige el error que dejaba la página en "Cargando..." para cursos sin contenido.
-  - LÓGICA MEJORADA: El script ahora verifica explícitamente si un curso tiene lecciones. Si no las tiene, renderiza de forma segura la vista "En Construcción".
-  - ESCALABILIDAD: La plataforma ahora está preparada para manejar múltiples cursos, mostrando correctamente tanto los que tienen contenido como los que están en preparación.
+  - FIX DEFINITIVO: Se soluciona el problema de la página "Cargando...".
+  - LÓGICA REESCRITA: La página ahora muestra la estructura del curso instantáneamente y carga el progreso del usuario en segundo plano.
+  - UX MEJORADA: Se elimina cualquier posibilidad de que la página se congele esperando una respuesta de la base de datos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -121,7 +121,7 @@
             const ALL_COURSES_DATA = {
               'manejo-plaguicidas-sag': {
                 title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
-                totalLessons: 9,
+                totalLessons: 11,
                 modules: [
                   {
                     title: 'Módulo 1: Fundamentos y Normativa',
@@ -150,8 +150,18 @@
                     title: 'Módulo 3: Aplicación y Post-Aplicación',
                     lessons: [
                        { id: '3-1', title: 'Técnicas de Aplicación Segura', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4' },
-                       { id: 'q-3', title: 'Quiz Final: Buenas Prácticas', type: 'quiz', questions: [
+                       { id: 'q-3', title: 'Quiz: Buenas Prácticas', type: 'quiz', questions: [
                            { text: 'El triple lavado de envases es una práctica para:', options: ['Reutilizar los envases', 'Eliminar residuos peligrosos antes de su desecho', 'Ahorrar producto'], correctAnswer: 1 },
+                       ]}
+                    ]
+                  },
+                  {
+                    title: 'Módulo 4: Casos Prácticos y Evaluación Final',
+                    lessons: [
+                       { id: '4-1', title: 'Análisis de Casos Reales', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4' },
+                       { id: 'q-4', title: 'Evaluación Final del Curso', type: 'quiz', questions: [
+                           { text: 'Ante un derrame de producto, ¿cuál es el primer paso a seguir?', options: ['Llamar a emergencias', 'Contener el derrame con material absorbente', 'Abandonar el área'], correctAnswer: 1 },
+                           { text: 'El período de reingreso a un área tratada se encuentra especificado en:', options: ['La boleta de compra', 'La etiqueta del producto', 'El manual del tractor'], correctAnswer: 1 }
                        ]}
                     ]
                   }
@@ -184,14 +194,28 @@
                 mainActionBtn: document.getElementById('main-action-btn'),
             };
 
-            // --- FUNCIONES PRINCIPALES DE RENDERIZADO ---
+            // --- FUNCIONES DE RENDERIZADO ---
+
+            function displayError(message, details = '') {
+                console.error(message, details);
+                dom.courseTitle.textContent = "Ocurrió un Error";
+                dom.lessonTitle.textContent = "Error al Cargar";
+                dom.lessonMaterialContainer.innerHTML = `
+                    <div class="text-center py-10">
+                        <i data-lucide="alert-triangle" class="w-16 h-16 mx-auto text-red-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-800">${message}</h3>
+                        <p class="mt-2 text-gray-600">Por favor, intenta recargar la página. Si el problema persiste, contacta a soporte.</p>
+                        ${details ? `<pre class="mt-4 text-xs text-left bg-gray-100 p-2 rounded">${details}</pre>` : ''}
+                    </div>`;
+                dom.progressContainer.style.display = 'none';
+                dom.navigationButtons.style.display = 'none';
+                lucide.createIcons();
+            }
 
             function renderCourseUnderConstruction() {
-                dom.courseTitle.textContent = courseData.title;
                 dom.lessonTitle.textContent = "Curso en Construcción";
                 dom.progressContainer.style.display = 'none';
                 dom.navigationButtons.style.display = 'none';
-
                 dom.lessonMaterialContainer.innerHTML = `
                     <div class="text-center py-10">
                         <i data-lucide="hard-hat" class="w-16 h-16 mx-auto text-yellow-500 mb-4"></i>
@@ -202,21 +226,25 @@
                 lucide.createIcons();
             }
 
-            function renderActiveCourse() {
-                if (!userProgress.currentLessonId) {
+            function renderInitialCourseView() {
+                if (!userProgress.currentLessonId && allLessons.length > 0) {
                     userProgress.currentLessonId = allLessons[0].id;
                 }
-                dom.courseTitle.textContent = courseData.title;
                 dom.progressContainer.style.display = 'block';
                 dom.navigationButtons.style.display = 'flex';
-                renderSidebar();
                 const lessonInfo = allLessons.find(l => l.id === userProgress.currentLessonId);
                 if (lessonInfo) {
                     dom.lessonTitle.textContent = lessonInfo.title;
                     renderLessonContent(lessonInfo);
                 }
+                updateUIWithProgress();
+            }
+            
+            function updateUIWithProgress() {
+                renderSidebar();
                 updateOverallProgress();
                 updateMainActionButton();
+                dom.prevBtn.disabled = allLessons.findIndex(l => l.id === userProgress.currentLessonId) === 0;
                 lucide.createIcons();
             }
 
@@ -287,7 +315,7 @@
                         navigateToLesson(allLessons[currentIndex + 1].id);
                     } else {
                         alert("¡Felicidades! Has completado el curso.");
-                        renderActiveCourse();
+                        updateUIWithProgress();
                     }
                 }
             }
@@ -333,7 +361,7 @@
             async function navigateToLesson(lessonId) {
                 userProgress.currentLessonId = lessonId;
                 await saveProgress();
-                renderActiveCourse();
+                renderInitialCourseView();
             }
 
             async function saveProgress() { 
@@ -342,15 +370,20 @@
                 await progressRef.set({ [courseId]: userProgress }, { merge: true }); 
             }
             
-            async function loadProgress() { 
-                const docRef = db.collection('userProgress').doc(currentUser.uid);
-                const doc = await docRef.get(); 
-                if (doc.exists && doc.data()[courseId]) { 
-                    const loadedProgress = doc.data()[courseId];
-                    userProgress.completedLessons = Array.isArray(loadedProgress.completedLessons) ? loadedProgress.completedLessons : [];
-                    userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : null;
+            async function loadAndApplyUserProgress() { 
+                try {
+                    const docRef = db.collection('userProgress').doc(currentUser.uid);
+                    const doc = await docRef.get();
+                    if (doc.exists && doc.data()[courseId]) { 
+                        const loadedProgress = doc.data()[courseId];
+                        userProgress.completedLessons = Array.isArray(loadedProgress.completedLessons) ? loadedProgress.completedLessons : [];
+                        userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : allLessons[0].id;
+                    }
+                } catch (error) {
+                    console.warn("No se pudo cargar el progreso. Se mostrará el curso desde el inicio.", error);
+                } finally {
+                    updateUIWithProgress();
                 }
-                renderActiveCourse(); 
             }
             
             function addSidebarListeners() {
@@ -365,26 +398,30 @@
             
             // --- INICIALIZACIÓN ---
             
-            auth.onAuthStateChanged(user => {
+            auth.onAuthStateChanged((user) => {
                 if (user) {
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
                     dom.userName.textContent = currentUser.name;
                     dom.userProfile.classList.remove('hidden');
                     dom.userProfile.classList.add('flex');
 
-                    if (!courseId || !ALL_COURSES_DATA[courseId]) {
-                        alert("Curso no válido.");
-                        window.location.href = 'campus-simaq.html';
-                        return;
-                    }
-                    
-                    courseData = ALL_COURSES_DATA[courseId];
-                    allLessons = courseData.modules.flatMap(m => m.lessons);
+                    try {
+                        if (!courseId || !ALL_COURSES_DATA[courseId]) {
+                            throw new Error("ID de curso no válido en la URL.");
+                        }
+                        
+                        courseData = ALL_COURSES_DATA[courseId];
+                        allLessons = courseData.modules.flatMap(m => m.lessons);
+                        dom.courseTitle.textContent = courseData.title;
 
-                    if (allLessons.length === 0) {
-                        renderCourseUnderConstruction();
-                    } else {
-                        loadProgress();
+                        if (allLessons.length === 0) {
+                            renderCourseUnderConstruction();
+                        } else {
+                            renderInitialCourseView();
+                            loadAndApplyUserProgress();
+                        }
+                    } catch (error) {
+                        displayError("No se pudo inicializar el curso", error.message);
                     }
 
                 } else {
