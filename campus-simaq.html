@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS VIRTUAL · SIMAQ v2.3 (Imágenes Corregidas)
+  CAMPUS · SIMAQ v2.2 (Imágenes Reales de Cursos)
   -------------------------------------------------------------------
-  - CORRECCIÓN VISUAL: Se han reemplazado las URLs de las imágenes de los cursos por unas nuevas y funcionales de Unsplash para solucionar el problema de las imágenes rotas.
-  - IDs ÚNICOS: Cada tarjeta de curso ahora tiene un `data-course-id` y un enlace con un parámetro `course=` único, preparando la plataforma para futuro contenido.
+  - IMÁGENES: Se reemplazan las imágenes de Unsplash por las fotografías reales del sitio web simaq.cl, proporcionadas por el usuario.
+  - AUTENTICIDAD: La página del campus ahora refleja fielmente la identidad visual de los cursos de SIMAQ.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8" />
-    <title>Campus Virtual – SIMAQ</title>
+    <title>Campus Virtual - SIMAQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de SIMAQ.">
+    <meta name="description" content="Dashboard de estudiante para acceder a los cursos de SIMAQ.">
     <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,171 +26,124 @@
         }
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .text-simaq-blue { color: var(--simaq-blue); }
-        .bg-simaq-blue { background-color: var(--simaq-blue); }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        }
     </style>
 </head>
 <body class="text-gray-800">
 
-  <header class="bg-white shadow-sm sticky top-0 z-30">
-    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2" aria-label="Ir al inicio de SIMAQ">
-        <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-16 md:h-20 w-auto" />
-      </a>
-      <div id="user-profile" class="hidden sm:flex items-center gap-4 relative">
-        <span id="user-name" class="font-semibold text-gray-700"></span>
-        <button id="logout-btn" class="text-sm font-medium text-gray-600 hover:text-red-600 transition-colors">Cerrar sesión</button>
-      </div>
-    </nav>
-  </header>
-
-  <main class="container mx-auto px-6 py-12 max-w-7xl">
-    <section class="mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name">Alumno</span>!</h1>
-      <p class="text-lg text-gray-600 mt-2">Continuemos fortaleciendo tus competencias.</p>
-    </section>
-
-    <section aria-labelledby="courses-heading">
-      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-8">Mis Cursos Disponibles</h2>
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
-        <!-- Curso: Plaguicidas -->
-        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="manejo-plaguicidas-sag">
-          <img src="https://images.unsplash.com/photo-1570963321391-1bef39442197?q=80&w=2070&auto=format&fit=crop" 
-               alt="Persona aplicando plaguicidas en un campo agrícola" 
-               class="h-48 w-full object-cover">
-          <div class="p-6 flex-grow flex flex-col">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
-            <h3 class="text-xl font-bold mt-2 mb-2">Uso y Manejo de Plaguicidas (Credencial SAG)</h3>
-            <p class="text-gray-600 text-sm mb-6 flex-grow">Aprende la normativa, calibración y aplicación segura para obtener tu credencial SAG.</p>
-          </div>
-          <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="campus-curso-simaq.html?course=manejo-plaguicidas-sag" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
-                Acceder al Curso
+    <header class="bg-white shadow-sm sticky top-0 z-30">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="index.html" aria-label="Ir al inicio de SIMAQ">
+                <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-16 md:h-20 w-auto" />
             </a>
-          </div>
-        </article>
-        
-        <!-- Curso: Calibración de equipos de pulverización -->
-        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="calibracion-pulverizacion">
-          <img src="https://images.unsplash.com/photo-1628863353534-b4b385556725?q=80&w=1974&auto=format&fit=crop" 
-               alt="Equipo de pulverización agrícola en un campo" 
-               class="h-48 w-full object-cover">
-          <div class="p-6 flex-grow flex flex-col">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
-            <h3 class="text-xl font-bold mt-2 mb-2">Calibración de Equipos de Pulverización</h3>
-            <p class="text-gray-600 text-sm mb-6 flex-grow">Domina los parámetros de aplicación, componentes, boquillas y sistemas de regulación.</p>
-          </div>
-          <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="campus-curso-simaq.html?course=calibracion-pulverizacion" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
-                Acceder al Curso
-            </a>
-          </div>
-        </article>
-        
-        <!-- Curso: Manejo y operación de carretillas elevadoras -->
-        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="manejo-carretillas">
-          <img src="https://images.unsplash.com/photo-1587044679093-e384e58b3f63?q=80&w=2070&auto=format&fit=crop" 
-               alt="Operador manejando una carretilla elevadora en un almacén" 
-               class="h-48 w-full object-cover">
-          <div class="p-6 flex-grow flex flex-col">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
-            <h3 class="text-xl font-bold mt-2 mb-2">Manejo y Operación de Carretillas Elevadoras</h3>
-            <p class="text-gray-600 text-sm mb-6 flex-grow">Conoce el funcionamiento del motor, sistema eléctrico, transmisión y elevación hidráulica.</p>
-          </div>
-          <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="campus-curso-simaq.html?course=manejo-carretillas" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
-                Acceder al Curso
-            </a>
-          </div>
-        </article>
-        
-        <!-- Curso: Operación y mantenimiento de equipos de riego -->
-        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="operacion-riego">
-          <img src="https://images.unsplash.com/photo-1524638431109-93d95c968f03?q=80&w=2070&auto=format&fit=crop" 
-               alt="Sistema de riego por aspersión en un campo verde" 
-               class="h-48 w-full object-cover">
-          <div class="p-6 flex-grow flex flex-col">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
-            <h3 class="text-xl font-bold mt-2 mb-2">Operación y Mantenimiento de Equipos de Riego</h3>
-            <p class="text-gray-600 text-sm mb-6 flex-grow">Aprende sobre fertirrigación, programación, control de equipos y manejo de tableros eléctricos.</p>
-          </div>
-          <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="campus-curso-simaq.html?course=operacion-riego" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
-                Acceder al Curso
-            </a>
-          </div>
-        </article>
-        
-        <!-- Curso: Operación y mantenimiento de tractores y maquinaria agrícola -->
-        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="operacion-tractores">
-          <img src="https://images.unsplash.com/photo-1580913829023-ad1354e20557?q=80&w=2070&auto=format&fit=crop" 
-               alt="Tractor agrícola en un campo al atardecer" 
-               class="h-48 w-full object-cover">
-          <div class="p-6 flex-grow flex flex-col">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
-            <h3 class="text-xl font-bold mt-2 mb-2">Operación y Mantenimiento de Tractores</h3>
-            <p class="text-gray-600 text-sm mb-6 flex-grow">Conoce los factores de uso y mantenimiento que afectan la economía de combustible.</p>
-          </div>
-          <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="campus-curso-simaq.html?course=operacion-tractores" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
-                Acceder al Curso
-            </a>
-          </div>
-        </article>
+            <div id="user-profile" class="hidden sm:flex items-center gap-3 relative">
+                <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[20ch]"></span>
+                <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
+            </div>
+        </nav>
+    </header>
 
-      </div>
-    </section>
-  </main>
+    <main class="container mx-auto px-6 py-12 max-w-7xl">
+        <section class="mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Alumno</span>!</h1>
+            <p class="text-lg text-gray-600 mt-2">Continuemos fortaleciendo tus competencias.</p>
+        </section>
 
-  <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
-    © 2025 SIMAQ Capacitaciones · Todos los derechos reservados.
-  </footer>
+        <section aria-labelledby="courses-heading">
+            <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-8">Mis Cursos Disponibles</h2>
+            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ ---
-      const firebaseConfig = {
-          apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
-          authDomain: "simaq-2ed6c.firebaseapp.com",
-          projectId: "simaq-2ed6c",
-          storageBucket: "simaq-2ed6c.firebasestorage.app",
-          messagingSenderId: "976543052975",
-          appId: "1:976543052975:web:1b8d35f9a6d3b1cbb1d05a",
-          measurementId: "G-1PRF6FG2YY"
-      };
-      
-      try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
-      
-      const auth = firebase.auth();
-      const db = firebase.firestore();
+                <!-- Curso: Uso y Manejo de Plaguicidas -->
+                <a href="campus-curso-simaq.html?course=manejo-plaguicidas-sag" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/noticias_1583865968_smal.jpg" alt="Persona aplicando plaguicidas en un campo agrícola">
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Uso y Manejo de Plaguicidas (Credencial SAG)</h3>
+                    </div>
+                </a>
 
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          const name = user.displayName || 'Alumno';
-          document.getElementById('user-name').textContent = name;
-          document.getElementById('welcome-name').textContent = name;
-          document.getElementById('user-profile').classList.remove('hidden');
-          
-          document.getElementById('logout-btn').addEventListener('click', () => {
-            auth.signOut().then(() => window.location.href = 'index.html');
-          });
-        } else {
-          window.location.href = 'acceso-simaq.html';
-        }
-      });
-    });
-  </script>
+                <!-- Curso: Calibración de Equipos de Pulverización -->
+                <a href="campus-curso-simaq.html?course=calibracion-pulverizacion" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/PHOTO-2019-07-24-17-13-15-COLLAGE.jpg" alt="Equipo de pulverización agrícola en un campo">
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Calibración de Equipos de Pulverización</h3>
+                    </div>
+                </a>
+
+                <!-- Curso: Manejo y Operación de Carretillas Elevadoras -->
+                <a href="campus-curso-simaq.html?course=manejo-carretillas" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/grua-horquilla-4x2-carga-35tons-a-3mts-50hp-gas-fesal-D_NQ_NP_777962-MLC40831975069_022020-F_cuaddrado.jpg" alt="Operador manejando una carretilla elevadora en un almacén">
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Manejo y Operación de Carretillas Elevadoras</h3>
+                    </div>
+                </a>
+                
+                <!-- Curso: Operación y Mantenimiento de Equipos de Riego -->
+                <a href="campus-curso-simaq.html?course=operacion-riego" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/tractor-1.jpg" alt="Sistema de riego en un campo agrícola">
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Operación y Mantenimiento de Equipos de Riego</h3>
+                    </div>
+                </a>
+
+                <!-- Curso: Operación y Mantenimiento de Tractores -->
+                <a href="campus-curso-simaq.html?course=operacion-tractores" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                     <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/tractor-1.jpg" alt="Tractor en un campo listo para operar">
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Operación y Mantenimiento de Tractores</h3>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
+        &copy; 2025 SIMAQ Capacitaciones · Todos los derechos reservados.
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const firebaseConfig = {
+                apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
+                authDomain: "simaq-2ed6c.firebaseapp.com",
+                projectId: "simaq-2ed6c",
+                storageBucket: "simaq-2ed6c.firebasestorage.app",
+                messagingSenderId: "976543052975",
+                appId: "1:976543052975:web:1b8d35f9a6d3b1cbb1d05a",
+                measurementId: "G-1PRF6FG2YY"
+            };
+            
+            try {
+                firebase.initializeApp(firebaseConfig);
+            } catch (e) {
+                console.warn("Firebase ya fue inicializado.");
+            }
+
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    const name = user.displayName || 'Alumno';
+                    document.getElementById('user-name').textContent = name;
+                    document.getElementById('welcome-name').textContent = name.split(' ')[0]; // Solo el primer nombre
+                    document.getElementById('user-profile').classList.remove('hidden');
+
+                    document.getElementById('logout-btn').addEventListener('click', () => {
+                        auth.signOut().then(() => {
+                            window.location.href = 'index.html';
+                        });
+                    });
+                } else {
+                    window.location.href = 'acceso-simaq.html';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 
