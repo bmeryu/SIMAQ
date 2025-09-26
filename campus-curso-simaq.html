@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · SIMAQ v3.1 (Soporte para Múltiples Cursos)
+  CAMPUS CURSO · SIMAQ v3.2 (Lógica de Cursos Vacíos Corregida)
   -------------------------------------------------------------------
-  - CONTENIDO: Se ha añadido la estructura de datos para todos los cursos de SIMAQ en el objeto `ALL_COURSES_DATA`.
-  - LÓGICA: La página ahora puede cargar dinámicamente el título y estado de cualquier curso.
-  - ESTADO "EN CONSTRUCCIÓN": Los nuevos cursos se muestran con un mensaje claro, indicando que el contenido estará disponible pronto.
+  - FIX: Se corrige el error que dejaba la página en "Cargando..." para cursos sin contenido.
+  - LÓGICA MEJORADA: El script ahora verifica explícitamente si un curso tiene lecciones. Si no las tiene, renderiza de forma segura la vista "En Construcción".
+  - ESCALABILIDAD: La plataforma ahora está preparada para manejar múltiples cursos, mostrando correctamente tanto los que tienen contenido como los que están en preparación.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -78,7 +78,9 @@
             <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
                 <div class="p-6 md:p-8 lg:p-10 max-w-4xl mx-auto">
                     <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-8">Cargando...</h2>
-                    <div id="lesson-material-container" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200"></div>
+                    <div id="lesson-material-container" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <!-- El contenido se inyecta aquí -->
+                    </div>
                     <div id="navigation-buttons" class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
                         <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
                         <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-simaq-blue rounded-lg shadow-sm hover:bg-simaq-dark-blue disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
@@ -96,7 +98,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ (CORREGIDA) ---
+            // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ ---
             const firebaseConfig = {
                 apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
                 authDomain: "simaq-2ed6c.firebaseapp.com",
@@ -111,16 +113,15 @@
 
             const auth = firebase.auth();
             const db = firebase.firestore();
-            const storage = firebase.storage();
             
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('course');
             
-            // --- ESTRUCTURA DE CURSOS SIMAQ ---
+            // --- BASE DE DATOS DE CURSOS SIMAQ ---
             const ALL_COURSES_DATA = {
               'manejo-plaguicidas-sag': {
                 title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
-                totalLessons: 9, // Total de lecciones (videos + quizzes)
+                totalLessons: 9,
                 modules: [
                   {
                     title: 'Módulo 1: Fundamentos y Normativa',
@@ -156,40 +157,19 @@
                   }
                 ]
               },
-              'calibracion-pulverizacion': {
-                title: 'Calibración de Equipos de Pulverización',
-                totalLessons: 0,
-                modules: []
-              },
-              'manejo-carretillas': {
-                title: 'Manejo y Operación de Carretillas Elevadoras',
-                totalLessons: 0,
-                modules: []
-              },
-              'operacion-riego': {
-                title: 'Operación y Mantenimiento de Equipos de Riego',
-                totalLessons: 0,
-                modules: []
-              },
-              'operacion-tractores': {
-                title: 'Operación y Mantenimiento de Tractores',
-                totalLessons: 0,
-                modules: []
-              }
+              'calibracion-pulverizacion': { title: 'Calibración de Equipos de Pulverización', totalLessons: 0, modules: [] },
+              'manejo-carretillas': { title: 'Manejo y Operación de Carretillas Elevadoras', totalLessons: 0, modules: [] },
+              'operacion-riego': { title: 'Operación y Mantenimiento de Equipos de Riego', totalLessons: 0, modules: [] },
+              'operacion-tractores': { title: 'Operación y Mantenimiento de Tractores', totalLessons: 0, modules: [] }
             };
 
-            if (!courseId || !ALL_COURSES_DATA[courseId]) {
-                alert("Curso no válido o no especificado.");
-                window.location.href = 'campus-simaq.html';
-                return;
-            }
-
-            const courseData = ALL_COURSES_DATA[courseId];
-            const allLessons = courseData.modules.flatMap(m => m.lessons);
+            // --- VARIABLES GLOBALES ---
             let currentUser = null;
+            let courseData = null;
+            let allLessons = [];
             let userProgress = { completedLessons: [], currentLessonId: null };
 
-            // Referencias al DOM
+            // --- REFERENCIAS AL DOM ---
             const dom = {
                 userName: document.getElementById('user-name'),
                 logoutButton: document.getElementById('logout-button'),
@@ -200,53 +180,41 @@
                 lessonTitle: document.getElementById('lesson-title'),
                 lessonMaterialContainer: document.getElementById('lesson-material-container'),
                 navigationButtons: document.getElementById('navigation-buttons'),
+                prevBtn: document.getElementById('prev-lesson-btn'),
+                mainActionBtn: document.getElementById('main-action-btn'),
             };
+
+            // --- FUNCIONES PRINCIPALES DE RENDERIZADO ---
 
             function renderCourseUnderConstruction() {
                 dom.courseTitle.textContent = courseData.title;
                 dom.lessonTitle.textContent = "Curso en Construcción";
-                
-                if(dom.progressContainer) dom.progressContainer.style.display = 'none';
-                if(dom.navigationButtons) dom.navigationButtons.style.display = 'none';
+                dom.progressContainer.style.display = 'none';
+                dom.navigationButtons.style.display = 'none';
 
-                const constructionHtml = `
+                dom.lessonMaterialContainer.innerHTML = `
                     <div class="text-center py-10">
                         <i data-lucide="hard-hat" class="w-16 h-16 mx-auto text-yellow-500 mb-4"></i>
                         <h3 class="text-2xl font-bold text-gray-800">¡Estamos preparando este curso!</h3>
-                        <p class="mt-2 text-gray-600">
-                            Todo el material de estudio para "${courseData.title}" estará disponible muy pronto.
-                            <br>
-                            Gracias por tu paciencia.
-                        </p>
-                    </div>
-                `;
-                
-                dom.lessonMaterialContainer.innerHTML = constructionHtml;
+                        <p class="mt-2 text-gray-600">El material para "${courseData.title}" estará disponible muy pronto.</p>
+                    </div>`;
                 dom.modulesContainer.innerHTML = `<p class="p-4 text-sm text-gray-500 text-center">El contenido se mostrará aquí.</p>`;
                 lucide.createIcons();
             }
 
-            function initializeCourse() {
-                if (allLessons.length === 0) {
-                    renderCourseUnderConstruction();
-                } else {
-                    loadProgress();
-                }
-            }
-            
-            function refreshUI() { 
-                if (!userProgress.currentLessonId && allLessons.length > 0) {
+            function renderActiveCourse() {
+                if (!userProgress.currentLessonId) {
                     userProgress.currentLessonId = allLessons[0].id;
                 }
-                dom.courseTitle.textContent = courseData.title; 
-                renderSidebar(); 
-                const lessonInfo = allLessons.find(l => l.id === userProgress.currentLessonId); 
-                if (lessonInfo) { 
-                    dom.lessonTitle.textContent = lessonInfo.title; 
-                    renderLessonContent(lessonInfo); 
-                    const prevBtn = document.getElementById('prev-lesson-btn');
-                    if(prevBtn) prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.id) === 0; 
-                } 
+                dom.courseTitle.textContent = courseData.title;
+                dom.progressContainer.style.display = 'block';
+                dom.navigationButtons.style.display = 'flex';
+                renderSidebar();
+                const lessonInfo = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (lessonInfo) {
+                    dom.lessonTitle.textContent = lessonInfo.title;
+                    renderLessonContent(lessonInfo);
+                }
                 updateOverallProgress();
                 updateMainActionButton();
                 lucide.createIcons();
@@ -257,13 +225,16 @@
                     const lessonsHtml = module.lessons.map(lesson => {
                         const isCompleted = userProgress.completedLessons.includes(lesson.id);
                         const isActive = userProgress.currentLessonId === lesson.id;
-                        let linkClasses = 'text-gray-600 hover:bg-slate-100';
-                        let statusIcon = isCompleted ? 'check-circle-2' : 'circle';
-                        let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
-                        if (isActive) {
-                            linkClasses = 'bg-blue-50 text-simaq-blue font-semibold';
-                        }
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span></a></li>`;
+                        const linkClasses = isActive ? 'bg-blue-50 text-simaq-blue font-semibold' : 'text-gray-600 hover:bg-slate-100';
+                        const statusIcon = isCompleted ? 'check-circle-2' : 'circle';
+                        const iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        return `
+                            <li class="lesson-item" data-lesson-id="${lesson.id}">
+                                <a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}">
+                                    <i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i>
+                                    <span class="flex-1 text-sm">${lesson.title}</span>
+                                </a>
+                            </li>`;
                     }).join('');
                     return `<div class="py-2"><h3 class="font-semibold text-gray-800 px-3 mb-1">${module.title}</h3><ul class="space-y-1">${lessonsHtml}</ul></div>`;
                 }).join('');
@@ -274,17 +245,22 @@
                 let materialHtml = ''; 
                 switch(lesson.type) { 
                     case 'video':
-                        materialHtml = `<div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-black"><video controls class="w-full h-full object-cover" src="${lesson.videoUrl || ''}"></video></div>`;
+                        materialHtml = `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black"><video controls class="w-full h-full object-cover" src="${lesson.videoUrl || ''}"></video></div>`;
                         break; 
                     case 'quiz':
                         const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
-                        let quizHtml = lesson.questions.map((q, qIndex) => {
-                            const optionsHtml = q.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
-                            return `<div class="space-y-4 mb-8" data-question-index="${qIndex}"><h3 class="text-xl font-semibold">${qIndex + 1}. ${q.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
-                        }).join('');
-                        materialHtml = isQuizCompleted ? `<p class="text-center p-4 bg-green-100 text-green-700 rounded-lg">Ya completaste este quiz.</p>` : `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                        if (isQuizCompleted) {
+                            materialHtml = `<p class="text-center p-4 bg-green-100 text-green-700 rounded-lg">Ya completaste este quiz.</p>`;
+                        } else {
+                            const questionsHtml = lesson.questions.map((q, qIndex) => {
+                                const optionsHtml = q.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
+                                return `<div class="space-y-4 mb-8" data-question-index="${qIndex}"><h3 class="text-xl font-semibold">${qIndex + 1}. ${q.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
+                            }).join('');
+                            materialHtml = `<div id="quiz-container">${questionsHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                        }
                         break;
-                    default: materialHtml = `<p>Contenido no disponible.</p>`;
+                    default: 
+                        materialHtml = `<p>Contenido no disponible.</p>`;
                 } 
                 dom.lessonMaterialContainer.innerHTML = materialHtml; 
 
@@ -297,6 +273,22 @@
                         });
                     });
                     document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswers(lesson));
+                }
+            }
+
+            // --- LÓGICA DEL CURSO Y PROGRESO ---
+
+            async function completeLesson(lessonId) {
+                if (!userProgress.completedLessons.includes(lessonId)) {
+                    userProgress.completedLessons.push(lessonId);
+                    await saveProgress();
+                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                    if (currentIndex < allLessons.length - 1) {
+                        navigateToLesson(allLessons[currentIndex + 1].id);
+                    } else {
+                        alert("¡Felicidades! Has completado el curso.");
+                        renderActiveCourse();
+                    }
                 }
             }
 
@@ -313,67 +305,41 @@
                     }
                 });
                 if (!allAnswered) {
-                    alert('Por favor, responde todas las preguntas antes de verificar.');
+                    alert('Por favor, responde todas las preguntas.');
                     return;
                 }
                 if (correctCount === lesson.questions.length) {
                     alert('¡Excelente! Todas las respuestas son correctas.');
                     completeLesson(lesson.id);
                 } else {
-                    alert(`Tienes ${correctCount} de ${lesson.questions.length} respuestas correctas. ¡Inténtalo de nuevo!`);
-                }
-            }
-
-            async function completeLesson(lessonId) {
-                const isCompleted = userProgress.completedLessons.includes(lessonId);
-                if (!isCompleted) {
-                    userProgress.completedLessons = [...userProgress.completedLessons, lessonId];
-                    await saveProgress();
-                    refreshUI();
-
-                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
-                    if (currentIndex < allLessons.length - 1) {
-                        navigateToLesson(allLessons[currentIndex + 1].id);
-                    } else {
-                        alert("¡Felicidades! Has completado el curso.");
-                    }
+                    alert(`Tienes ${correctCount} de ${lesson.questions.length} respuestas correctas. Inténtalo de nuevo.`);
                 }
             }
             
             function updateMainActionButton() {
                 const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
-                const mainActionBtn = document.getElementById('main-action-btn');
-                if (!lesson || !mainActionBtn) return;
-                mainActionBtn.disabled = lesson.type === 'quiz' || userProgress.completedLessons.includes(lesson.id);
-                if (userProgress.completedLessons.includes(lesson.id)) {
-                    mainActionBtn.textContent = 'Completada';
-                } else {
-                    mainActionBtn.textContent = 'Marcar como completada';
-                }
+                if (!lesson) return;
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                dom.mainActionBtn.disabled = lesson.type === 'quiz' || isCompleted;
+                dom.mainActionBtn.textContent = isCompleted ? 'Completada' : 'Marcar como completada';
             }
 
             function updateOverallProgress() { 
-                const progressBar = document.getElementById('progress-bar');
-                const progressText = document.getElementById('progress-text');
-                if(!progressBar || !progressText) return;
-
                 const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / courseData.totalLessons) * 100) : 0;
-                progressBar.style.width = `${percentage}%`;
-                progressText.textContent = `${percentage}%`; 
+                document.getElementById('progress-bar').style.width = `${percentage}%`;
+                document.getElementById('progress-text').textContent = `${percentage}%`; 
             }
             
             async function navigateToLesson(lessonId) {
                 userProgress.currentLessonId = lessonId;
                 await saveProgress();
-                refreshUI();
+                renderActiveCourse();
             }
 
             async function saveProgress() { 
                 if (!currentUser) return; 
-                try { 
-                    const progressRef = db.collection('userProgress').doc(currentUser.uid); 
-                    await progressRef.set({ [courseId]: userProgress }, { merge: true }); 
-                } catch (error) { console.error("Error al guardar el progreso:", error); } 
+                const progressRef = db.collection('userProgress').doc(currentUser.uid); 
+                await progressRef.set({ [courseId]: userProgress }, { merge: true }); 
             }
             
             async function loadProgress() { 
@@ -382,31 +348,22 @@
                 if (doc.exists && doc.data()[courseId]) { 
                     const loadedProgress = doc.data()[courseId];
                     userProgress.completedLessons = Array.isArray(loadedProgress.completedLessons) ? loadedProgress.completedLessons : [];
-                    userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : allLessons[0].id;
+                    userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : null;
                 }
-                refreshUI(); 
+                renderActiveCourse(); 
             }
             
             function addSidebarListeners() {
                 dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
                     link.addEventListener('click', e => {
                         e.preventDefault();
-                        const li = e.currentTarget.closest('.lesson-item');
-                        if (li) navigateToLesson(li.dataset.lessonId);
+                        const lessonId = e.currentTarget.closest('.lesson-item').dataset.lessonId;
+                        navigateToLesson(lessonId);
                     });
                 });
             }
             
-            const mainActionBtn = document.getElementById('main-action-btn');
-            if(mainActionBtn) mainActionBtn.addEventListener('click', () => {
-                completeLesson(userProgress.currentLessonId)
-            });
-            
-            const prevBtn = document.getElementById('prev-lesson-btn');
-            if(prevBtn) prevBtn.addEventListener('click', () => { 
-                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); 
-                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); 
-            });
+            // --- INICIALIZACIÓN ---
             
             auth.onAuthStateChanged(user => {
                 if (user) {
@@ -414,13 +371,33 @@
                     dom.userName.textContent = currentUser.name;
                     dom.userProfile.classList.remove('hidden');
                     dom.userProfile.classList.add('flex');
-                    initializeCourse(); // Usamos la nueva función de inicialización
+
+                    if (!courseId || !ALL_COURSES_DATA[courseId]) {
+                        alert("Curso no válido.");
+                        window.location.href = 'campus-simaq.html';
+                        return;
+                    }
+                    
+                    courseData = ALL_COURSES_DATA[courseId];
+                    allLessons = courseData.modules.flatMap(m => m.lessons);
+
+                    if (allLessons.length === 0) {
+                        renderCourseUnderConstruction();
+                    } else {
+                        loadProgress();
+                    }
+
                 } else {
                     window.location.href = 'acceso-simaq.html';
                 }
             });
 
-            if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
+            dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
+            dom.mainActionBtn.addEventListener('click', () => completeLesson(userProgress.currentLessonId));
+            dom.prevBtn.addEventListener('click', () => { 
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); 
+                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); 
+            });
         });
     </script>
 </body>
