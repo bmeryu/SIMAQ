@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <!-- 
-    PÁGINA DE ACCESO SIMAC v2.1 (Favicon actualizado)
+    PÁGINA DE ACCESO SIMAC v2.2 (Firebase Conectado)
     -----------------------------------------------------------------------
+    - ACTUALIZACIÓN: Se ha insertado la configuración real del proyecto de Firebase
+      "simaq-2ed6c", dejando la página completamente funcional.
     - CORRECCIÓN: Se ha actualizado la ruta del favicon para que apunte al 
       archivo .ico correcto en el repositorio, en lugar del logo .png.
     - REDISEÑO VISUAL: Se ha actualizado la interfaz para reflejar la estética 
       de la web simaq.cl, utilizando su paleta de colores (azules, blancos, grises)
       y una tipografía similar (Inter).
-    - UI MEJORADA: El diseño ahora es más limpio, luminoso y profesional. 
-      Se rediseñaron los botones, campos de formulario y pestañas para una 
-      experiencia de usuario más moderna.
     - FUNCIONALIDAD: La lógica de autenticación con Firebase (solo email) se mantiene
-      intacta. Solo necesitas actualizar tu configuración.
+      intacta.
 -->
 <html lang="es-CL">
 <head>
@@ -164,14 +163,14 @@
     <script defer>
     document.addEventListener('DOMContentLoaded', () => {
         // --- CONFIGURACIÓN DE FIREBASE PARA SIMAC ---
-        // IMPORTANTE: Reemplaza estos valores con los de tu proyecto de Firebase para SIMAC
         const firebaseConfig = {
-            apiKey: "TU_API_KEY",
-            authDomain: "TU_AUTH_DOMAIN",
-            projectId: "TU_PROJECT_ID",
-            storageBucket: "TU_STORAGE_BUCKET",
-            messagingSenderId: "TU_MESSAGING_SENDER_ID",
-            appId: "TU_APP_ID"
+            apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
+            authDomain: "simaq-2ed6c.firebaseapp.com",
+            projectId: "simaq-2ed6c",
+            storageBucket: "simaq-2ed6c.appspot.com",
+            messagingSenderId: "976543052975",
+            appId: "1:976543052975:web:1b8d35f9a6d3b1cbb1d05a",
+            measurementId: "G-1PRF6FG2YY"
         };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
