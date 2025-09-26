@@ -39,6 +39,16 @@
         }
         .text-simaq-blue { color: var(--simaq-blue); }
         .bg-simaq-blue { background-color: var(--simaq-blue); }
+        
+        /* Animación para aparecer */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-section {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
     </style>
 </head>
 <body class="bg-white text-gray-800 antialiased">
@@ -51,6 +61,7 @@
             </a>
             <nav class="hidden md:flex items-center space-x-8">
                 <a href="#servicios" class="text-gray-600 hover:text-simaq-blue font-medium">Servicios</a>
+                <a href="#metodologia" class="text-gray-600 hover:text-simaq-blue font-medium">Metodología</a>
                 <a href="#cursos" class="text-gray-600 hover:text-simaq-blue font-medium">Cursos</a>
                 <a href="#equipo" class="text-gray-600 hover:text-simaq-blue font-medium">Equipo</a>
             </nav>
@@ -67,8 +78,9 @@
 
     <!-- Hero Section -->
     <main class="pt-24">
-        <section class="bg-gray-50">
-            <div class="container mx-auto px-6 py-20 md:py-32 text-center">
+        <section class="bg-gray-50 relative">
+             <div class="absolute inset-0 bg-cover bg-center opacity-5" style="background-image: url('https://images.unsplash.com/photo-1621939514649-280e29b62f26?q=80&w=2070&auto=format&fit=crop');"></div>
+            <div class="container mx-auto px-6 py-20 md:py-32 text-center relative z-10">
                 <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
                     <span class="text-simaq-blue">SIMAQ</span> – Soluciones Integrales de Capacitación Ltda.
                 </h1>
@@ -91,21 +103,21 @@
                     <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Soluciones a la medida de las necesidades de su empresa.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <div class="text-center p-8 bg-gray-50 rounded-xl">
+                    <div class="text-center p-8 bg-gray-50 rounded-xl hover:shadow-lg hover:-translate-y-2 transition-transform duration-300">
                         <div class="flex justify-center items-center mb-5 w-16 h-16 bg-simaq-blue/10 rounded-full mx-auto">
                             <i data-lucide="clipboard-list" class="w-8 h-8 text-simaq-blue"></i>
                         </div>
                         <h3 class="text-xl font-semibold mb-2">Capacitación</h3>
                         <p class="text-gray-600">Diagnóstico de necesidades de capacitación y desarrollo de programas personalizados para empresas y trabajadores.</p>
                     </div>
-                    <div class="text-center p-8 bg-gray-50 rounded-xl">
+                    <div class="text-center p-8 bg-gray-50 rounded-xl hover:shadow-lg hover:-translate-y-2 transition-transform duration-300">
                         <div class="flex justify-center items-center mb-5 w-16 h-16 bg-simaq-blue/10 rounded-full mx-auto">
                             <i data-lucide="tractor" class="w-8 h-8 text-simaq-blue"></i>
                         </div>
                         <h3 class="text-xl font-semibold mb-2">Maquinaria</h3>
                         <p class="text-gray-600">Formación especializada en la operación, mantenimiento y calibración de maquinaria agrícola y equipos de riego.</p>
                     </div>
-                    <div class="text-center p-8 bg-gray-50 rounded-xl">
+                    <div class="text-center p-8 bg-gray-50 rounded-xl hover:shadow-lg hover:-translate-y-2 transition-transform duration-300">
                         <div class="flex justify-center items-center mb-5 w-16 h-16 bg-simaq-blue/10 rounded-full mx-auto">
                             <i data-lucide="briefcase" class="w-8 h-8 text-simaq-blue"></i>
                         </div>
@@ -116,37 +128,122 @@
             </div>
         </section>
 
+        <!-- Metodología Section -->
+        <section id="metodologia" class="bg-gray-50 py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Nuestra Metodología de Éxito</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Un proceso probado para garantizar resultados medibles.</p>
+                </div>
+                <div class="relative">
+                    <!-- Linea de conexión -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+                        <div class="text-center">
+                            <div class="relative inline-block">
+                                <div class="w-20 h-20 bg-simaq-blue text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold">1</div>
+                            </div>
+                            <h3 class="text-xl font-semibold mt-6 mb-2">Diagnóstico</h3>
+                            <p class="text-gray-600">Analizamos las necesidades específicas de su equipo y organización para definir objetivos claros y alcanzables.</p>
+                        </div>
+                        <div class="text-center">
+                             <div class="relative inline-block">
+                                <div class="w-20 h-20 bg-simaq-blue text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold">2</div>
+                            </div>
+                            <h3 class="text-xl font-semibold mt-6 mb-2">Capacitación Personalizada</h3>
+                            <p class="text-gray-600">Diseñamos e impartimos programas formativos a medida, combinando teoría y práctica con equipamiento real.</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="relative inline-block">
+                                <div class="w-20 h-20 bg-simaq-blue text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold">3</div>
+                            </div>
+                            <h3 class="text-xl font-semibold mt-6 mb-2">Certificación y Seguimiento</h3>
+                            <p class="text-gray-600">Validamos las competencias adquiridas y ofrecemos seguimiento para asegurar la aplicación efectiva en el puesto de trabajo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Cursos Section -->
-        <section id="cursos" class="bg-gray-50 py-20 md:py-28">
+        <section id="cursos" class="py-20 md:py-28">
             <div class="container mx-auto px-6">
                  <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Nuestros Cursos de Capacitación</h2>
                     <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Programas diseñados para entregar competencias clave a sus colaboradores.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-simaq-blue">
-                        <h3 class="font-bold text-lg mb-2">Calibración de equipos de pulverización</h3>
+                    <!-- Curso 1 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
+                        <i data-lucide="spray-can" class="w-10 h-10 text-simaq-blue mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2 flex-grow">Calibración de equipos de pulverización</h3>
                         <p class="text-sm text-gray-600">Aprenda sobre control de parámetros, componentes, sistemas de mando, tipos de boquillas y más.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-simaq-blue">
-                        <h3 class="font-bold text-lg mb-2">Uso y manejo de plaguicidas (credencial SAG)</h3>
+                     <!-- Curso 2 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
+                        <i data-lucide="shield-check" class="w-10 h-10 text-simaq-blue mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2 flex-grow">Uso y manejo de plaguicidas (credencial SAG)</h3>
                         <p class="text-sm text-gray-600">Domine el almacenamiento, transporte, mezcla y manipulación de plaguicidas según la normativa vigente.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-simaq-blue">
-                        <h3 class="font-bold text-lg mb-2">Manejo y operación de carretillas elevadoras</h3>
+                     <!-- Curso 3 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
+                         <i data-lucide="forklift" class="w-10 h-10 text-simaq-blue mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2 flex-grow">Manejo y operación de carretillas elevadoras</h3>
                         <p class="text-sm text-gray-600">Conozca la descripción, funcionamiento y sistemas de una carretilla elevadora.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-simaq-blue">
-                        <h3 class="font-bold text-lg mb-2">Operación y mantenimiento de equipos de riego</h3>
+                     <!-- Curso 4 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
+                        <i data-lucide="droplets" class="w-10 h-10 text-simaq-blue mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2 flex-grow">Operación y mantenimiento de equipos de riego</h3>
                         <p class="text-sm text-gray-600">Entienda los principios de fertirrigación, mantenimiento, programación y manejo de tableros eléctricos.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-simaq-blue">
-                        <h3 class="font-bold text-lg mb-2">Operación y mantenimiento de tractores y maquinaria</h3>
+                     <!-- Curso 5 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-simaq-blue flex flex-col">
+                        <i data-lucide="tractor" class="w-10 h-10 text-simaq-blue mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2 flex-grow">Operación y mantenimiento de tractores y maquinaria</h3>
                         <p class="text-sm text-gray-600">Factores para el uso y mantenimiento adecuado, velocidad de avance y economía de combustible.</p>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                     <a href="acceso-simaq.html" class="simaq-button text-white font-semibold px-8 py-3 rounded-lg shadow-lg">
+                        Inscribirse en un Curso
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios Section -->
+        <section id="testimonios" class="bg-gray-50 py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Lo que dicen nuestros clientes</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">La experiencia y resultados nos avalan.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <p class="text-gray-600 mb-6">"La capacitación de SIMAQ fue un antes y un después para nuestro equipo. Mejoramos la eficiencia en el uso de la maquinaria y redujimos costos de mantenimiento significativamente. Su enfoque práctico es invaluable."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/48x48/e2e8f0/334155?text=CA" class="w-12 h-12 rounded-full" alt="Foto de cliente">
+                            <div class="ml-4">
+                                <p class="font-semibold">Carlos Andrade</p>
+                                <p class="text-sm text-gray-500">Jefe de Operaciones, Agro-Exportadora del Valle</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <p class="text-gray-600 mb-6">"Obtener la credencial SAG a través de SIMAQ fue un proceso claro y muy completo. Los instructores tienen un dominio total de la materia y la normativa. Totalmente recomendados para cualquier empresa del sector."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/48x48/e2e8f0/334155?text=LR" class="w-12 h-12 rounded-full" alt="Foto de cliente">
+                            <div class="ml-4">
+                                <p class="font-semibold">Lorena Rojas</p>
+                                <p class="text-sm text-gray-500">Encargada de Prevención de Riesgos</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+
 
         <!-- Equipo Section -->
         <section id="equipo" class="py-20 md:py-28">
@@ -181,6 +278,17 @@
                         <p class="text-xs text-gray-500 mt-1">Especialista en franquicias tributarias.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+         <section class="bg-simaq-blue">
+            <div class="container mx-auto px-6 py-20 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Potencie el talento de su equipo hoy mismo</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-white/80">Contáctenos para un diagnóstico sin costo y descubra cómo podemos ayudar a su empresa a alcanzar sus objetivos.</p>
+                <a href="mailto:simaqcapacita@gmail.com" class="mt-8 inline-block bg-white text-simaq-blue font-semibold px-10 py-4 rounded-lg shadow-lg text-lg hover:bg-gray-100 transition-colors">
+                    Solicitar Información
+                </a>
             </div>
         </section>
 
@@ -238,6 +346,20 @@
                 } else {
                     header.classList.remove('shadow-md', 'bg-white');
                 }
+            });
+
+            // Lógica para animación de secciones al hacer scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-section');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
             });
         });
     </script>
