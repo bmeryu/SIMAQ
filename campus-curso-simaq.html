@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · SIMAQ v2.0 (Funcional)
+  CAMPUS CURSO · SIMAQ v2.1 (Página de Curso en Construcción)
   -------------------------------------------------------------------
-  - CORRECCIÓN CRÍTICA: Se actualizó la configuración de Firebase (storageBucket) para conectar correctamente con SIMAQ.
-  - CORRECCIÓN DE LÓGICA: Se corrigió la URL de redirección para usuarios no autenticados.
-  - ACTUALIZACIÓN DE CONTENIDO: Se reemplazó toda la data del curso de "IA Aplicada" por una nueva estructura para el curso "Uso y Manejo de Plaguicidas", que sirve como plantilla.
-  - PLACEHOLDERS: Todos los videos y recursos ahora apuntan a URLs de ejemplo. Debes reemplazarlos con tu contenido real subido al Storage de Firebase.
+  - MODIFICACIÓN: Se adapta la página para mostrar un estado de "Curso en Construcción" cuando el contenido aún no está disponible.
+  - UI: Se oculta la barra de progreso, los módulos y los botones de navegación.
+  - UX: Se muestra un mensaje claro al usuario indicando que el material estará disponible próximamente.
+  - CONTENIDO: Se deja la estructura de datos del curso como un ejemplo comentado para facilitar la futura carga de contenido.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -65,7 +65,7 @@
                 <div class="p-6">
                     <a href="./campus-simaq.html" class="text-sm text-simaq-blue hover:text-simaq-dark-blue font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
                     <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
-                    <div class="mt-4">
+                    <div id="progress-container" class="mt-4">
                         <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
                         <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-simaq-blue h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
                     </div>
@@ -114,12 +114,14 @@
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('course');
             
-            // --- NUEVA ESTRUCTURA DE CURSOS SIMAQ ---
+            // --- ESTRUCTURA DE CURSOS SIMAQ ---
             const ALL_COURSES_DATA = {
               'manejo-plaguicidas-sag': {
                 title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
-                totalLessons: 6, // Actualizar este número manualmente
+                totalLessons: 0, // El curso no tiene lecciones creadas aún
                 modules: [
+                  /*
+                  EJEMPLO DE CÓMO SE VERÁ LA ESTRUCTURA CUANDO EL CURSO ESTÉ CREADO:
                   {
                     title: 'Módulo 1: Normativa y Seguridad',
                     lessons: [
@@ -127,54 +129,20 @@
                         id: '1-1', 
                         title: 'Introducción a la Normativa Vigente', 
                         type: 'video', 
-                        // REEMPLAZAR: Sube tu video a Firebase Storage y pega la URL de descarga aquí
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                        resources: [
-                          { name: 'Resumen Normativa SAG.pdf', url: '#' } 
-                        ]
-                      },
-                      { 
-                        id: '1-2', 
-                        title: 'Equipos de Protección Personal (EPP)', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+                        videoUrl: 'URL_DE_TU_VIDEO_EN_FIREBASE_STORAGE',
+                        resources: [ { name: 'Resumen Normativa SAG.pdf', url: 'URL_DEL_PDF' } ]
                       },
                       { 
                         id: 'q-1', 
                         title: 'Quiz: Módulo 1', 
                         type: 'quiz', 
                         questions: [
-                          { text: '¿Cuál es el objetivo principal de la credencial SAG?', options: ['Certificar el conocimiento de la normativa', 'Permitir la compra de cualquier producto', 'Es un requisito solo para exportadores'], correctAnswer: 0 },
-                           { text: 'Un EPP básico incluye:', options: ['Gorra y lentes de sol', 'Guantes, mascarilla y traje impermeable', 'Zapatos de seguridad solamente'], correctAnswer: 1 },
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    title: 'Módulo 2: Manipulación y Almacenamiento',
-                    lessons: [
-                      { 
-                        id: '2-1', 
-                        title: 'Técnicas de Mezcla Segura', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
-                      },
-                      { 
-                        id: '2-2', 
-                        title: 'Bodegaje y Transporte de Plaguicidas', 
-                        type: 'video', 
-                        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
-                      },
-                      { 
-                        id: 'q-2', 
-                        title: 'Quiz: Módulo 2', 
-                        type: 'quiz', 
-                        questions: [
-                           { text: '¿Dónde se deben almacenar los plaguicidas?', options: ['En una bodega ventilada, segura y señalizada', 'Junto a los alimentos para animales', 'En cualquier lugar fresco'], correctAnswer: 0 },
+                          { text: 'Pregunta 1', options: ['Opción A', 'Opción B'], correctAnswer: 0 },
                         ]
                       }
                     ]
                   }
+                  */
                 ]
               }
               // Puedes agregar más cursos aquí
@@ -189,7 +157,7 @@
             const courseData = ALL_COURSES_DATA[courseId];
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
-            let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null };
+            let userProgress = { completedLessons: [], currentLessonId: null };
 
             // Referencias al DOM
             const dom = {
@@ -197,15 +165,48 @@
                 logoutButton: document.getElementById('logout-button'),
                 userProfile: document.getElementById('user-profile-container'),
                 courseTitle: document.getElementById('course-title'),
-                progressBar: document.getElementById('progress-bar'),
-                progressText: document.getElementById('progress-text'),
+                progressContainer: document.getElementById('progress-container'),
                 modulesContainer: document.getElementById('modules-container'),
                 lessonTitle: document.getElementById('lesson-title'),
                 lessonMaterialContainer: document.getElementById('lesson-material-container'),
-                prevBtn: document.getElementById('prev-lesson-btn'),
-                mainActionBtn: document.getElementById('main-action-btn'),
+                navigationButtons: document.getElementById('navigation-buttons'),
             };
 
+            function renderCourseUnderConstruction() {
+                dom.courseTitle.textContent = courseData.title;
+                dom.lessonTitle.textContent = "Curso en Construcción";
+                
+                if(dom.progressContainer) dom.progressContainer.style.display = 'none';
+                if(dom.navigationButtons) dom.navigationButtons.style.display = 'none';
+
+                const constructionHtml = `
+                    <div class="text-center py-10">
+                        <i data-lucide="hard-hat" class="w-16 h-16 mx-auto text-yellow-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-800">¡Estamos preparando este curso!</h3>
+                        <p class="mt-2 text-gray-600">
+                            Todo el material de estudio para "${courseData.title}" estará disponible muy pronto.
+                            <br>
+                            Gracias por tu paciencia.
+                        </p>
+                    </div>
+                `;
+                
+                dom.lessonMaterialContainer.innerHTML = constructionHtml;
+                dom.modulesContainer.innerHTML = `<p class="p-4 text-sm text-gray-500 text-center">El contenido del curso se mostrará aquí una vez que esté disponible.</p>`;
+                lucide.createIcons();
+            }
+
+            function initializeCourse() {
+                if (allLessons.length === 0) {
+                    renderCourseUnderConstruction();
+                    // No hay necesidad de cargar progreso si no hay lecciones
+                } else {
+                    // Lógica original para cargar el curso (se ejecutará cuando agregues lecciones)
+                    loadProgress();
+                }
+            }
+            
+            // --- Las demás funciones se mantienen pero solo se usarán cuando haya lecciones ---
             function refreshUI() { 
                 if (!userProgress.currentLessonId && allLessons.length > 0) {
                     userProgress.currentLessonId = allLessons[0].id;
@@ -216,7 +217,8 @@
                 if (lessonInfo) { 
                     dom.lessonTitle.textContent = lessonInfo.title; 
                     renderLessonContent(lessonInfo); 
-                    dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.id) === 0; 
+                    const prevBtn = document.getElementById('prev-lesson-btn');
+                    if(prevBtn) prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.id) === 0; 
                 } 
                 updateOverallProgress();
                 updateMainActionButton();
@@ -306,19 +308,24 @@
             
             function updateMainActionButton() {
                 const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
-                if (!lesson) return;
-                dom.mainActionBtn.disabled = lesson.type === 'quiz' || userProgress.completedLessons.includes(lesson.id);
+                const mainActionBtn = document.getElementById('main-action-btn');
+                if (!lesson || !mainActionBtn) return;
+                mainActionBtn.disabled = lesson.type === 'quiz' || userProgress.completedLessons.includes(lesson.id);
                 if (userProgress.completedLessons.includes(lesson.id)) {
-                    dom.mainActionBtn.textContent = 'Completada';
+                    mainActionBtn.textContent = 'Completada';
                 } else {
-                    dom.mainActionBtn.textContent = 'Marcar como completada';
+                    mainActionBtn.textContent = 'Marcar como completada';
                 }
             }
 
             function updateOverallProgress() { 
+                const progressBar = document.getElementById('progress-bar');
+                const progressText = document.getElementById('progress-text');
+                if(!progressBar || !progressText) return;
+
                 const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / courseData.totalLessons) * 100) : 0;
-                dom.progressBar.style.width = `${percentage}%`;
-                dom.progressText.textContent = `${percentage}%`; 
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${percentage}%`; 
             }
             
             async function navigateToLesson(lessonId) {
@@ -340,7 +347,6 @@
                 const doc = await docRef.get(); 
                 if (doc.exists && doc.data()[courseId]) { 
                     const loadedProgress = doc.data()[courseId];
-                    // Validar datos cargados
                     userProgress.completedLessons = Array.isArray(loadedProgress.completedLessons) ? loadedProgress.completedLessons : [];
                     userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : allLessons[0].id;
                 }
@@ -357,10 +363,13 @@
                 });
             }
             
-            dom.mainActionBtn.addEventListener('click', () => {
+            const mainActionBtn = document.getElementById('main-action-btn');
+            if(mainActionBtn) mainActionBtn.addEventListener('click', () => {
                 completeLesson(userProgress.currentLessonId)
             });
-            dom.prevBtn.addEventListener('click', () => { 
+            
+            const prevBtn = document.getElementById('prev-lesson-btn');
+            if(prevBtn) prevBtn.addEventListener('click', () => { 
                 const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); 
                 if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); 
             });
@@ -371,9 +380,8 @@
                     dom.userName.textContent = currentUser.name;
                     dom.userProfile.classList.remove('hidden');
                     dom.userProfile.classList.add('flex');
-                    loadProgress();
+                    initializeCourse(); // Usamos la nueva función de inicialización
                 } else {
-                    // --- REDIRECCIÓN CORREGIDA ---
                     window.location.href = 'acceso-simaq.html';
                 }
             });
