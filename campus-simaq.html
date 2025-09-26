@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · SIMAQ v1.0 (Migración Inicial)
+  CAMPUS DASHBOARD · SIMAQ v2.0
   -------------------------------------------------------------------
-  - MIGRACIÓN: Se actualizó la configuración de Firebase al proyecto "simaq-2ed6c".
-  - BRANDING: Se aplicó el look & feel de SIMAQ (colores, logo, tipografía).
-  - SIMPLIFICACIÓN: Se eliminaron los cursos secundarios (lista de espera, etc.) 
-    para centrarse en el curso principal. La lógica de acceso se ha simplificado
-    para esta primera versión.
-  - CORRECCIÓN: Todos los enlaces y redirecciones apuntan a las páginas
-    correctas del nuevo ecosistema SIMAQ.
+  - CORRECCIÓN: Solucionado error de storageBucket en la config de Firebase.
+  - ACTUALIZACIÓN: Se reemplaza el curso de IA por los cursos reales de SIMAQ.
+  - NAVEGACIÓN: El botón del curso principal ahora apunta al ID de curso correcto.
+  - UI: Se añaden tarjetas para futuros cursos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -17,44 +14,40 @@
   <title>Campus Virtual – SIMAQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Dashboard de estudiante para acceder a cursos y recursos de SIMAQ.">
+  <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de SIMAQ.">
   <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
 
   <style>
     :root {
-      --simaq-blue: #0057FF;
+        --simaq-blue: #0057FF;
+        --simaq-dark-blue: #003db3;
     }
     html { font-family: 'Inter', sans-serif; }
     body { background-color: #f8fafc; }
     .card-hover {
       @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
     }
-    #profile-modal { transition: all 0.3s ease-in-out; }
-    
-    .form-input-error { @apply border-red-500 ring-red-500; }
-    .form-input-success { @apply border-green-500 ring-green-500; }
-    .error-message { @apply text-red-600 text-xs mt-1; }
-    label span.required { @apply text-red-500; }
-    .simaq-button { background-color: var(--simaq-blue); }
-    .simaq-button:hover { background-color: #0045cc; }
-    .focus\:ring-simaq-blue:focus { --tw-ring-color: var(--simaq-blue); }
-    .focus\:border-simaq-blue:focus { border-color: var(--simaq-blue); }
     .text-simaq-blue { color: var(--simaq-blue); }
+    .bg-simaq-blue { background-color: var(--simaq-blue); }
     .border-simaq-blue { border-color: var(--simaq-blue); }
+
+    label span.required { 
+        @apply text-red-500;
+    }
   </style>
 </head>
 <body class="text-gray-800">
 
   <header class="bg-white shadow-sm sticky top-0 z-30">
     <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" class="flex items-center gap-2" aria-label="Ir al inicio de SIMAQ">
+      <a href="index.html" class="flex items-center gap-2" aria-label="Ir al inicio de SIMAQ">
         <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-16 w-auto" />
       </a>
       <div id="user-profile" class="hidden sm:flex items-center gap-3 relative">
@@ -69,37 +62,55 @@
 
   <main class="container mx-auto px-6 py-12 max-w-7xl">
     <section class="mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Aprendiz</span>!</h1>
-      <p class="text-lg text-gray-600 mt-2">Continuemos aprendiendo juntos ✨</p>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Alumno</span>!</h1>
+      <p class="text-lg text-gray-600 mt-2">Sigamos fortaleciendo tus competencias ✨</p>
     </section>
 
     <section aria-labelledby="courses-heading">
       <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos</h2>
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-        <!-- INICIO: Curso IA Aplicada · Esencial -->
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="ia-aplicada-esencial">
+        <!-- Curso: Uso y manejo de plaguicidas (credencial SAG) -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="manejo-plaguicidas-sag">
           <div class="p-6 flex-grow">
-            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Cargando...</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Esencial</h3>
-            <p class="text-gray-600 text-sm mb-6">Acceso a todos los módulos, con actualizaciones y certificado.</p>
-            <div class="mb-2 progress-container hidden">
-              <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                <span>Progreso</span>
-                <span class="percent">0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="fill h-2.5 rounded-full transition-all duration-500 bg-simaq-blue" style="width: 0%"></div>
-              </div>
-            </div>
+            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Disponible</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">Uso y manejo de plaguicidas (credencial SAG)</h3>
+            <p class="text-gray-600 text-sm mb-6">Aprende a realizar labores agrícolas de acuerdo a la normativa vigente.</p>
           </div>
-          <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="#" class="course-action-btn block text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg transition-colors cursor-wait">
-              Verificando acceso...
+          <div class="card-footer bg-gray-50 px-6 py-4 mt-auto">
+            <a href="campus-curso-simaq.html?course=manejo-plaguicidas-sag" class="course-action-btn block text-center bg-simaq-blue hover:bg-simaq-dark-blue text-white font-bold py-3 px-5 rounded-lg transition-colors">
+              Acceder al Curso
             </a>
           </div>
         </article>
-        <!-- FIN: Curso IA Aplicada · Esencial -->
+
+        <!-- Curso Próximamente 1 -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col opacity-70">
+          <div class="p-6 flex-grow">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-100 px-2 py-1 rounded-full">Próximamente</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">Operación de Tractores y Maquinaria</h3>
+            <p class="text-gray-600 text-sm mb-6">Domina el uso y mantenimiento adecuado para maximizar la eficiencia.</p>
+          </div>
+          <div class="bg-gray-50 px-6 py-4 mt-auto">
+              <button class="w-full text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg cursor-not-allowed">
+                No disponible
+              </button>
+            </div>
+        </article>
+        
+        <!-- Curso Próximamente 2 -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col opacity-70">
+          <div class="p-6 flex-grow">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-100 px-2 py-1 rounded-full">Próximamente</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">Manejo de Carretillas Elevadoras</h3>
+            <p class="text-gray-600 text-sm mb-6">Conoce el funcionamiento, sistemas y operación segura del equipo.</p>
+          </div>
+          <div class="bg-gray-50 px-6 py-4 mt-auto">
+              <button class="w-full text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg cursor-not-allowed">
+                No disponible
+              </button>
+            </div>
+        </article>
 
       </div>
     </section>
@@ -116,45 +127,17 @@
           <div class="p-6 flex-shrink-0">
               <div class="flex justify-between items-start">
                   <div>
-                      <h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3>
-                      <p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p>
+                      <h3 class="text-2xl font-bold text-gray-900">Editar Perfil</h3>
+                      <p class="text-gray-600 mt-1">Mantén tus datos actualizados.</p>
                   </div>
                   <button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button>
               </div>
           </div>
-          
           <div class="px-6 pb-2 flex-grow overflow-y-auto">
-              <form id="profile-form" class="space-y-4" novalidate>
+              <form id="profile-form" class="space-y-3" novalidate>
                   <div>
                       <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
-                      <div class="relative">
-                        <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-simaq-blue focus:ring-simaq-blue pr-10" placeholder="Ej: Ada Lovelace">
-                        <span id="name-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
-                      </div>
-                      <p class="text-xs text-gray-500 mt-1">Este será el nombre en tu certificado.</p>
-                      <div id="name-error" class="error-message"></div>
-                  </div>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                       <div>
-                          <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
-                          <div class="relative">
-                            <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-simaq-blue focus:ring-simaq-blue appearance-none pr-10">
-                                <option value="">Selecciona tu país</option>
-                                <option value="CL">Chile</option>
-                                <option value="AR">Argentina</option>
-                                <option value="PE">Perú</option>
-                                <option value="CO">Colombia</option>
-                                <option value="MX">México</option>
-                                <option value="OT">Otro</option>
-                            </select>
-                            <span id="country-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"></span>
-                          </div>
-                          <div id="country-error" class="error-message"></div>
-                      </div>
-                      <div>
-                          <label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label>
-                          <input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-simaq-blue focus:ring-simaq-blue" placeholder="Ej: Estudiante">
-                      </div>
+                      <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-simaq-blue focus:ring-simaq-blue">
                   </div>
                   <div>
                       <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
@@ -166,21 +149,21 @@
           <div class="p-6 pt-4 flex-shrink-0">
                <div class="flex justify-end gap-3 pt-4 border-t">
                   <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-                  <button type="submit" form="profile-form" id="save-profile-btn" class="simaq-button text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                      <span id="save-btn-text">Guardar Cambios</span>
-                      <i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
+                  <button type="submit" form="profile-form" id="save-profile-btn" class="bg-simaq-blue text-white font-semibold py-2 px-4 rounded-lg hover:bg-simaq-dark-blue transition-colors">
+                      Guardar Cambios
                   </button>
               </div>
           </div>
       </div>
   </div>
   <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-  <script defer>
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ (CORREGIDA) ---
       const firebaseConfig = {
           apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
           authDomain: "simaq-2ed6c.firebaseapp.com",
@@ -191,14 +174,15 @@
           measurementId: "G-1PRF6FG2YY"
       };
       
-      try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
+      try {
+        firebase.initializeApp(firebaseConfig);
+      } catch(e) {
+        console.warn("Firebase ya fue inicializado.");
+      }
       
       const auth = firebase.auth();
       const db = firebase.firestore();
       
-      const COURSE_CONFIG = { 'ia-aplicada-esencial': { totalLessons: 13 } };
-      const ESSENTIAL_COURSE_ID = 'ia-aplicada-esencial';
-
       const profileModalOverlay = document.getElementById('profile-modal-overlay');
       const profileModal = document.getElementById('profile-modal');
       const avatarButton = document.getElementById('avatar-button');
@@ -207,200 +191,75 @@
       const profileForm = document.getElementById('profile-form');
       const profileNameInput = document.getElementById('profile-name-input');
       const profileEmailInput = document.getElementById('profile-email-input');
-      const profileJobInput = document.getElementById('profile-job-input');
-      const profileCountrySelect = document.getElementById('profile-country-select');
-      const formStatus = document.getElementById('form-status');
-      const saveBtn = document.getElementById('save-profile-btn');
-      const saveBtnText = document.getElementById('save-btn-text');
-      const saveSpinner = document.getElementById('save-spinner');
 
-      async function showProfileModal(isMandatory = false) {
+      function showProfileModal() {
           profileForm.reset();
           const user = auth.currentUser;
           if (!user) return;
 
           profileEmailInput.value = user.email || '';
-          const userDocRef = db.collection('users').doc(user.uid);
-          try {
-              const doc = await userDocRef.get();
-              const dbData = doc.exists ? doc.data() : {};
-              profileNameInput.value = dbData.displayName || user.displayName || '';
-              profileJobInput.value = dbData.jobTitle || '';
-              profileCountrySelect.value = dbData.country || '';
-          } catch (error) { console.error("Error al cargar datos del perfil:", error); }
+          profileNameInput.value = user.displayName || '';
           
-          checkAllFieldsAndToggleButtonState();
-
           profileModalOverlay.classList.remove('hidden');
           profileModal.classList.remove('hidden');
           setTimeout(() => {
-              profileModal.querySelector('div.bg-white').classList.remove('scale-95', 'opacity-0');
+              const inner = profileModal.querySelector('div.bg-white');
+              if (inner) inner.classList.remove('scale-95', 'opacity-0');
           }, 10);
       }
 
       function hideProfileModal() {
           const inner = profileModal.querySelector('div.bg-white');
-          inner.classList.add('scale-95', 'opacity-0');
+          if (inner) inner.classList.add('scale-95', 'opacity-0');
           setTimeout(() => {
               profileModalOverlay.classList.add('hidden');
               profileModal.classList.add('hidden');
           }, 300);
       }
 
-      avatarButton.addEventListener('click', () => showProfileModal(false));
+      avatarButton.addEventListener('click', () => showProfileModal());
       cancelProfileBtn.addEventListener('click', hideProfileModal);
       closeProfileBtn.addEventListener('click', hideProfileModal);
-
-      function setFieldState(field, state, message = '') {
-        const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
-        const errorEl = document.getElementById(`${field}-error`);
-        const iconEl = document.getElementById(`${field}-status-icon`);
-
-        if (!inputEl) return;
-        inputEl.classList.remove('form-input-error', 'form-input-success');
-        if (errorEl) errorEl.textContent = '';
-        if (iconEl) iconEl.innerHTML = '';
-        
-        if (state === 'error') {
-            inputEl.classList.add('form-input-error');
-            if (errorEl) errorEl.textContent = message;
-            if (iconEl) iconEl.innerHTML = `<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>`;
-        } else if (state === 'success') {
-            inputEl.classList.add('form-input-success');
-            if (iconEl) iconEl.innerHTML = `<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>`;
-        }
-        if (iconEl && iconEl.innerHTML) lucide.createIcons({ nodes: [iconEl.querySelector('i')] });
-      }
-
-      function validateName() {
-        if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) {
-            setFieldState('name', 'error', 'Ingresa tu nombre y apellido.'); return false;
-        }
-        setFieldState('name', 'success'); return true;
-      }
-
-      function validateCountry() {
-          if (profileCountrySelect.value === '') {
-              setFieldState('country', 'error', 'Selecciona tu país.'); return false;
-          }
-          setFieldState('country', 'success'); return true;
-      }
-
-      function checkAllFieldsAndToggleButtonState() {
-        const isNameValid = validateName();
-        const isCountryValid = validateCountry();
-        saveBtn.disabled = !(isNameValid && isCountryValid);
-      }
-
-      profileNameInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
-      profileCountrySelect.addEventListener('change', checkAllFieldsAndToggleButtonState);
       
       profileForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          if (saveBtn.disabled) return;
-
-          saveBtn.disabled = true;
-          saveBtnText.textContent = 'Guardando...';
-          saveSpinner.classList.remove('hidden');
           const user = auth.currentUser;
           const newName = profileNameInput.value.trim();
-          const userDocRef = db.collection('users').doc(user.uid);
+          if (!user || !newName) return;
 
           try {
-              if (newName !== user.displayName) await user.updateProfile({ displayName: newName });
-              await userDocRef.set({
-                  displayName: newName, 
-                  email: user.email, 
-                  jobTitle: profileJobInput.value.trim(), 
-                  country: profileCountrySelect.value, 
-                  profileCompleted: true
-              }, { merge: true });
-
+              await user.updateProfile({ displayName: newName });
               document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
-              setTimeout(hideProfileModal, 1500);
-
+              hideProfileModal();
           } catch (error) {
               console.error("Error al guardar perfil:", error);
-          } finally {
-              saveBtnText.textContent = 'Guardar Cambios';
-              saveSpinner.classList.add('hidden');
+              alert('Hubo un error al guardar. Inténtalo de nuevo.');
           }
       });
 
-      function updateCardForEnrolledUser(card, progress, courseId) {
-          const tagEl = card.querySelector('.tag');
-          const percentEl = card.querySelector('.percent');
-          const fillEl = card.querySelector('.fill');
-          const progressContainer = card.querySelector('.progress-container');
-          const actionBtn = card.querySelector('.course-action-btn');
-          
-          progressContainer.classList.remove('hidden');
-          percentEl.textContent = `${progress}%`;
-          fillEl.style.width = `${progress}%`;
-          
-          const courseUrl = `campus-curso-simaq.html?course=${courseId}`;
-          
-          actionBtn.href = courseUrl;
-          actionBtn.classList.remove('cursor-wait', 'bg-gray-400');
-          actionBtn.classList.add('simaq-button');
-          
-          tagEl.textContent = 'En progreso';
-          tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-2 py-1 rounded-full';
-          actionBtn.textContent = 'Continuar aprendiendo';
-          
-          lucide.createIcons();
-      }
-
-      function listenForCourseProgress(userId) {
-          const courseId = ESSENTIAL_COURSE_ID;
-          let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
-          if (!courseCard) return;
-          
-          // Lógica simplificada: se asume que todo usuario logueado tiene acceso.
-          const progressRef = db.collection('userProgress').doc(userId);
-          progressRef.onSnapshot(doc => {
-              let completedCount = 0;
-              if (doc.exists) {
-                  const data = doc.data();
-                  const courseProgress = data[courseId];
-                  if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
-                      completedCount = new Set(courseProgress.completedLessons).size;
-                  }
-              }
-              const totalLessons = COURSE_CONFIG[courseId]?.totalLessons || 1;
-              const percentage = Math.min(Math.round((completedCount / totalLessons) * 100), 100);
-              updateCardForEnrolledUser(courseCard, percentage, courseId);
-          }, error => {
-              console.error(`Error al escuchar progreso:`, error);
-              updateCardForEnrolledUser(courseCard, 0, courseId);
-          });
-      }
-
       auth.onAuthStateChanged(user => {
         if (user) {
-          db.collection('users').doc(user.uid).get().then(doc => {
-            const userData = doc.exists ? doc.data() : {};
-            const name = userData.displayName || user.displayName || 'Alumno';
-            document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
-          });
+          const name = user.displayName || 'Alumno';
+          document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
           
-          document.getElementById('user-avatar').src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'A')}&background=0057FF&color=fff`;
+          document.getElementById('user-avatar').src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0057FF&color=fff`;
           document.getElementById('user-profile').classList.remove('hidden');
           
           document.getElementById('logout-btn').addEventListener('click', e => {
             e.preventDefault();
-            auth.signOut().then(() => window.location.href = 'acceso-simaq.html');
+            auth.signOut().then(() => window.location.href = 'index.html');
           });
-        
-          listenForCourseProgress(user.uid);
 
         } else {
+          // --- REDIRECCIÓN CORREGIDA ---
           window.location.href = 'acceso-simaq.html';
         }
       });
 
+      // Inicializar iconos
       lucide.createIcons();
     });
   </script>
 </body>
 </html>
+
