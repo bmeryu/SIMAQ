@@ -1,309 +1,414 @@
 <!DOCTYPE html>
 <!-- 
-  HOME · SIMAQ v3.5 (Mapa de Ubicación y Redes Sociales)
+  CAMPUS CURSO · SIMAQ v3.6 (Botones de Progreso Corregidos)
   -------------------------------------------------------------------
-  - FEATURE: Se añade una sección con un mapa interactivo de Google Maps para mostrar la ubicación de la empresa.
-  - FEATURE: Se agregan íconos de redes sociales (Facebook) en el pie de página para mejorar la conexión con los clientes.
-  - UX: Se mejora la sección de contacto, haciéndola más visual e informativa.
+  - FIX: Se soluciona el error que impedía el funcionamiento de los botones "Marcar como completada" y de navegación en la v3.5.
+  - LÓGICA REFACTORIZADA: Se ha mejorado la función que maneja la finalización de lecciones para asegurar que el estado se guarde y la interfaz se actualice correctamente.
+  - UX: La navegación y el registro del progreso del curso ahora son fiables y funcionales.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8" />
-    <title>SIMAQ – Soluciones Integrales de Capacitación</title>
+    <title>Lección del Curso - SIMAQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="SIMAQ, con más de 18 años de experiencia en la capacitación de personal en Chile y Perú, ofrece cursos y consultoría en maquinaria agrícola y más.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Plataforma de aprendizaje de SIMAQ.">
     <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
     <style>
         :root {
             --simaq-blue: #0057FF;
             --simaq-dark-blue: #003db3;
         }
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .text-simaq-blue { color: var(--simaq-blue); }
         .bg-simaq-blue { background-color: var(--simaq-blue); }
-        .hover\:bg-simaq-dark-blue:hover { background-color: var(--simaq-dark-blue); }
+        .border-simaq-blue { border-color: var(--simaq-blue); }
         .ring-simaq-blue { --tw-ring-color: var(--simaq-blue); }
-        .scroll-animation {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        
+        .quiz-option.selected { 
+            border-color: var(--simaq-blue); 
+            background-color: #eff6ff; 
+            --tw-ring-color: var(--simaq-blue);
+            box-shadow: 0 0 0 2px var(--simaq-blue);
         }
-        .scroll-animation.animate {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .whatsapp-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25D366;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-            z-index: 100;
-            transition: transform 0.2s ease-in-out;
-        }
-        .whatsapp-button:hover {
-            transform: scale(1.1);
-        }
-        .whatsapp-button svg {
-            width: 32px;
-            height: 32px;
-            fill: white;
-        }
+
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .arrow-down { transform: rotate(180deg); }
+        .arrow-down { transition: transform 0.2s ease-in-out; }
     </style>
 </head>
-<body class="bg-white text-gray-800">
+<body class="text-gray-800">
 
-    <!-- Header -->
-    <header class="bg-white sticky top-0 z-50 shadow-md">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" aria-label="Página de inicio de SIMAQ">
-                <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ" class="h-16 md:h-20 w-auto">
-            </a>
-            <div class="flex items-center space-x-4">
-                <a href="#cursos" class="text-gray-600 hover:text-simaq-blue font-semibold transition-colors">Cursos</a>
-                <a href="#contacto" class="text-gray-600 hover:text-simaq-blue font-semibold transition-colors">Contacto</a>
-                <a href="acceso-simaq.html" class="bg-simaq-blue text-white font-bold py-2 px-6 rounded-lg hover:bg-simaq-dark-blue transition-colors">
-                    Acceso Alumnos
+    <div id="app" class="flex flex-col min-h-screen">
+        <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+            <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+                <a href="index.html" class="flex items-center" aria-label="Página de inicio de SIMAQ">
+                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ" class="h-16 md:h-20 w-auto">
                 </a>
-            </div>
-        </nav>
-    </header>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div id="user-profile-container" class="hidden items-center gap-3 relative">
+                        <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
+                        <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
 
-    <!-- Hero Section -->
-    <main>
-        <section class="relative bg-gray-50">
-            <div class="container mx-auto px-6 py-20 md:py-32 flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 text-center md:text-left">
-                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight scroll-animation">
-                        Soluciones Integrales de Capacitación
-                    </h1>
-                    <p class="mt-6 text-lg text-gray-600 max-w-xl mx-auto md:mx-0 scroll-animation">
-                        Con más de 18 años de experiencia, potenciamos el talento de personal en Chile y Perú a través de capacitación, consultoría y formación en maquinaria especializada.
-                    </p>
-                    <div class="mt-8 flex justify-center md:justify-start space-x-4 scroll-animation">
-                        <a href="#cursos" class="bg-simaq-blue text-white font-bold py-3 px-8 rounded-lg hover:bg-simaq-dark-blue transition-colors">
-                            Ver Cursos
-                        </a>
+        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
+                <div class="p-6">
+                    <a href="./campus-simaq.html" class="text-sm text-simaq-blue hover:text-simaq-dark-blue font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
+                    <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
+                    <div id="progress-container" class="mt-4">
+                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
+                        <div class="w-full bg-slate-200 rounded-full h-2-5"><div id="progress-bar" class="bg-simaq-blue h-2-5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
                     </div>
                 </div>
-                <div class="md:w-1/2 mt-10 md:mt-0">
-                    <img src="https://www.simaq.cl/wp-content/uploads/2020/04/tractor-1.jpg" alt="Tractor agrícola operando en un campo" class="rounded-lg shadow-2xl scroll-animation">
-                </div>
-            </div>
-        </section>
+                <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
+            </aside>
 
-        <!-- Metodología Section -->
-        <section id="metodologia" class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 scroll-animation">Nuestra Metodología de Trabajo</h2>
-                    <p class="mt-4 text-lg text-gray-600 scroll-animation">Un proceso probado para garantizar resultados efectivos.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <div class="text-center p-6 bg-gray-50 rounded-lg scroll-animation">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-simaq-blue text-white mx-auto mb-6">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">1. Diagnóstico</h3>
-                        <p class="text-gray-600">Analizamos las necesidades específicas de capacitación para desarrollar un programa a la medida de tu empresa y trabajadores.</p>
+            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
+                <div class="p-6 md:p-8 lg:p-10 max-w-4xl mx-auto">
+                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-8">Cargando...</h2>
+                    <div id="lesson-material-container" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <!-- El contenido se inyecta aquí -->
                     </div>
-                    <div class="text-center p-6 bg-gray-50 rounded-lg scroll-animation">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-simaq-blue text-white mx-auto mb-6">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">2. Capacitación</h3>
-                        <p class="text-gray-600">Impartimos cursos teóricos y prácticos con un equipo profesional de vasta experiencia en terreno, tanto en Chile como en el extranjero.</p>
-                    </div>
-                    <div class="text-center p-6 bg-gray-50 rounded-lg scroll-animation">
-                         <div class="flex items-center justify-center h-16 w-16 rounded-full bg-simaq-blue text-white mx-auto mb-6">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">3. Certificación</h3>
-                        <p class="text-gray-600">Nuestros programas, como el de "Uso y manejo de plaguicidas", otorgan credenciales oficiales (SAG) que validan las competencias adquiridas.</p>
+                    <div id="navigation-buttons" class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
+                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
+                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-simaq-blue rounded-lg shadow-sm hover:bg-simaq-dark-blue disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Certificacion Section -->
-        <section id="certificacion" class="py-20 bg-gray-100">
-            <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16">
-                    <div class="md:w-2/5 text-center md:text-left scroll-animation">
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Calidad y Confianza Certificada</h2>
-                        <p class="mt-4 text-lg text-gray-600">Estamos orgullosos de contar con la certificación SGS, un reconocimiento internacional que avala la calidad y seguridad de nuestros procesos de capacitación. Este sello garantiza nuestro compromiso con la excelencia.</p>
-                    </div>
-                    <div class="md:w-1/3 scroll-animation">
-                        <img src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/SGS.png" alt="Certificado SGS de SIMAQ" class="rounded-lg shadow-2xl border-4 border-white">
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Cursos Destacados Section -->
-        <section id="cursos" class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 scroll-animation">Nuestros Cursos de Capacitación</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Curso Card -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 scroll-animation">
-                        <img src="https://www.simaq.cl/wp-content/uploads/2020/04/PHOTO-2019-07-24-17-13-15-COLLAGE.jpg" alt="Equipo de pulverización" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2">Calibración de Equipos de Pulverización</h3>
-                            <p class="text-gray-600">Domina los parámetros de aplicación, componentes y tipos de boquillas.</p>
-                        </div>
-                    </div>
-                     <!-- Curso Card -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 scroll-animation">
-                        <img src="https://www.simaq.cl/wp-content/uploads/2020/04/noticias_1583865968_smal.jpg" alt="Persona aplicando plaguicidas de forma segura" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2">Uso y Manejo de Plaguicidas (Credencial SAG)</h3>
-                            <p class="text-gray-600">Aprende sobre almacenamiento, transporte y manipulación según la normativa vigente.</p>
-                        </div>
-                    </div>
-                     <!-- Curso Card -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 scroll-animation">
-                        <img src="https://www.simaq.cl/wp-content/uploads/2020/04/grua-horquilla-4x2-carga-35tons-a-3mts-50hp-gas-fesal-D_NQ_NP_777962-MLC40831975069_022020-F_cuaddrado.jpg" alt="Carretilla elevadora en operación" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2">Manejo de Carretillas Elevadoras</h3>
-                            <p class="text-gray-600">Conoce el funcionamiento del motor, sistema eléctrico, transmisión y más.</p>
-                        </div>
-                    </div>
-                </div>
-                 <div class="text-center mt-12">
-                    <a href="acceso-simaq.html" class="bg-simaq-blue text-white font-bold py-3 px-8 rounded-lg hover:bg-simaq-dark-blue transition-colors scroll-animation">
-                        Ingresar a la Plataforma de Cursos
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Equipo Section -->
-        <section class="py-20 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 scroll-animation">Nuestro Equipo Profesional</h2>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-                    <div class="text-center scroll-animation">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/JMery_cuadrado.jpg" 
-                             alt="Retrato de José Mery Grez">
-                        <h3 class="text-xl font-bold">José Mery Grez</h3>
-                        <p class="text-gray-600">Gerente y Asesor</p>
-                    </div>
-                    <div class="text-center scroll-animation">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Joshua_cuadrado.jpg" 
-                             alt="Retrato de Joshua Rocuant">
-                        <h3 class="text-xl font-bold">Joshua Rocuant</h3>
-                        <p class="text-gray-600">Jefe de Operaciones</p>
-                    </div>
-                    <div class="text-center scroll-animation">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Nataly_cuadrado.jpg" 
-                             alt="Retrato de Nataly Quintana">
-                        <h3 class="text-xl font-bold">Nataly Quintana</h3>
-                        <p class="text-gray-600">Asistente Administrativa</p>
-                    </div>
-                    <div class="text-center scroll-animation">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Vilma_cuadrado.jpg" 
-                             alt="Retrato de Vilma Cabezas">
-                        <h3 class="text-xl font-bold">Vilma Cabezas</h3>
-                        <p class="text-gray-600">Directora de Capacitación</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Mapa Section -->
-        <section class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 scroll-animation">Nuestra Ubicación</h2>
-                     <p class="mt-4 text-lg text-gray-600 scroll-animation">Visítanos en nuestras oficinas en Peumo, VI Región.</p>
-                </div>
-                <div class="rounded-lg shadow-2xl overflow-hidden scroll-animation">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.823333160235!2d-71.16453988478334!3d-34.1001409805927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9663fbe596c34091%3A0x1e362a939bf33c6!2sVictor%20Achurra%20398%2C%20Peumo%2C%20O'Higgins!5e0!3m2!1ses!2scl!4v1664222045535!5m2!1ses!2scl" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer id="contacto" class="bg-gray-900 text-gray-300">
-        <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
-                <div class="md:col-span-1">
-                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ en pie de página" class="h-12 w-auto mx-auto md:mx-0 mb-4">
-                    <p class="max-w-xs mx-auto md:mx-0">Soluciones Integrales de Capacitación Ltda. Más de 18 años de experiencia.</p>
-                </div>
-                <div>
-                    <h3 class="font-bold text-white uppercase tracking-wider mb-4">Contacto</h3>
-                    <p>Victor Achurra #398, Peumo, VI Región</p>
-                    <p>Lunes a Viernes, 9:00 - 18:00 hrs.</p>
-                    <p class="mt-2"><a href="mailto:simaqcapacita@gmail.com" class="hover:text-simaq-blue transition-colors">simaqcapacita@gmail.com</a></p>
-                </div>
-                <div>
-                    <h3 class="font-bold text-white uppercase tracking-wider mb-4">Navegación</h3>
-                    <ul>
-                        <li><a href="#cursos" class="hover:text-simaq-blue transition-colors">Cursos</a></li>
-                        <li><a href="acceso-simaq.html" class="hover:text-simaq-blue transition-colors">Acceso Alumnos</a></li>
-                        <li><a href="#" class="hover:text-simaq-blue transition-colors">Responsabilidad Social</a></li>
-                    </ul>
-                </div>
-                 <div>
-                    <h3 class="font-bold text-white uppercase tracking-wider mb-4">Síguenos</h3>
-                    <div class="flex justify-center md:justify-start space-x-4">
-                        <!-- INSTRUCCIÓN: Reemplaza "#" con la URL de tu página de Facebook -->
-                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook de SIMAQ">
-                           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.785 4.659-4.785 1.325 0 2.464.099 2.796.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.403 24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-12 pt-6 text-center text-sm">
-                <p>&copy; 2025 SIMAQ Capacitaciones. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
+            </section>
+        </main>
+    </div>
     
-    <!-- Botón Flotante de WhatsApp -->
-    <!-- INSTRUCCIÓN: Reemplaza "569XXXXXXXX" con tu número de teléfono, incluyendo el código de país. -->
-    <a href="https://wa.me/569XXXXXXXX" target="_blank" rel="noopener noreferrer" class="whatsapp-button" aria-label="Contactar por WhatsApp">
-        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d=" M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.63.63 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.447-.545-.516-1.146-1.29-1.46-1.963a.426.426 0 0 1-.073-.215c0-.33.99-.945.99-1.49 0-.143-.73-2.09-.832-2.335-.143-.372-.214-.487-.6-.487-.187 0-.36-.044-.53-.044-.302 0-.53.115-.746.315-.688.645-1.032 1.318-1.06 2.264v.114c-.015.99.472 1.977 1.017 2.78 1.23 1.82 2.506 3.41 4.554 4.34.616.287 2.035.888 2.722.888.817 0 2.15-.515 2.478-1.318.12-.302.214-.73.214-1.064 0-.36-.044-.73-.114-1.194l-.129-.41z M15.01 4.39C6.73 4.39 0 11.12 0 19.4c0 3.2.87 6.3 2.5 8.9l-2.5 9.1 9.3-2.4c2.5.5 5.2.8 7.8.8 8.28 0 15-6.73 15-15.02 0-8.28-6.72-14.98-15-14.98z M23.5 22.8c-.273.746-1.418 1.39-2.617 1.39-.214 0-1.88-.287-3.41-1.23-2.015-1.23-3.6-2.9-4.8-4.502-1.15-1.5-1.8-3.1-1.8-4.792v-.114c0-1.147.52-2.17 1.2-2.82.3-.3.6-.4.9-.4.2 0 .4.0.6.0.3 0 .5.1.7.2.1.0.3.1.4.2.3.2.5.5.6.8.2.3.3.7.2 1l-.2 1.1c-.1.5-.2.9-.3 1.2-.2.5-.4 1-.5 1.5l-.2 1.1c-.1.3-.2.5-.3.7-.2.2-.3.4-.5.5-.2.1-.5.2-.7.2-.3 0-.7-.1-1-.2z"/></svg>
-    </a>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const animatedElements = document.querySelectorAll('.scroll-animation');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate');
-                    }
+            // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ ---
+            const firebaseConfig = {
+                apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
+                authDomain: "simaq-2ed6c.firebaseapp.com",
+                projectId: "simaq-2ed6c",
+                storageBucket: "simaq-2ed6c.firebasestorage.app",
+                messagingSenderId: "976543052975",
+                appId: "1:976543052975:web:1b8d35f9a6d3b1cbb1d05a",
+                measurementId: "G-1PRF6FG2YY"
+            };
+            
+            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
+
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('course');
+            
+            // --- BASE DE DATOS DE CURSOS SIMAQ ---
+            const ALL_COURSES_DATA = {
+              'manejo-plaguicidas-sag': {
+                title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
+                totalLessons: 11,
+                modules: [
+                  {
+                    title: 'Módulo 1: Fundamentos y Normativa',
+                    lessons: [
+                      { id: '1-1', title: 'Introducción al Manejo Seguro', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
+                      { id: '1-2', title: 'Normativa SAG Aplicable', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4' },
+                      { id: '1-3', title: 'Tipos de Plaguicidas y Etiquetas', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' },
+                      { id: 'q-1', title: 'Quiz: Fundamentos', type: 'quiz', questions: [
+                          { text: 'La normativa SAG busca principalmente:', options: ['Aumentar la producción', 'Asegurar la inocuidad alimentaria y la seguridad del aplicador', 'Facilitar la exportación'], correctAnswer: 1 },
+                          { text: 'La banda toxicológica de color rojo en una etiqueta indica:', options: ['Poco peligroso', 'Cuidado', 'Muy peligroso'], correctAnswer: 2 }
+                      ]}
+                    ]
+                  },
+                  {
+                    title: 'Módulo 2: Equipos y Calibración',
+                    lessons: [
+                       { id: '2-1', title: 'Equipos de Protección Personal (EPP)', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4' },
+                       { id: '2-2', title: 'Calibración de Equipos de Pulverización', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4' },
+                       { id: 'q-2', title: 'Quiz: Equipos', type: 'quiz', questions: [
+                           { text: '¿Qué elemento del EPP protege las vías respiratorias?', options: ['Guantes', 'Traje impermeable', 'Mascarilla con filtro'], correctAnswer: 2 },
+                           { text: 'Una correcta calibración asegura:', options: ['Aplicar la dosis exacta del producto', 'Ahorrar tiempo', 'Usar menos agua'], correctAnswer: 0 },
+                       ]}
+                    ]
+                  },
+                  {
+                    title: 'Módulo 3: Aplicación y Post-Aplicación',
+                    lessons: [
+                       { id: '3-1', title: 'Técnicas de Aplicación Segura', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4' },
+                       { id: 'q-3', title: 'Quiz: Buenas Prácticas', type: 'quiz', questions: [
+                           { text: 'El triple lavado de envases es una práctica para:', options: ['Reutilizar los envases', 'Eliminar residuos peligrosos antes de su desecho', 'Ahorrar producto'], correctAnswer: 1 },
+                       ]}
+                    ]
+                  },
+                  {
+                    title: 'Módulo 4: Casos Prácticos y Evaluación Final',
+                    lessons: [
+                       { id: '4-1', title: 'Análisis de Casos Reales', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4' },
+                       { id: 'q-4', title: 'Evaluación Final del Curso', type: 'quiz', questions: [
+                           { text: 'Ante un derrame de producto, ¿cuál es el primer paso a seguir?', options: ['Llamar a emergencias', 'Contener el derrame con material absorbente', 'Abandonar el área'], correctAnswer: 1 },
+                           { text: 'El período de reingreso a un área tratada se encuentra especificado en:', options: ['La boleta de compra', 'La etiqueta del producto', 'El manual del tractor'], correctAnswer: 1 }
+                       ]}
+                    ]
+                  }
+                ]
+              },
+              'calibracion-pulverizacion': { title: 'Calibración de Equipos de Pulverización', totalLessons: 0, modules: [] },
+              'manejo-carretillas': { title: 'Manejo y Operación de Carretillas Elevadoras', totalLessons: 0, modules: [] },
+              'operacion-riego': { title: 'Operación y Mantenimiento de Equipos de Riego', totalLessons: 0, modules: [] },
+              'operacion-tractores': { title: 'Operación y Mantenimiento de Tractores', totalLessons: 0, modules: [] }
+            };
+
+            // --- VARIABLES GLOBALES ---
+            let currentUser = null;
+            let courseData = null;
+            let allLessons = [];
+            let userProgress = { completedLessons: [], currentLessonId: null };
+
+            // --- REFERENCIAS AL DOM ---
+            const dom = {
+                userName: document.getElementById('user-name'),
+                logoutButton: document.getElementById('logout-button'),
+                userProfile: document.getElementById('user-profile-container'),
+                courseTitle: document.getElementById('course-title'),
+                progressContainer: document.getElementById('progress-container'),
+                modulesContainer: document.getElementById('modules-container'),
+                lessonTitle: document.getElementById('lesson-title'),
+                lessonMaterialContainer: document.getElementById('lesson-material-container'),
+                navigationButtons: document.getElementById('navigation-buttons'),
+                prevBtn: document.getElementById('prev-lesson-btn'),
+                mainActionBtn: document.getElementById('main-action-btn'),
+            };
+
+            // --- FUNCIONES DE RENDERIZADO ---
+
+            function displayError(message) {
+                dom.courseTitle.textContent = "Error";
+                dom.lessonTitle.textContent = "Error al Cargar";
+                dom.lessonMaterialContainer.innerHTML = `<p class="text-red-500">${message}</p>`;
+                dom.progressContainer.style.display = 'none';
+                dom.navigationButtons.style.display = 'none';
+            }
+
+            function renderCourseUnderConstruction() {
+                dom.lessonTitle.textContent = "Curso en Construcción";
+                dom.progressContainer.style.display = 'none';
+                dom.navigationButtons.style.display = 'none';
+                dom.lessonMaterialContainer.innerHTML = `<div class="text-center py-10"><i data-lucide="hard-hat" class="w-16 h-16 mx-auto text-yellow-500 mb-4"></i><h3 class="text-2xl font-bold text-gray-800">¡Estamos preparando este curso!</h3><p class="mt-2 text-gray-600">El material para "${courseData.title}" estará disponible muy pronto.</p></div>`;
+                dom.modulesContainer.innerHTML = `<p class="p-4 text-sm text-gray-500 text-center">El contenido se mostrará aquí.</p>`;
+                lucide.createIcons();
+            }
+            
+            function updateUI() {
+                const lessonInfo = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (lessonInfo) {
+                    dom.lessonTitle.textContent = lessonInfo.title;
+                    renderLessonContent(lessonInfo);
+                }
+                renderSidebar();
+                updateOverallProgress();
+                updateNavigationButtons();
+                lucide.createIcons();
+            }
+
+            function renderSidebar() {
+                dom.modulesContainer.innerHTML = courseData.modules.map((module) => {
+                    const lessonsHtml = module.lessons.map(lesson => {
+                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const isActive = userProgress.currentLessonId === lesson.id;
+                        const linkClasses = isActive ? 'bg-blue-50 text-simaq-blue font-semibold' : 'text-gray-600 hover:bg-slate-100';
+                        const statusIcon = isCompleted ? 'check-circle-2' : 'circle';
+                        const iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span></a></li>`;
+                    }).join('');
+                    return `<div class="py-2"><h3 class="font-semibold text-gray-800 px-3 mb-1">${module.title}</h3><ul class="space-y-1">${lessonsHtml}</ul></div>`;
+                }).join('');
+                addSidebarListeners();
+            }
+            
+            function renderLessonContent(lesson) {
+                let materialHtml = ''; 
+                switch(lesson.type) { 
+                    case 'video':
+                        materialHtml = `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black"><video controls class="w-full h-full object-cover" src="${lesson.videoUrl || ''}" key="${lesson.id}"></video></div>`;
+                        break; 
+                    case 'quiz':
+                        const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
+                        if (isQuizCompleted) {
+                            materialHtml = `<p class="text-center p-4 bg-green-100 text-green-700 rounded-lg">Ya completaste este quiz.</p>`;
+                        } else {
+                            const questionsHtml = lesson.questions.map((q, qIndex) => {
+                                const optionsHtml = q.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
+                                return `<div class="space-y-4 mb-8" data-question-index="${qIndex}"><h3 class="text-xl font-semibold">${qIndex + 1}. ${q.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
+                            }).join('');
+                            materialHtml = `<div id="quiz-container">${questionsHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                        }
+                        break;
+                    default: 
+                        materialHtml = `<p>Contenido no disponible.</p>`;
+                } 
+                dom.lessonMaterialContainer.innerHTML = materialHtml; 
+
+                if (lesson.type === 'quiz' && !userProgress.completedLessons.includes(lesson.id)) {
+                    dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.addEventListener('click', () => {
+                            opt.closest('[data-question-index]').querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                            opt.classList.add('selected');
+                        });
+                    });
+                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswers(lesson));
+                }
+            }
+
+            // --- LÓGICA DEL CURSO Y PROGRESO ---
+
+            async function completeLesson(lessonId) {
+                if (userProgress.completedLessons.includes(lessonId)) return;
+
+                userProgress.completedLessons.push(lessonId);
+                await saveProgress();
+
+                const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                if (currentIndex < allLessons.length - 1) {
+                    navigateToLesson(allLessons[currentIndex + 1].id);
+                } else {
+                    alert("¡Felicidades! Has completado el curso.");
+                    updateUI();
+                }
+            }
+
+            function checkQuizAnswers(lesson) {
+                let correctCount = 0;
+                let allAnswered = true;
+                lesson.questions.forEach((q, qIndex) => {
+                    const selected = dom.lessonMaterialContainer.querySelector(`[data-question-index="${qIndex}"] .quiz-option.selected`);
+                    if (!selected) allAnswered = false;
+                    else if (parseInt(selected.dataset.index) === q.correctAnswer) correctCount++;
                 });
-            }, {
-                threshold: 0.1
+
+                if (!allAnswered) {
+                    alert('Por favor, responde todas las preguntas.');
+                    return;
+                }
+                if (correctCount === lesson.questions.length) {
+                    alert('¡Excelente! Todas las respuestas son correctas.');
+                    completeLesson(lesson.id);
+                } else {
+                    alert(`Tienes ${correctCount} de ${lesson.questions.length} respuestas correctas. Inténtalo de nuevo.`);
+                }
+            }
+            
+            function updateNavigationButtons() {
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (!lesson) return;
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                dom.mainActionBtn.disabled = lesson.type === 'quiz' || isCompleted;
+                dom.mainActionBtn.textContent = isCompleted ? 'Completada' : 'Marcar como completada';
+                dom.prevBtn.disabled = allLessons.findIndex(l => l.id === userProgress.currentLessonId) === 0;
+            }
+
+            function updateOverallProgress() { 
+                const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / courseData.totalLessons) * 100) : 0;
+                document.getElementById('progress-bar').style.width = `${percentage}%`;
+                document.getElementById('progress-text').textContent = `${percentage}%`; 
+            }
+            
+            async function navigateToLesson(lessonId) {
+                userProgress.currentLessonId = lessonId;
+                await saveProgress();
+                updateUI();
+            }
+
+            async function saveProgress() { 
+                if (!currentUser) return; 
+                try {
+                    const progressRef = db.collection('userProgress').doc(currentUser.uid); 
+                    await progressRef.set({ [courseId]: userProgress }, { merge: true });
+                } catch(error) {
+                    console.error("Error al guardar el progreso:", error);
+                }
+            }
+            
+            function addSidebarListeners() {
+                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
+                    link.addEventListener('click', e => {
+                        e.preventDefault();
+                        const lessonId = e.currentTarget.closest('.lesson-item').dataset.lessonId;
+                        if (lessonId !== userProgress.currentLessonId) {
+                            navigateToLesson(lessonId);
+                        }
+                    });
+                });
+            }
+            
+            // --- INICIALIZACIÓN ---
+            
+            async function initializeApp(user) {
+                currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
+                dom.userName.textContent = currentUser.name;
+                dom.userProfile.classList.remove('hidden');
+                dom.userProfile.classList.add('flex');
+
+                if (!courseId || !ALL_COURSES_DATA[courseId]) {
+                    displayError("Curso no encontrado.");
+                    return;
+                }
+                
+                courseData = ALL_COURSES_DATA[courseId];
+                allLessons = courseData.modules.flatMap(m => m.lessons);
+                dom.courseTitle.textContent = courseData.title;
+
+                if (allLessons.length === 0) {
+                    renderCourseUnderConstruction();
+                    return;
+                }
+
+                // Cargar progreso y luego renderizar
+                try {
+                    const docRef = db.collection('userProgress').doc(currentUser.uid);
+                    const doc = await docRef.get();
+                    if (doc.exists && doc.data()[courseId]) {
+                        const loadedProgress = doc.data()[courseId];
+                        userProgress.completedLessons = loadedProgress.completedLessons || [];
+                        userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : allLessons[0].id;
+                    } else {
+                         userProgress.currentLessonId = allLessons[0].id;
+                    }
+                } catch (error) {
+                    console.warn("No se pudo cargar el progreso. Se iniciará desde cero.", error);
+                    userProgress.currentLessonId = allLessons[0].id;
+                }
+
+                updateUI();
+            }
+
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    initializeApp(user);
+                } else {
+                    window.location.href = 'acceso-simaq.html';
+                }
             });
-            animatedElements.forEach(el => {
-                observer.observe(el);
+
+            dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => { window.location.href = 'index.html' }));
+            dom.mainActionBtn.addEventListener('click', () => completeLesson(userProgress.currentLessonId));
+            dom.prevBtn.addEventListener('click', () => { 
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); 
+                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); 
             });
         });
     </script>
