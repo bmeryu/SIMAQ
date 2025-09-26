@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-    PÁGINA DE ACCESO SIMAC v2.3 (Configuración Corregida)
+    PÁGINA DE ACCESO SIMAC v2.4 (Redirección Corregida)
     -----------------------------------------------------------------------
-    - CORRECCIÓN: Se ha corregido un error en la URL del "storageBucket" y se ha
-      revalidado toda la configuración de Firebase para solucionar el error
-      "auth/api-key-not-valid".
+    - CORRECCIÓN: Se ha ajustado la URL de redirección post-login a "campus-simaq.html"
+      (en minúsculas) para coincidir con el nombre de archivo real en el repositorio
+      y solucionar el error 404 de GitHub Pages.
     - ACTUALIZACIÓN: Se ha insertado la configuración real del proyecto de Firebase
       "simaq-2ed6c", dejando la página completamente funcional.
     - REDISEÑO VISUAL: Se mantiene la estética de la web simaq.cl.
@@ -267,7 +267,8 @@
         auth.onAuthStateChanged(user => {
             if (user) {
                 console.log('Usuario autenticado. Redirigiendo al campus de SIMAC...');
-                window.location.href = 'campus-SIMAQ.html';
+                // CORRECCIÓN: Apuntar a 'campus-simaq.html' en minúsculas
+                window.location.href = 'campus-simaq.html';
             }
         });
         
