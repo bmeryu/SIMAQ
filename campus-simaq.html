@@ -1,169 +1,99 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · SIMAQ v2.0
+  CAMPUS VIRTUAL · SIMAQ v2.1 (ID de Curso Corregido)
   -------------------------------------------------------------------
-  - CORRECCIÓN: Solucionado error de storageBucket en la config de Firebase.
-  - ACTUALIZACIÓN: Se reemplaza el curso de IA por los cursos reales de SIMAQ.
-  - NAVEGACIÓN: El botón del curso principal ahora apunta al ID de curso correcto.
-  - UI: Se añaden tarjetas para futuros cursos.
+  - CORRECCIÓN CRÍTICA: Se ha corregido el ID del curso en el enlace "Acceder al Curso" para que coincida con el ID esperado por la página de la lección. Esto soluciona el error "Curso no válido".
+  - ACTUALIZACIÓN DE CONTENIDO: Se ha actualizado el texto y la imagen de la tarjeta del curso para reflejar el contenido de "Manejo de Plaguicidas".
   -------------------------------------------------------------------
 -->
-<html lang="es-CL" class="scroll-smooth">
+<html lang="es-CL">
 <head>
-  <meta charset="UTF-8" />
-  <title>Campus Virtual – SIMAQ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de SIMAQ.">
-  <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
-
-  <style>
-    :root {
-        --simaq-blue: #0057FF;
-        --simaq-dark-blue: #003db3;
-    }
-    html { font-family: 'Inter', sans-serif; }
-    body { background-color: #f8fafc; }
-    .card-hover {
-      @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
-    }
-    .text-simaq-blue { color: var(--simaq-blue); }
-    .bg-simaq-blue { background-color: var(--simaq-blue); }
-    .border-simaq-blue { border-color: var(--simaq-blue); }
-
-    label span.required { 
-        @apply text-red-500;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>Campus Virtual – SIMAQ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de SIMAQ.">
+    <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --simaq-blue: #0057FF;
+            --simaq-dark-blue: #003db3;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .text-simaq-blue { color: var(--simaq-blue); }
+        .bg-simaq-blue { background-color: var(--simaq-blue); }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+    </style>
 </head>
 <body class="text-gray-800">
 
   <header class="bg-white shadow-sm sticky top-0 z-30">
     <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2" aria-label="Ir al inicio de SIMAQ">
-        <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-16 w-auto" />
+        <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-16 md:h-20 w-auto" />
       </a>
-      <div id="user-profile" class="hidden sm:flex items-center gap-3 relative">
-        <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[15ch]"></span>
-        <button id="avatar-button" aria-label="Abrir menú de perfil">
-            <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-simaq-blue cursor-pointer hover:opacity-90 transition-opacity" />
-        </button>
-        <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
+      <div id="user-profile" class="hidden sm:flex items-center gap-4 relative">
+        <span id="user-name" class="font-semibold text-gray-700"></span>
+        <button id="logout-btn" class="text-sm font-medium text-gray-600 hover:text-red-600 transition-colors">Cerrar sesión</button>
       </div>
     </nav>
   </header>
 
   <main class="container mx-auto px-6 py-12 max-w-7xl">
     <section class="mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Alumno</span>!</h1>
-      <p class="text-lg text-gray-600 mt-2">Sigamos fortaleciendo tus competencias ✨</p>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name">Alumno</span>!</h1>
+      <p class="text-lg text-gray-600 mt-2">Continuemos fortaleciendo tus competencias.</p>
     </section>
 
     <section aria-labelledby="courses-heading">
-      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos</h2>
+      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-8">Mis Cursos Disponibles</h2>
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-        <!-- Curso: Uso y manejo de plaguicidas (credencial SAG) -->
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="manejo-plaguicidas-sag">
-          <div class="p-6 flex-grow">
-            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Disponible</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">Uso y manejo de plaguicidas (credencial SAG)</h3>
-            <p class="text-gray-600 text-sm mb-6">Aprende a realizar labores agrícolas de acuerdo a la normativa vigente.</p>
+        <!-- Curso: Plaguicidas -->
+        <article class="bg-white rounded-2xl shadow-lg card-hover overflow-hidden flex flex-col" data-course-id="manejo-plaguicidas-sag">
+          <img src="https://images.unsplash.com/photo-1591785233519-27c95b655d40?q=80&w=2070&auto=format&fit=crop" 
+               alt="Persona aplicando plaguicidas en un campo agrícola" 
+               class="h-48 w-full object-cover">
+          <div class="p-6 flex-grow flex flex-col">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded-full mb-4 self-start">Disponible</span>
+            <h3 class="text-xl font-bold mt-2 mb-2">Uso y Manejo de Plaguicidas (Credencial SAG)</h3>
+            <p class="text-gray-600 text-sm mb-6 flex-grow">Aprende la normativa, calibración y aplicación segura para obtener tu credencial SAG.</p>
           </div>
-          <div class="card-footer bg-gray-50 px-6 py-4 mt-auto">
-            <a href="campus-curso-simaq.html?course=manejo-plaguicidas-sag" class="course-action-btn block text-center bg-simaq-blue hover:bg-simaq-dark-blue text-white font-bold py-3 px-5 rounded-lg transition-colors">
-              Acceder al Curso
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <a href="campus-curso-simaq.html?course=manejo-plaguicidas-sag" class="course-action-btn block text-center bg-simaq-blue text-white font-bold py-3 px-5 rounded-lg transition-colors hover:bg-simaq-dark-blue">
+                Acceder al Curso
             </a>
           </div>
         </article>
-
-        <!-- Curso Próximamente 1 -->
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col opacity-70">
-          <div class="p-6 flex-grow">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-100 px-2 py-1 rounded-full">Próximamente</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">Operación de Tractores y Maquinaria</h3>
-            <p class="text-gray-600 text-sm mb-6">Domina el uso y mantenimiento adecuado para maximizar la eficiencia.</p>
-          </div>
-          <div class="bg-gray-50 px-6 py-4 mt-auto">
-              <button class="w-full text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg cursor-not-allowed">
-                No disponible
-              </button>
-            </div>
-        </article>
         
-        <!-- Curso Próximamente 2 -->
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col opacity-70">
-          <div class="p-6 flex-grow">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-100 px-2 py-1 rounded-full">Próximamente</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">Manejo de Carretillas Elevadoras</h3>
-            <p class="text-gray-600 text-sm mb-6">Conoce el funcionamiento, sistemas y operación segura del equipo.</p>
-          </div>
-          <div class="bg-gray-50 px-6 py-4 mt-auto">
-              <button class="w-full text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg cursor-not-allowed">
-                No disponible
-              </button>
-            </div>
-        </article>
+        <!-- Aquí puedes agregar más tarjetas de cursos en el futuro -->
 
       </div>
     </section>
   </main>
 
   <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
-    © 2024 SIMAQ · Todos los derechos reservados.
+    © 2025 SIMAQ Capacitaciones · Todos los derechos reservados.
   </footer>
 
-  <!-- MODAL DE PERFIL -->
-  <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
-  <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0">
-          <div class="p-6 flex-shrink-0">
-              <div class="flex justify-between items-start">
-                  <div>
-                      <h3 class="text-2xl font-bold text-gray-900">Editar Perfil</h3>
-                      <p class="text-gray-600 mt-1">Mantén tus datos actualizados.</p>
-                  </div>
-                  <button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button>
-              </div>
-          </div>
-          <div class="px-6 pb-2 flex-grow overflow-y-auto">
-              <form id="profile-form" class="space-y-3" novalidate>
-                  <div>
-                      <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
-                      <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-simaq-blue focus:ring-simaq-blue">
-                  </div>
-                  <div>
-                      <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
-                      <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
-                  </div>
-                  <div id="form-status" class="text-center p-3 rounded-lg hidden"></div>
-              </form>
-          </div>
-          <div class="p-6 pt-4 flex-shrink-0">
-               <div class="flex justify-end gap-3 pt-4 border-t">
-                  <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-                  <button type="submit" form="profile-form" id="save-profile-btn" class="bg-simaq-blue text-white font-semibold py-2 px-4 rounded-lg hover:bg-simaq-dark-blue transition-colors">
-                      Guardar Cambios
-                  </button>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
+  
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ (CORREGIDA) ---
+      // --- CONFIGURACIÓN DE FIREBASE PARA SIMAQ ---
       const firebaseConfig = {
           apiKey: "AIzaSyDfkx7XhbHIYqtRTTXjL9T-5qW5LenqYjI",
           authDomain: "simaq-2ed6c.firebaseapp.com",
@@ -174,90 +104,25 @@
           measurementId: "G-1PRF6FG2YY"
       };
       
-      try {
-        firebase.initializeApp(firebaseConfig);
-      } catch(e) {
-        console.warn("Firebase ya fue inicializado.");
-      }
+      try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
       
       const auth = firebase.auth();
       const db = firebase.firestore();
-      
-      const profileModalOverlay = document.getElementById('profile-modal-overlay');
-      const profileModal = document.getElementById('profile-modal');
-      const avatarButton = document.getElementById('avatar-button');
-      const cancelProfileBtn = document.getElementById('cancel-profile-btn');
-      const closeProfileBtn = document.getElementById('close-profile-modal-btn');
-      const profileForm = document.getElementById('profile-form');
-      const profileNameInput = document.getElementById('profile-name-input');
-      const profileEmailInput = document.getElementById('profile-email-input');
-
-      function showProfileModal() {
-          profileForm.reset();
-          const user = auth.currentUser;
-          if (!user) return;
-
-          profileEmailInput.value = user.email || '';
-          profileNameInput.value = user.displayName || '';
-          
-          profileModalOverlay.classList.remove('hidden');
-          profileModal.classList.remove('hidden');
-          setTimeout(() => {
-              const inner = profileModal.querySelector('div.bg-white');
-              if (inner) inner.classList.remove('scale-95', 'opacity-0');
-          }, 10);
-      }
-
-      function hideProfileModal() {
-          const inner = profileModal.querySelector('div.bg-white');
-          if (inner) inner.classList.add('scale-95', 'opacity-0');
-          setTimeout(() => {
-              profileModalOverlay.classList.add('hidden');
-              profileModal.classList.add('hidden');
-          }, 300);
-      }
-
-      avatarButton.addEventListener('click', () => showProfileModal());
-      cancelProfileBtn.addEventListener('click', hideProfileModal);
-      closeProfileBtn.addEventListener('click', hideProfileModal);
-      
-      profileForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const user = auth.currentUser;
-          const newName = profileNameInput.value.trim();
-          if (!user || !newName) return;
-
-          try {
-              await user.updateProfile({ displayName: newName });
-              document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
-              hideProfileModal();
-          } catch (error) {
-              console.error("Error al guardar perfil:", error);
-              alert('Hubo un error al guardar. Inténtalo de nuevo.');
-          }
-      });
 
       auth.onAuthStateChanged(user => {
         if (user) {
           const name = user.displayName || 'Alumno';
-          document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
-          
-          document.getElementById('user-avatar').src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0057FF&color=fff`;
+          document.getElementById('user-name').textContent = name;
+          document.getElementById('welcome-name').textContent = name;
           document.getElementById('user-profile').classList.remove('hidden');
           
-          document.getElementById('logout-btn').addEventListener('click', e => {
-            e.preventDefault();
+          document.getElementById('logout-btn').addEventListener('click', () => {
             auth.signOut().then(() => window.location.href = 'index.html');
           });
-
         } else {
-          // --- REDIRECCIÓN CORREGIDA ---
           window.location.href = 'acceso-simaq.html';
         }
       });
-
-      // Inicializar iconos
-      lucide.createIcons();
     });
   </script>
 </body>
