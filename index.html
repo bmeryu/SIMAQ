@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <!-- 
-  HOME · SIMAQ v3.4 (Acceso Simplificado y Botón WhatsApp)
+  HOME · SIMAQ v3.6 (Enlaces de Imágenes Corregidos)
   -------------------------------------------------------------------
-  - UX: Se simplifica el acceso a la plataforma de alumnos, dejando un único botón principal en la navegación y un CTA claro.
-  - FEATURE: Se añade un botón flotante de WhatsApp para facilitar el contacto directo.
-  - INSTRUCCIÓN: Se deja un comentario en el código del botón de WhatsApp para que el usuario reemplace el número de teléfono.
+  - FIX: Se actualizan las rutas de las imágenes del equipo y del certificado para usar los enlaces directos del repositorio de GitHub del usuario, solucionando el problema de las imágenes rotas.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -201,28 +199,28 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                     <div class="text-center scroll-animation">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg" 
                              src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/JMery_cuadrado.jpg" 
                              alt="Retrato de José Mery Grez">
                         <h3 class="text-xl font-bold">José Mery Grez</h3>
                         <p class="text-gray-600">Gerente y Asesor</p>
                     </div>
                     <div class="text-center scroll-animation">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
-                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Joshua_cuadrado.jpg" 
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg" 
+                             src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/joshua-150x150.png" 
                              alt="Retrato de Joshua Rocuant">
                         <h3 class="text-xl font-bold">Joshua Rocuant</h3>
                         <p class="text-gray-600">Jefe de Operaciones</p>
                     </div>
                     <div class="text-center scroll-animation">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg" 
                              src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Nataly_cuadrado.jpg" 
                              alt="Retrato de Nataly Quintana">
                         <h3 class="text-xl font-bold">Nataly Quintana</h3>
                         <p class="text-gray-600">Asistente Administrativa</p>
                     </div>
                     <div class="text-center scroll-animation">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg bg-gray-200" 
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-lg" 
                              src="https://raw.githubusercontent.com/bmeryu/SIMAQ/main/Vilma_cuadrado.jpg" 
                              alt="Retrato de Vilma Cabezas">
                         <h3 class="text-xl font-bold">Vilma Cabezas</h3>
@@ -232,28 +230,25 @@
             </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="bg-gray-800 text-white">
-            <div class="container mx-auto px-6 py-20 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold scroll-animation">¿Listo para potenciar a tu equipo?</h2>
-                <p class="mt-4 text-lg text-gray-300 max-w-2xl mx-auto scroll-animation">
-                    Contacta con nosotros para obtener un diagnóstico y una propuesta de capacitación a la medida de tus necesidades.
-                </p>
-                <div class="mt-8 scroll-animation">
-                    <a href="#contacto" class="bg-simaq-blue text-white font-bold py-4 px-10 rounded-lg hover:bg-simaq-dark-blue transition-colors text-lg">
-                        Contáctanos
-                    </a>
+        <!-- Mapa Section -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 scroll-animation">Nuestra Ubicación</h2>
+                     <p class="mt-4 text-lg text-gray-600 scroll-animation">Visítanos en nuestras oficinas en Peumo, VI Región.</p>
+                </div>
+                <div class="rounded-lg shadow-2xl overflow-hidden scroll-animation">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.823333160235!2d-71.16453988478334!3d-34.1001409805927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9663fbe596c34091%3A0x1e362a939bf33c6!2sVictor%20Achurra%20398%2C%20Peumo%2C%20O'Higgins!5e0!3m2!1ses!2scl!4v1664222045535!5m2!1ses!2scl" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </section>
-
     </main>
 
     <!-- Footer -->
     <footer id="contacto" class="bg-gray-900 text-gray-300">
         <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-                <div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+                <div class="md:col-span-1">
                     <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ en pie de página" class="h-12 w-auto mx-auto md:mx-0 mb-4">
                     <p class="max-w-xs mx-auto md:mx-0">Soluciones Integrales de Capacitación Ltda. Más de 18 años de experiencia.</p>
                 </div>
@@ -270,6 +265,15 @@
                         <li><a href="acceso-simaq.html" class="hover:text-simaq-blue transition-colors">Acceso Alumnos</a></li>
                         <li><a href="#" class="hover:text-simaq-blue transition-colors">Responsabilidad Social</a></li>
                     </ul>
+                </div>
+                 <div>
+                    <h3 class="font-bold text-white uppercase tracking-wider mb-4">Síguenos</h3>
+                    <div class="flex justify-center md:justify-start space-x-4">
+                        <!-- INSTRUCCIÓN: Reemplaza "#" con la URL de tu página de Facebook -->
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook de SIMAQ">
+                           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.785 4.659-4.785 1.325 0 2.464.099 2.796.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.403 24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z"/></svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-12 pt-6 text-center text-sm">
