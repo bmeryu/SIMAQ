@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Blog SIMAQ – Artículos de Capacitación Agrícola | José Mery Grez PhD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Blog de SIMAQ: artículos de José Mery Grez PhD sobre agricultura de precisión, viticultura, fruticultura y capacitación agrícola en Chile.">
+    <meta name="keywords"
+        content="José Mery Grez, agricultura precisión, viticultura, NDVI, drones agrícolas, pulverizadores, SAG Chile">
+    <meta name="author" content="SIMAQ Capacitaciones">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://bmeryu.github.io/SIMAQ/blog.html">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'simaq': { 50: '#eff6ff', 100: '#dbeafe', 500: '#0057FF', 600: '#0045cc' },
+                        'agricola': '#22c55e', 'bienestar': '#f97316', 'administracion': '#3b82f6', 'tecnologia': '#8b5cf6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .category-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .article-card {
+            transition: all 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-card.hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased">
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html"><img src="Logo_SIMAQ.png" alt="SIMAQ" class="h-14 w-auto"></a>
+            <div class="flex items-center gap-6">
+                <a href="index.html" class="text-gray-600 hover:text-simaq-500 font-medium hidden sm:block">Inicio</a>
+                <a href="blog.html" class="text-simaq-500 font-semibold hidden sm:block">Blog</a>
+                <a href="https://www.aulasimaq.cl" target="_blank"
+                    class="bg-simaq-500 text-white font-semibold py-2.5 px-6 rounded-full hover:bg-simaq-600">Acceso</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="bg-gradient-to-br from-simaq-500 to-simaq-600 py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Blog SIMAQ</h1>
+                <p class="text-xl text-white/80 max-w-2xl mx-auto">Artículos de José Mery Grez PhD sobre agricultura de
+                    precisión</p>
+            </div>
+        </section>
+        <section class="py-8 bg-white border-b border-gray-100">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="filterArticles('all')"
+                        class="category-btn active px-6 py-3 rounded-full font-semibold bg-gray-900 text-white"
+                        data-category="all">Todos</button>
+                    <button onclick="filterArticles('agricola')"
+                        class="category-btn px-6 py-3 rounded-full font-semibold bg-agricola/10 text-agricola hover:bg-agricola hover:text-white"
+                        data-category="agricola">🌱 Agrícola</button>
+                    <button onclick="filterArticles('bienestar')"
+                        class="category-btn px-6 py-3 rounded-full font-semibold bg-bienestar/10 text-bienestar hover:bg-bienestar hover:text-white"
+                        data-category="bienestar">💚 Bienestar</button>
+                    <button onclick="filterArticles('administracion')"
+                        class="category-btn px-6 py-3 rounded-full font-semibold bg-administracion/10 text-administracion hover:bg-administracion hover:text-white"
+                        data-category="administracion">📊 Administración</button>
+                    <button onclick="filterArticles('tecnologia')"
+                        class="category-btn px-6 py-3 rounded-full font-semibold bg-tecnologia/10 text-tecnologia hover:bg-tecnologia hover:text-white"
+                        data-category="tecnologia">💻 Tecnología</button>
+                </div>
+            </div>
+        </section>
+        <section class="py-16">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="articles-grid">
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_ia_agricultura_1770151918473.png" alt="IA agricultura"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 1 Feb 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Inteligencia Artificial en el campo chileno
+                            </h2>
+                            <p class="text-gray-600 text-sm mb-4">Cómo la IA transforma la toma de decisiones en huertos
+                                de manzanas, cerezas y arándanos.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_drones_multiespectrales_1770151934680.png" alt="Drones"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 25 Ene 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Drones con cámaras multiespectrales</h2>
+                            <p class="text-gray-600 text-sm mb-4">Guía práctica para implementar monitoreo aéreo en tu
+                                predio frutícola.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_viticultura_precision_1770151950442.png" alt="Viticultura"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 20 Ene 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Viticultura de Precisión en Chile</h2>
+                            <p class="text-gray-600 text-sm mb-4">Imágenes satelitales revolucionan el manejo del viñedo
+                                chileno.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_huertos_manzanos_1770151966719.png" alt="Manzanos"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 15 Ene 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Manejo sectorizado de huertos</h2>
+                            <p class="text-gray-600 text-sm mb-4">Metodología INIA-FIA para gestionar cada sector del
+                                huerto.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_calibracion_pulverizadores_1770151982760.png"
+                                alt="Calibración" class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 10 Ene 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">5 errores en calibración de pulverizadores
+                            </h2>
+                            <p class="text-gray-600 text-sm mb-4">Los errores más frecuentes y cómo corregirlos en
+                                terreno.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_credencial_sag_1770152013992.png" alt="SAG"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 5 Ene 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Credencial SAG 2025: guía completa</h2>
+                            <p class="text-gray-600 text-sm mb-4">Paso a paso para obtener tu certificación de
+                                plaguicidas.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_riego_precision_1770152033083.png" alt="Riego"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 28 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Riego de precisión para frutales</h2>
+                            <p class="text-gray-600 text-sm mb-4">Sensores y automatización para optimizar el uso del
+                                agua.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_ndvi_mapas_1770152049965.png" alt="NDVI"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 20 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Índice NDVI: mapas de vigor vegetativo</h2>
+                            <p class="text-gray-600 text-sm mb-4">Guía para interpretar índices de vegetación en tu
+                                predio.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_cosecha_mecanizada_1770152064580.png" alt="Cosecha"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 15 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Mecanización de la cosecha en frutales</h2>
+                            <p class="text-gray-600 text-sm mb-4">Tendencias y oportunidades en cosecha asistida.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_aplicacion_variable_1770152078950.png" alt="VRA"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 10 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Aplicación variable de insumos (VRA)</h2>
+                            <p class="text-gray-600 text-sm mb-4">Reduce costos y cuida el medio ambiente con
+                                tecnología.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_gps_tractores_1770152113558.png" alt="GPS"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 1 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">GPS y autoguiado en tractores</h2>
+                            <p class="text-gray-600 text-sm mb-4">Rentabilidad real y casos de éxito en O'Higgins.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_deriva_fitosanitarios_1770152128202.png" alt="Deriva"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 25 Nov 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Control de deriva en aplicaciones</h2>
+                            <p class="text-gray-600 text-sm mb-4">Técnicas probadas para minimizar la deriva.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_atomizadores_frutales_1770152144247.png" alt="Atomizadores"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 20 Nov 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Atomizadores para frutales</h2>
+                            <p class="text-gray-600 text-sm mb-4">Selección y regulación según tipo de cultivo.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_estaciones_meteo_1770152159739.png" alt="Meteo"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 15 Nov 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Estaciones meteorológicas en el predio</h2>
+                            <p class="text-gray-600 text-sm mb-4">Datos climáticos para mejores decisiones de riego.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_agricultura_regenerativa_1770152179289.png"
+                                alt="Regenerativa" class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 10 Nov 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Agricultura regenerativa</h2>
+                            <p class="text-gray-600 text-sm mb-4">Más allá de la sustentabilidad: restaurar el suelo.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_normativa_sag_1770152233922.png" alt="Normativa"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 1 Nov 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Actualización normativa SAG 2024</h2>
+                            <p class="text-gray-600 text-sm mb-4">Cambios en regulación de plaguicidas.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_cerezos_chile_1770152250460.png" alt="Cerezos"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 25 Oct 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Tecnología para cerezos</h2>
+                            <p class="text-gray-600 text-sm mb-4">Monitoreo de madurez y predicción de cosecha.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_boquillas_electrovalvulas_1770152267324.png"
+                                alt="Boquillas" class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 20 Oct 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Boquillas y electroválvulas</h2>
+                            <p class="text-gray-600 text-sm mb-4">La clave para una pulverización eficiente.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_tractores_fruteros_1770152281323.png" alt="Tractores"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 15 Oct 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Tractores fruteros</h2>
+                            <p class="text-gray-600 text-sm mb-4">Características y selección para huertos modernos.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_epp_aplicadores_1770152296205.png" alt="EPP"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 10 Oct 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Elementos de protección personal</h2>
+                            <p class="text-gray-600 text-sm mb-4">Crear cultura de seguridad en equipos de aplicación.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_fertirrigacion_1770152342239.png" alt="Fertirrigación"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 1 Oct 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Fertirrigación inteligente</h2>
+                            <p class="text-gray-600 text-sm mb-4">Sensores y algoritmos para nutrición precisa.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_arandanos_chile_1770152357110.png" alt="Arándanos"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 25 Sep 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Arándanos: calibre y firmeza</h2>
+                            <p class="text-gray-600 text-sm mb-4">Tecnología para mejorar calidad exportable.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_metodologia_simaq_1770152371863.png" alt="Metodología"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 20 Sep 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Metodología SIMAQ de calibración</h2>
+                            <p class="text-gray-600 text-sm mb-4">20 años de experiencia en terreno.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_maquinaria_usada_1770152387895.png" alt="Maquinaria"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 15 Sep 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Compra de maquinaria usada</h2>
+                            <p class="text-gray-600 text-sm mb-4">Checklist técnico para evaluar equipos.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_triple_lavado_1770152402963.png" alt="Triple lavado"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 10 Sep 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Triple lavado y gestión de envases</h2>
+                            <p class="text-gray-600 text-sm mb-4">Cumplimiento y buenas prácticas.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_heladas_frutales_1770152451193.png" alt="Heladas"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 1 Sep 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Control de heladas en frutales</h2>
+                            <p class="text-gray-600 text-sm mb-4">Tecnologías y estrategias efectivas.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_duraznos_raleo_1770152470913.png" alt="Duraznos"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 25 Ago 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Duraznos: optimización del raleo</h2>
+                            <p class="text-gray-600 text-sm mb-4">Usar datos históricos para calibrar intensidad.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_monitoreo_plagas_1770152487237.png" alt="Plagas"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 20 Ago 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Monitoreo digital de plagas</h2>
+                            <p class="text-gray-600 text-sm mb-4">Apps y trampas inteligentes para MIP.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="agricola">
+                        <div class="relative"><img src="blog_trazabilidad_export_1770152504340.png" alt="Trazabilidad"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-agricola text-white text-xs font-bold px-3 py-1 rounded-full">🌱
+                                Agrícola</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">Por José Mery Grez, PhD • 15 Ago 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Trazabilidad para exportación</h2>
+                            <p class="text-gray-600 text-sm mb-4">Sistemas digitales que exige el mercado.</p>
+                        </div>
+                    </article>
+
+                    <!-- BIENESTAR -->
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="bienestar">
+                        <div class="relative"><img src="blog_clima_laboral_1770152519256.png" alt="Clima"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-bienestar text-white text-xs font-bold px-3 py-1 rounded-full">💚
+                                Bienestar</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">8 Ene 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Clima laboral en empresas agrícolas</h2>
+                            <p class="text-gray-600 text-sm mb-4">Estrategias para mejorar satisfacción y retención.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="bienestar">
+                        <div class="relative"><img src="blog_team_building_1770152577171.png" alt="Team"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-bienestar text-white text-xs font-bold px-3 py-1 rounded-full">💚
+                                Bienestar</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">5 Ene 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Team building que funciona</h2>
+                            <p class="text-gray-600 text-sm mb-4">Actividades de integración con resultados medibles.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="bienestar">
+                        <div class="relative"><img src="blog_salud_mental_1770152596255.png" alt="Salud"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-bienestar text-white text-xs font-bold px-3 py-1 rounded-full">💚
+                                Bienestar</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">20 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Salud mental en el trabajo</h2>
+                            <p class="text-gray-600 text-sm mb-4">Programas de apoyo efectivos para empresas.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="bienestar">
+                        <div class="relative"><img src="blog_liderazgo_positivo_1770152612123.png" alt="Liderazgo"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-bienestar text-white text-xs font-bold px-3 py-1 rounded-full">💚
+                                Bienestar</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">10 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Liderazgo positivo</h2>
+                            <p class="text-gray-600 text-sm mb-4">Impacto en el bienestar del equipo.</p>
+                        </div>
+                    </article>
+
+                    <!-- ADMINISTRACIÓN -->
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="administracion">
+                        <div class="relative"><img src="blog_liderazgo_terreno_1770152627976.png" alt="Terreno"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-administracion text-white text-xs font-bold px-3 py-1 rounded-full">📊
+                                Administración</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">3 Ene 2025</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Liderazgo en terreno</h2>
+                            <p class="text-gray-600 text-sm mb-4">Gestionar equipos de trabajo rural.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="administracion">
+                        <div class="relative"><img src="blog_kpis_productividad_1770152642410.png" alt="KPIs"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-administracion text-white text-xs font-bold px-3 py-1 rounded-full">📊
+                                Administración</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">28 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">KPIs para agroindustria</h2>
+                            <p class="text-gray-600 text-sm mb-4">Indicadores clave de productividad.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="administracion">
+                        <div class="relative"><img src="blog_gestion_rrhh_1770152702043.png" alt="RRHH"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-administracion text-white text-xs font-bold px-3 py-1 rounded-full">📊
+                                Administración</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">15 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Gestión RRHH en temporada alta</h2>
+                            <p class="text-gray-600 text-sm mb-4">Planificación efectiva de personal.</p>
+                        </div>
+                    </article>
+
+                    <!-- TECNOLOGÍA -->
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="tecnologia">
+                        <div class="relative"><img src="blog_lms_capacitacion_1770152718833.png" alt="LMS"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-tecnologia text-white text-xs font-bold px-3 py-1 rounded-full">💻
+                                Tecnología</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">20 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Herramientas digitales de capacitación</h2>
+                            <p class="text-gray-600 text-sm mb-4">Plataformas LMS y tracking de certificaciones.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="tecnologia">
+                        <div class="relative"><img src="blog_automatizacion_agro_1770152735731.png" alt="Automatización"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-tecnologia text-white text-xs font-bold px-3 py-1 rounded-full">💻
+                                Tecnología</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">15 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Automatización en el agro</h2>
+                            <p class="text-gray-600 text-sm mb-4">Por dónde empezar con tecnología.</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                        data-category="tecnologia">
+                        <div class="relative"><img src="blog_software_gestion_1770152751821.png" alt="Software"
+                                class="w-full h-48 object-cover"><span
+                                class="absolute top-4 left-4 bg-tecnologia text-white text-xs font-bold px-3 py-1 rounded-full">💻
+                                Tecnología</span></div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">1 Dic 2024</p>
+                            <h2 class="text-xl font-bold text-gray-900 mb-3">Software de gestión agrícola 2024</h2>
+                            <p class="text-gray-600 text-sm mb-4">Comparativa de plataformas disponibles en Chile.</p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-simaq-500">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold text-white mb-4">¿Quieres más artículos?</h2>
+                <a href="https://wa.me/56992802596?text=Quiero%20suscribirme%20al%20newsletter" target="_blank"
+                    class="inline-flex bg-white text-simaq-600 font-bold py-4 px-8 rounded-full hover:bg-gray-100">Suscribirme
+                    por WhatsApp</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <img src="Logo_SIMAQ.png" alt="SIMAQ" class="h-12 brightness-0 invert mx-auto mb-6">
+            <p class="text-sm text-gray-500">© 2025 SIMAQ Capacitaciones</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/56992802596" target="_blank"
+        class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 z-50">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+    <script>
+        function filterArticles(category) {
+            document.querySelectorAll('.article-card').forEach(a => a.classList.toggle('hidden', category !== 'all' && a.dataset.category !== category));
+            document.querySelectorAll('.category-btn').forEach(b => { b.classList.remove('active', 'bg-gray-900', 'text-white'); if (b.dataset.category === category) b.classList.add('active', 'bg-gray-900', 'text-white'); });
+        }
+    </script>
+</body>
+
+</html>

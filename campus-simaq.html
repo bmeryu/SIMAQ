@@ -9,14 +9,15 @@
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
+
 <head>
     <meta charset="UTF-8" />
     <title>Campus Virtual - SIMAQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Dashboard de estudiante para acceder a los cursos de SIMAQ.">
-    <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="Logo_SIMAQ.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,115 +27,150 @@
             --simaq-blue: #0057FF;
             --simaq-dark-blue: #003db3;
         }
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .text-simaq-blue { color: var(--simaq-blue); }
-        .bg-simaq-blue { background-color: var(--simaq-blue); }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .text-simaq-blue {
+            color: var(--simaq-blue);
+        }
+
+        .bg-simaq-blue {
+            background-color: var(--simaq-blue);
+        }
     </style>
 </head>
+
 <body class="text-gray-800">
 
     <header class="bg-white shadow-sm sticky top-0 z-30">
         <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
             <a href="index.html" aria-label="Ir al inicio de SIMAQ">
-                <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-16 md:h-20 w-auto" />
+                <img src="Logo_SIMAQ.png" alt="Logo SIMAQ" class="h-16 md:h-20 w-auto" />
             </a>
             <div id="user-profile" class="hidden sm:flex items-center gap-3 relative">
                 <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[20ch]"></span>
-                <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
+                <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar
+                    sesión</button>
             </div>
         </nav>
     </header>
 
     <main class="container mx-auto px-6 py-12 max-w-7xl">
         <section class="mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Alumno</span>!</h1>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span
+                    id="welcome-name" class="whitespace-nowrap">Alumno</span>!</h1>
             <p class="text-lg text-gray-600 mt-2">Continuemos fortaleciendo tus competencias.</p>
         </section>
 
         <section aria-labelledby="courses-heading">
-            <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-8">Mis Cursos Disponibles</h2>
+            <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-8">Mis Cursos
+                Disponibles</h2>
             <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
                 <!-- Curso: Uso y Manejo de Plaguicidas -->
-                <a href="campus-curso-simaq.html?course=manejo-plaguicidas-sag" data-course-id="manejo-plaguicidas-sag" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/noticias_1583865968_smal.jpg" alt="Persona aplicando plaguicidas en un campo agrícola">
+                <a href="campus-curso-simaq.html?course=manejo-plaguicidas-sag" data-course-id="manejo-plaguicidas-sag"
+                    class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="curso-plaguicidas.png"
+                        alt="Persona aplicando plaguicidas en un campo agrícola">
                     <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Uso y Manejo de Plaguicidas (Credencial SAG)</h3>
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Uso y
+                            Manejo de Plaguicidas (Credencial SAG)</h3>
                         <div class="progress-container mt-4 hidden">
                             <div class="flex justify-between text-xs font-medium text-gray-500 mb-1">
                                 <span>Progreso</span>
                                 <span class="percent-text">0%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300"
+                                    style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
                 </a>
 
                 <!-- Curso: Calibración de Equipos de Pulverización -->
-                <a href="campus-curso-simaq.html?course=calibracion-pulverizacion" data-course-id="calibracion-pulverizacion" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/PHOTO-2019-07-24-17-13-15-COLLAGE.jpg" alt="Equipo de pulverización agrícola en un campo">
+                <a href="campus-curso-simaq.html?course=calibracion-pulverizacion"
+                    data-course-id="calibracion-pulverizacion"
+                    class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="curso-pulverizacion.png"
+                        alt="Equipo de pulverización agrícola en un campo">
                     <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Calibración de Equipos de Pulverización</h3>
-                         <div class="progress-container mt-4 hidden">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">
+                            Calibración de Equipos de Pulverización</h3>
+                        <div class="progress-container mt-4 hidden">
                             <div class="flex justify-between text-xs font-medium text-gray-500 mb-1">
                                 <span>Progreso</span>
                                 <span class="percent-text">0%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300"
+                                    style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
                 </a>
 
                 <!-- Curso: Manejo y Operación de Carretillas Elevadoras -->
-                <a href="campus-curso-simaq.html?course=manejo-carretillas" data-course-id="manejo-carretillas" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/grua-horquilla-4x2-carga-35tons-a-3mts-50hp-gas-fesal-D_NQ_NP_777962-MLC40831975069_022020-F_cuaddrado.jpg" alt="Operador manejando una carretilla elevadora en un almacén">
+                <a href="campus-curso-simaq.html?course=manejo-carretillas" data-course-id="manejo-carretillas"
+                    class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="curso-carretilla.png"
+                        alt="Operador manejando una carretilla elevadora en un almacén">
                     <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Manejo y Operación de Carretillas Elevadoras</h3>
-                         <div class="progress-container mt-4 hidden">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Manejo
+                            y Operación de Carretillas Elevadoras</h3>
+                        <div class="progress-container mt-4 hidden">
                             <div class="flex justify-between text-xs font-medium text-gray-500 mb-1">
                                 <span>Progreso</span>
                                 <span class="percent-text">0%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300"
+                                    style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
                 </a>
-                
+
                 <!-- Curso: Operación y Mantenimiento de Equipos de Riego -->
-                <a href="campus-curso-simaq.html?course=operacion-riego" data-course-id="operacion-riego" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                    <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/tractor-1.jpg" alt="Sistema de riego en un campo agrícola">
+                <a href="campus-curso-simaq.html?course=operacion-riego" data-course-id="operacion-riego"
+                    class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="hero-tractor.png"
+                        alt="Sistema de riego en un campo agrícola">
                     <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Operación y Mantenimiento de Equipos de Riego</h3>
-                         <div class="progress-container mt-4 hidden">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">
+                            Operación y Mantenimiento de Equipos de Riego</h3>
+                        <div class="progress-container mt-4 hidden">
                             <div class="flex justify-between text-xs font-medium text-gray-500 mb-1">
                                 <span>Progreso</span>
                                 <span class="percent-text">0%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300"
+                                    style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
                 </a>
 
                 <!-- Curso: Operación y Mantenimiento de Tractores -->
-                <a href="campus-curso-simaq.html?course=operacion-tractores" data-course-id="operacion-tractores" class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
-                     <img class="h-40 w-full object-cover" src="https://www.simaq.cl/wp-content/uploads/2020/04/tractor-1.jpg" alt="Tractor en un campo listo para operar">
+                <a href="campus-curso-simaq.html?course=operacion-tractores" data-course-id="operacion-tractores"
+                    class="course-card group block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                    <img class="h-40 w-full object-cover" src="hero-tractor.png"
+                        alt="Tractor en un campo listo para operar">
                     <div class="p-5">
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">Operación y Mantenimiento de Tractores</h3>
-                         <div class="progress-container mt-4 hidden">
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-simaq-blue transition-colors">
+                            Operación y Mantenimiento de Tractores</h3>
+                        <div class="progress-container mt-4 hidden">
                             <div class="flex justify-between text-xs font-medium text-gray-500 mb-1">
                                 <span>Progreso</span>
                                 <span class="percent-text">0%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                <div class="progress-bar bg-simaq-blue h-2 rounded-full transition-all duration-300"
+                                    style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
@@ -164,7 +200,7 @@
                 appId: "1:976543052975:web:1b8d35f9a6d3b1cbb1d05a",
                 measurementId: "G-1PRF6FG2YY"
             };
-            
+
             try {
                 firebase.initializeApp(firebaseConfig);
             } catch (e) {
@@ -175,11 +211,11 @@
             const db = firebase.firestore();
 
             const ALL_COURSES_DATA = {
-              'manejo-plaguicidas-sag': { totalLessons: 11 },
-              'calibracion-pulverizacion': { totalLessons: 0 },
-              'manejo-carretillas': { totalLessons: 0 },
-              'operacion-riego': { totalLessons: 0 },
-              'operacion-tractores': { totalLessons: 0 }
+                'manejo-plaguicidas-sag': { totalLessons: 11 },
+                'calibracion-pulverizacion': { totalLessons: 0 },
+                'manejo-carretillas': { totalLessons: 0 },
+                'operacion-riego': { totalLessons: 0 },
+                'operacion-tractores': { totalLessons: 0 }
             };
 
             function listenAndDisplayProgress(userId) {
@@ -193,14 +229,14 @@
                         const courseId = card.dataset.courseId;
                         const courseConfig = ALL_COURSES_DATA[courseId];
                         const courseProgress = allProgressData[courseId];
-                        
+
                         const progressContainer = card.querySelector('.progress-container');
                         if (!courseConfig || !progressContainer) return;
 
                         if (courseProgress && courseConfig.totalLessons > 0) {
                             const completedCount = courseProgress.completedLessons ? courseProgress.completedLessons.length : 0;
                             const percentage = Math.round((completedCount / courseConfig.totalLessons) * 100);
-                            
+
                             progressContainer.classList.remove('hidden');
                             card.querySelector('.percent-text').textContent = `${percentage}%`;
                             card.querySelector('.progress-bar').style.width = `${percentage}%`;
@@ -220,7 +256,7 @@
                     document.getElementById('user-name').textContent = name;
                     document.getElementById('welcome-name').textContent = name.split(' ')[0];
                     document.getElementById('user-profile').classList.remove('hidden');
-                    
+
                     listenAndDisplayProgress(user.uid);
 
                     document.getElementById('logout-btn').addEventListener('click', () => {
@@ -235,5 +271,5 @@
         });
     </script>
 </body>
-</html>
 
+</html>

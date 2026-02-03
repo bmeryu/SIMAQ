@@ -8,14 +8,15 @@
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
+
 <head>
     <meta charset="UTF-8" />
     <title>Lección del Curso - SIMAQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Plataforma de aprendizaje de SIMAQ.">
-    <link rel="icon" href="https://bmeryu.github.io/SIMAQ/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="Logo_SIMAQ.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,50 +27,87 @@
             --simaq-blue: #0057FF;
             --simaq-dark-blue: #003db3;
         }
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .text-simaq-blue { color: var(--simaq-blue); }
-        .bg-simaq-blue { background-color: var(--simaq-blue); }
-        .border-simaq-blue { border-color: var(--simaq-blue); }
-        .ring-simaq-blue { --tw-ring-color: var(--simaq-blue); }
-        
-        .quiz-option.selected { 
-            border-color: var(--simaq-blue); 
-            background-color: #eff6ff; 
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .text-simaq-blue {
+            color: var(--simaq-blue);
+        }
+
+        .bg-simaq-blue {
+            background-color: var(--simaq-blue);
+        }
+
+        .border-simaq-blue {
+            border-color: var(--simaq-blue);
+        }
+
+        .ring-simaq-blue {
+            --tw-ring-color: var(--simaq-blue);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--simaq-blue);
+            background-color: #eff6ff;
             --tw-ring-color: var(--simaq-blue);
             box-shadow: 0 0 0 2px var(--simaq-blue);
         }
 
-        details > summary { list-style: none; }
-        details > summary::-webkit-details-marker { display: none; }
-        details[open] summary .arrow-down { transform: rotate(180deg); }
-        .arrow-down { transition: transform 0.2s ease-in-out; }
+        details>summary {
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] summary .arrow-down {
+            transform: rotate(180deg);
+        }
+
+        .arrow-down {
+            transition: transform 0.2s ease-in-out;
+        }
     </style>
 </head>
+
 <body class="text-gray-800">
 
     <div id="app" class="flex flex-col min-h-screen">
         <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
             <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
                 <a href="index.html" class="flex items-center" aria-label="Página de inicio de SIMAQ">
-                    <img src="https://bmeryu.github.io/SIMAQ/Logo_SIMAQ.png" alt="Logo de SIMAQ" class="h-16 md:h-20 w-auto">
+                    <img src="Logo_SIMAQ.png" alt="Logo de SIMAQ" class="h-16 md:h-20 w-auto">
                 </a>
                 <div class="flex items-center gap-2 sm:gap-4">
                     <div id="user-profile-container" class="hidden items-center gap-3 relative">
                         <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
-                        <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
+                        <button id="logout-button"
+                            class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar
+                            sesión</button>
                     </div>
                 </div>
             </nav>
         </header>
 
         <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
+            <aside id="course-sidebar"
+                class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
                 <div class="p-6">
-                    <a href="./campus-simaq.html" class="text-sm text-simaq-blue hover:text-simaq-dark-blue font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
+                    <a href="./campus-simaq.html"
+                        class="text-sm text-simaq-blue hover:text-simaq-dark-blue font-semibold flex items-center mb-4"><i
+                            data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
                     <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
                     <div id="progress-container" class="mt-4">
-                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
-                        <div class="w-full bg-slate-200 rounded-full h-2-5"><div id="progress-bar" class="bg-simaq-blue h-2-5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                            <span>Progreso</span><span id="progress-text">0%</span></div>
+                        <div class="w-full bg-slate-200 rounded-full h-2-5">
+                            <div id="progress-bar" class="bg-simaq-blue h-2-5 rounded-full transition-all duration-500"
+                                style="width: 0%"></div>
+                        </div>
                     </div>
                 </div>
                 <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
@@ -78,18 +116,24 @@
             <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
                 <div class="p-6 md:p-8 lg:p-10 max-w-4xl mx-auto">
                     <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-8">Cargando...</h2>
-                    <div id="lesson-material-container" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <div id="lesson-material-container"
+                        class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                         <!-- El contenido se inyecta aquí -->
                     </div>
-                    <div id="navigation-buttons" class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
-                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
-                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-simaq-blue rounded-lg shadow-sm hover:bg-simaq-dark-blue disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
+                    <div id="navigation-buttons"
+                        class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
+                        <button id="prev-lesson-btn"
+                            class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección
+                            Anterior</button>
+                        <button id="main-action-btn"
+                            class="px-6 py-3 text-sm font-semibold text-white bg-simaq-blue rounded-lg shadow-sm hover:bg-simaq-dark-blue disabled:opacity-50 disabled:cursor-not-allowed">Marcar
+                            como completada</button>
                     </div>
                 </div>
             </section>
         </main>
     </div>
-    
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
@@ -108,69 +152,77 @@
                 appId: "1:976543052975:web:1b8d35f9a6d3b1cbb1d05a",
                 measurementId: "G-1PRF6FG2YY"
             };
-            
-            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
+
+            try { firebase.initializeApp(firebaseConfig); } catch (e) { console.warn("Firebase ya fue inicializado."); }
 
             const auth = firebase.auth();
             const db = firebase.firestore();
-            
+
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('course');
-            
+
             // --- BASE DE DATOS DE CURSOS SIMAQ ---
             const ALL_COURSES_DATA = {
-              'manejo-plaguicidas-sag': {
-                title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
-                totalLessons: 11,
-                modules: [
-                  {
-                    title: 'Módulo 1: Fundamentos y Normativa',
-                    lessons: [
-                      { id: '1-1', title: 'Introducción al Manejo Seguro', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
-                      { id: '1-2', title: 'Normativa SAG Aplicable', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4' },
-                      { id: '1-3', title: 'Tipos de Plaguicidas y Etiquetas', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' },
-                      { id: 'q-1', title: 'Quiz: Fundamentos', type: 'quiz', questions: [
-                          { text: 'La normativa SAG busca principalmente:', options: ['Aumentar la producción', 'Asegurar la inocuidad alimentaria y la seguridad del aplicador', 'Facilitar la exportación'], correctAnswer: 1 },
-                          { text: 'La banda toxicológica de color rojo en una etiqueta indica:', options: ['Poco peligroso', 'Cuidado', 'Muy peligroso'], correctAnswer: 2 }
-                      ]}
+                'manejo-plaguicidas-sag': {
+                    title: 'Uso y Manejo de Plaguicidas (Credencial SAG)',
+                    totalLessons: 11,
+                    modules: [
+                        {
+                            title: 'Módulo 1: Fundamentos y Normativa',
+                            lessons: [
+                                { id: '1-1', title: 'Introducción al Manejo Seguro', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
+                                { id: '1-2', title: 'Normativa SAG Aplicable', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4' },
+                                { id: '1-3', title: 'Tipos de Plaguicidas y Etiquetas', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' },
+                                {
+                                    id: 'q-1', title: 'Quiz: Fundamentos', type: 'quiz', questions: [
+                                        { text: 'La normativa SAG busca principalmente:', options: ['Aumentar la producción', 'Asegurar la inocuidad alimentaria y la seguridad del aplicador', 'Facilitar la exportación'], correctAnswer: 1 },
+                                        { text: 'La banda toxicológica de color rojo en una etiqueta indica:', options: ['Poco peligroso', 'Cuidado', 'Muy peligroso'], correctAnswer: 2 }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 2: Equipos y Calibración',
+                            lessons: [
+                                { id: '2-1', title: 'Equipos de Protección Personal (EPP)', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4' },
+                                { id: '2-2', title: 'Calibración de Equipos de Pulverización', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4' },
+                                {
+                                    id: 'q-2', title: 'Quiz: Equipos', type: 'quiz', questions: [
+                                        { text: '¿Qué elemento del EPP protege las vías respiratorias?', options: ['Guantes', 'Traje impermeable', 'Mascarilla con filtro'], correctAnswer: 2 },
+                                        { text: 'Una correcta calibración asegura:', options: ['Aplicar la dosis exacta del producto', 'Ahorrar tiempo', 'Usar menos agua'], correctAnswer: 0 },
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 3: Aplicación y Post-Aplicación',
+                            lessons: [
+                                { id: '3-1', title: 'Técnicas de Aplicación Segura', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4' },
+                                {
+                                    id: 'q-3', title: 'Quiz: Buenas Prácticas', type: 'quiz', questions: [
+                                        { text: 'El triple lavado de envases es una práctica para:', options: ['Reutilizar los envases', 'Eliminar residuos peligrosos antes de su desecho', 'Ahorrar producto'], correctAnswer: 1 },
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 4: Casos Prácticos y Evaluación Final',
+                            lessons: [
+                                { id: '4-1', title: 'Análisis de Casos Reales', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4' },
+                                {
+                                    id: 'q-4', title: 'Evaluación Final del Curso', type: 'quiz', questions: [
+                                        { text: 'Ante un derrame de producto, ¿cuál es el primer paso a seguir?', options: ['Llamar a emergencias', 'Contener el derrame con material absorbente', 'Abandonar el área'], correctAnswer: 1 },
+                                        { text: 'El período de reingreso a un área tratada se encuentra especificado en:', options: ['La boleta de compra', 'La etiqueta del producto', 'El manual del tractor'], correctAnswer: 1 }
+                                    ]
+                                }
+                            ]
+                        }
                     ]
-                  },
-                  {
-                    title: 'Módulo 2: Equipos y Calibración',
-                    lessons: [
-                       { id: '2-1', title: 'Equipos de Protección Personal (EPP)', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4' },
-                       { id: '2-2', title: 'Calibración de Equipos de Pulverización', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4' },
-                       { id: 'q-2', title: 'Quiz: Equipos', type: 'quiz', questions: [
-                           { text: '¿Qué elemento del EPP protege las vías respiratorias?', options: ['Guantes', 'Traje impermeable', 'Mascarilla con filtro'], correctAnswer: 2 },
-                           { text: 'Una correcta calibración asegura:', options: ['Aplicar la dosis exacta del producto', 'Ahorrar tiempo', 'Usar menos agua'], correctAnswer: 0 },
-                       ]}
-                    ]
-                  },
-                  {
-                    title: 'Módulo 3: Aplicación y Post-Aplicación',
-                    lessons: [
-                       { id: '3-1', title: 'Técnicas de Aplicación Segura', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4' },
-                       { id: 'q-3', title: 'Quiz: Buenas Prácticas', type: 'quiz', questions: [
-                           { text: 'El triple lavado de envases es una práctica para:', options: ['Reutilizar los envases', 'Eliminar residuos peligrosos antes de su desecho', 'Ahorrar producto'], correctAnswer: 1 },
-                       ]}
-                    ]
-                  },
-                  {
-                    title: 'Módulo 4: Casos Prácticos y Evaluación Final',
-                    lessons: [
-                       { id: '4-1', title: 'Análisis de Casos Reales', type: 'video', videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4' },
-                       { id: 'q-4', title: 'Evaluación Final del Curso', type: 'quiz', questions: [
-                           { text: 'Ante un derrame de producto, ¿cuál es el primer paso a seguir?', options: ['Llamar a emergencias', 'Contener el derrame con material absorbente', 'Abandonar el área'], correctAnswer: 1 },
-                           { text: 'El período de reingreso a un área tratada se encuentra especificado en:', options: ['La boleta de compra', 'La etiqueta del producto', 'El manual del tractor'], correctAnswer: 1 }
-                       ]}
-                    ]
-                  }
-                ]
-              },
-              'calibracion-pulverizacion': { title: 'Calibración de Equipos de Pulverización', totalLessons: 0, modules: [] },
-              'manejo-carretillas': { title: 'Manejo y Operación de Carretillas Elevadoras', totalLessons: 0, modules: [] },
-              'operacion-riego': { title: 'Operación y Mantenimiento de Equipos de Riego', totalLessons: 0, modules: [] },
-              'operacion-tractores': { title: 'Operación y Mantenimiento de Tractores', totalLessons: 0, modules: [] }
+                },
+                'calibracion-pulverizacion': { title: 'Calibración de Equipos de Pulverización', totalLessons: 0, modules: [] },
+                'manejo-carretillas': { title: 'Manejo y Operación de Carretillas Elevadoras', totalLessons: 0, modules: [] },
+                'operacion-riego': { title: 'Operación y Mantenimiento de Equipos de Riego', totalLessons: 0, modules: [] },
+                'operacion-tractores': { title: 'Operación y Mantenimiento de Tractores', totalLessons: 0, modules: [] }
             };
 
             // --- VARIABLES GLOBALES ---
@@ -212,7 +264,7 @@
                 dom.modulesContainer.innerHTML = `<p class="p-4 text-sm text-gray-500 text-center">El contenido se mostrará aquí.</p>`;
                 lucide.createIcons();
             }
-            
+
             function updateUI() {
                 const lessonInfo = allLessons.find(l => l.id === userProgress.currentLessonId);
                 if (lessonInfo) {
@@ -239,13 +291,13 @@
                 }).join('');
                 addSidebarListeners();
             }
-            
+
             function renderLessonContent(lesson) {
-                let materialHtml = ''; 
-                switch(lesson.type) { 
+                let materialHtml = '';
+                switch (lesson.type) {
                     case 'video':
                         materialHtml = `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black"><video controls class="w-full h-full object-cover" src="${lesson.videoUrl || ''}" key="${lesson.id}"></video></div>`;
-                        break; 
+                        break;
                     case 'quiz':
                         const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
                         if (isQuizCompleted) {
@@ -258,10 +310,10 @@
                             materialHtml = `<div id="quiz-container">${questionsHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
                         }
                         break;
-                    default: 
+                    default:
                         materialHtml = `<p>Contenido no disponible.</p>`;
-                } 
-                dom.lessonMaterialContainer.innerHTML = materialHtml; 
+                }
+                dom.lessonMaterialContainer.innerHTML = materialHtml;
 
                 if (lesson.type === 'quiz' && !userProgress.completedLessons.includes(lesson.id)) {
                     dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
@@ -311,7 +363,7 @@
                     alert(`Tienes ${correctCount} de ${lesson.questions.length} respuestas correctas. Inténtalo de nuevo.`);
                 }
             }
-            
+
             function updateNavigationButtons() {
                 const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
                 if (!lesson) return;
@@ -321,28 +373,28 @@
                 dom.prevBtn.disabled = allLessons.findIndex(l => l.id === userProgress.currentLessonId) === 0;
             }
 
-            function updateOverallProgress() { 
+            function updateOverallProgress() {
                 const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / courseData.totalLessons) * 100) : 0;
                 document.getElementById('progress-bar').style.width = `${percentage}%`;
-                document.getElementById('progress-text').textContent = `${percentage}%`; 
+                document.getElementById('progress-text').textContent = `${percentage}%`;
             }
-            
+
             async function navigateToLesson(lessonId) {
                 userProgress.currentLessonId = lessonId;
                 await saveProgress();
                 updateUI();
             }
 
-            async function saveProgress() { 
-                if (!currentUser) return; 
+            async function saveProgress() {
+                if (!currentUser) return;
                 try {
-                    const progressRef = db.collection('userProgress').doc(currentUser.uid); 
+                    const progressRef = db.collection('userProgress').doc(currentUser.uid);
                     await progressRef.set({ [courseId]: userProgress }, { merge: true });
-                } catch(error) {
+                } catch (error) {
                     console.error("Error al guardar el progreso:", error);
                 }
             }
-            
+
             function addSidebarListeners() {
                 dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
                     link.addEventListener('click', e => {
@@ -354,9 +406,9 @@
                     });
                 });
             }
-            
+
             // --- INICIALIZACIÓN ---
-            
+
             async function initializeApp(user) {
                 currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
                 dom.userName.textContent = currentUser.name;
@@ -367,7 +419,7 @@
                     displayError("Curso no encontrado.");
                     return;
                 }
-                
+
                 courseData = ALL_COURSES_DATA[courseId];
                 allLessons = courseData.modules.flatMap(m => m.lessons);
                 dom.courseTitle.textContent = courseData.title;
@@ -386,7 +438,7 @@
                         userProgress.completedLessons = loadedProgress.completedLessons || [];
                         userProgress.currentLessonId = allLessons.some(l => l.id === loadedProgress.currentLessonId) ? loadedProgress.currentLessonId : allLessons[0].id;
                     } else {
-                         userProgress.currentLessonId = allLessons[0].id;
+                        userProgress.currentLessonId = allLessons[0].id;
                     }
                 } catch (error) {
                     console.warn("No se pudo cargar el progreso. Se iniciará desde cero.", error);
@@ -406,12 +458,12 @@
 
             dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => { window.location.href = 'index.html' }));
             dom.mainActionBtn.addEventListener('click', () => completeLesson(userProgress.currentLessonId));
-            dom.prevBtn.addEventListener('click', () => { 
-                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); 
-                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); 
+            dom.prevBtn.addEventListener('click', () => {
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
+                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id);
             });
         });
     </script>
 </body>
-</html>
 
+</html>
